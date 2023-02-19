@@ -1,0 +1,35 @@
+<table *ngIf="visitors$ | async as visitors" class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Nome</th>
+      <th scope="col">CPF</th>
+      <th scope="col">Opções</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="
+        let visitor of visitors.content
+          | paginate
+            : {
+                itemsPerPage: visitors.itemsPerPage,
+                currentPage: visitors.currentPage,
+                totalItems: visitors.totalItems
+              }
+      ">
+      <th scope="row">{{ visitor.name }}</th>
+      <td>{{ visitor.document }}</td>
+      <td>
+        <button class="btn btn-primary">Novo</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div>
+  <pagination-controls
+    (pageChange)="onPaginatorChange($event)"
+    [autoHide]="true"
+    [maxSize]="4"
+    nextLabel="Próxima"
+    previousLabel="Anterior"></pagination-controls>
+</div>
