@@ -1,3 +1,94 @@
+<nav class="navbar navbar">
+  <form class="d-flex">
+    <input
+      aria-label="Search"
+      class="form-control me-2 small"
+      placeholder="Search"
+      type="search" />
+    <button class="btn btn-outline-success btn-sm" type="submit">Search</button>
+  </form>
+  <button
+    class="btn btn-success btn-sm"
+    data-bs-target="#visitorModal"
+    data-bs-toggle="modal"
+    type="button">
+    Novo visitante
+  </button>
+</nav>
+
 <pgm-visitor-table
   (paginatorChange)="onChangePage($event)"
+  (tableSizeChange)="onTableSizeChange($event)"
   [visitors$]="visitors$"></pgm-visitor-table>
+
+<!-- Modal -->
+<div
+  aria-hidden="true"
+  aria-labelledby="visitorModal"
+  class="modal fade"
+  id="visitorModal"
+  tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="visitorModalLabel">
+          Cadastro de visitante
+        </h1>
+        <button
+          (click)="onCancel()"
+          aria-label="Close"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          type="button"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formVisitor" class="row g-3" novalidate>
+          <div class="col-12">
+            <label class="form-label" for="inputName">Nome</label>
+            <input
+              class="form-control"
+              formControlName="name"
+              id="inputName"
+              type="text" />
+            <div
+              *ngIf="name?.touched && name?.invalid"
+              class="alert alert-danger">
+              {{ getErrorMessage('name') }}
+            </div>
+          </div>
+
+          <div class="col">
+            <label class="form-label" for="inputDocument">CPF</label>
+            <input
+              class="form-control"
+              formControlName="document"
+              id="inputDocument"
+              type="text" />
+            <div
+              *ngIf="document?.touched && document?.invalid"
+              class="alert alert-danger">
+              {{ getErrorMessage('document') }}
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          (click)="onCancel()"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          type="button">
+          Cancelar
+        </button>
+        <button
+          (click)="onSubmit()"
+          [disabled]="formVisitor.invalid"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          type="button">
+          Cadastrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

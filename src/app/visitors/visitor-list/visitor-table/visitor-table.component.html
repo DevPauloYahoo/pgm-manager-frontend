@@ -1,35 +1,51 @@
-<table *ngIf="visitors$ | async as visitors" class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Nome</th>
-      <th scope="col">CPF</th>
-      <th scope="col">Opções</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr
-      *ngFor="
-        let visitor of visitors.content
-          | paginate
-            : {
-                itemsPerPage: visitors.itemsPerPage,
-                currentPage: visitors.currentPage,
-                totalItems: visitors.totalItems
-              }
-      ">
-      <th scope="row">{{ visitor.name }}</th>
-      <td>{{ visitor.document }}</td>
-      <td>
-        <button class="btn btn-primary">Novo</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<div>
-  <pagination-controls
-    (pageChange)="onPaginatorChange($event)"
-    [autoHide]="true"
-    [maxSize]="4"
-    nextLabel="Próxima"
-    previousLabel="Anterior"></pagination-controls>
+<div class="card mb-2">
+  <div class="card-body">
+    <table *ngIf="visitors$ | async as visitors" class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">CPF</th>
+          <th scope="col">Atendimento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let visitor of visitors.content
+              | paginate
+                : {
+                    itemsPerPage: visitors.itemsPerPage,
+                    currentPage: visitors.currentPage,
+                    totalItems: visitors.totalItems
+                  }
+          ">
+          <td>{{ visitor.name }}</td>
+          <td>{{ visitor.document }}</td>
+          <td>
+            <a class="btn btn-primary btn-sm">Adicionar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <select
+      (change)="onTableSizeChange($event)"
+      class="form-select float-end"
+      style="width: 80px; height: 35px; font-size: small">
+      <option value="5">5</option>
+      <option selected value="10">10</option>
+      <option value="15">15</option>
+    </select>
+
+    <pagination-controls
+      (pageChange)="onPaginatorChange($event)"
+      [autoHide]="false"
+      [maxSize]="5"
+      class="float-end me-3"
+      nextLabel="Próxima"
+      previousLabel="Anterior"></pagination-controls>
+  </div>
 </div>

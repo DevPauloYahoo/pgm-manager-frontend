@@ -14,8 +14,15 @@ export class VisitorTableComponent {
     new Observable<TypeVisitorPaginator<Visitor>>();
 
   @Output() paginatorChange = new EventEmitter<number>();
+  @Output() tableSizeChange = new EventEmitter<number>();
 
-  onPaginatorChange(event: number) {
+  tableSizes: number[] = [5, 10, 15];
+
+  onPaginatorChange(event: Event | any) {
     this.paginatorChange.emit(event);
+  }
+
+  onTableSizeChange(event: Event | any) {
+    this.tableSizeChange.emit(event);
   }
 }

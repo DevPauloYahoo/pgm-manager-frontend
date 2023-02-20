@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Visitor } from '../models/visitor.interface';
 import {
   TypeDataPagination,
+  TypeVisitor,
   TypeVisitorPaginator,
 } from '../types/visitor.type';
 
@@ -25,5 +26,9 @@ export class VisitorsService {
       `${this.BASE_URL}/visitors`,
       { params }
     );
+  }
+
+  createVisitor(visitor: TypeVisitor) {
+    return this.http.post(`${this.BASE_URL}/visitors`, visitor);
   }
 }
