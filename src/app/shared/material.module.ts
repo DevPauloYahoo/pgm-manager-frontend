@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  exports: [MatTableModule, MatPaginatorModule],
+  exports: [MatDialogModule],
 })
 export class MaterialModule {}

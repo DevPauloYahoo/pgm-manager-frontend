@@ -8,15 +8,19 @@
     <button class="btn btn-outline-success btn-sm" type="submit">Search</button>
   </form>
   <button
-    (click)="onShowModalCreateVisitor()"
-    class="btn btn-success btn-sm"
+    (click)="onChangeStatus()"
+    [class]="dataPagination.status ? 'btn btn-danger' : 'btn btn-success'"
+    class="btn-sm"
+    style="width: 200px"
     type="button">
-    Novo Cadastro
+    {{
+      dataPagination.status ? 'Atendimentos Encerrados' : 'Atendimentos Ativos'
+    }}
   </button>
 </nav>
 
-<pgm-visitor-table
-  (addVisit)="onAddVisitToVisitor($event)"
+<pgm-visit-table
   (paginatorChange)="onChangePage($event)"
   (tableSizeChange)="onTableSizeChange($event)"
-  [visitors$]="visitors$"></pgm-visitor-table>
+  [statusVisits]="dataPagination.status"
+  [visits$]="visits$"></pgm-visit-table>

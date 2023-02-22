@@ -4,21 +4,21 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { MaterialModule } from '../../shared/material.module';
-import { VisitorModalComponent } from './visitor-form-modal/visitor-modal.component';
-import { VisitorListComponent } from './visitor-list.component';
-import { VisitorTableComponent } from './visitor-table/visitor-table.component';
+import { VisitFormModalComponent } from './visit-form-modal/visit-form-modal.component';
+import { VisitListComponent } from './visit-list.component';
+import { VisitTableComponent } from './visit-table/visit-table.component';
 
 @NgModule({
   declarations: [
-    VisitorListComponent,
-    VisitorTableComponent,
-    VisitorModalComponent,
+    VisitListComponent,
+    VisitTableComponent,
+    VisitFormModalComponent,
   ],
   imports: [
     CommonModule,
-    MaterialModule,
     NgxPaginationModule,
     ReactiveFormsModule,
+    MaterialModule,
   ],
 })
-export class VisitorListModule {}
+export class VisitListModule {}

@@ -1,8 +1,15 @@
 import { Visitor } from '../models/visitor.interface';
 
-export type TypeVisitor = Omit<Visitor, 'id' | 'visits'>;
+// export type TypeVisitor = Omit<Visitor, 'id'>;
+export type TypeVisitor = Partial<Visitor>;
 
-export type TypeVisitorPaginator<T> = {
+export type TypeVisitToVisitor = {
+  visitorId: string;
+  badge: string;
+  secretary: string;
+};
+
+export type TypeResponseVisitor<T> = {
   content: Content<T>;
   totalItems: number;
   itemsPerPage: number;
@@ -11,7 +18,7 @@ export type TypeVisitorPaginator<T> = {
 
 export type Content<T> = Array<T>;
 
-export type TypeDataPagination = {
+export type TypePageableVisitor = {
   search?: string;
   page: number;
   limit: number;

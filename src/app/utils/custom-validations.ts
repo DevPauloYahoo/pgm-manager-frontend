@@ -56,4 +56,15 @@ export class CustomValidations {
       return false;
     };
   }
+
+  static isValidBadge(): ValidatorFn {
+    return (control: AbstractControl): Validators => {
+      const badge = control.value;
+      if (badge <= 50) {
+        return false;
+      } else {
+        return { badgeNotValid: true };
+      }
+    };
+  }
 }

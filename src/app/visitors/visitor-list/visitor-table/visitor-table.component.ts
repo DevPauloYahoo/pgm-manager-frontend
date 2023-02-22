@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Visitor } from '../../models/visitor.interface';
-import { TypeVisitorPaginator } from '../../types/visitor.type';
+import { TypeResponseVisitor, TypeVisitor } from '../../types/visitor.type';
 
 @Component({
   selector: 'pgm-visitor-table',
@@ -10,9 +10,11 @@ import { TypeVisitorPaginator } from '../../types/visitor.type';
   styleUrls: ['./visitor-table.component.css'],
 })
 export class VisitorTableComponent {
-  @Input() visitors$: Observable<TypeVisitorPaginator<Visitor>> =
-    new Observable<TypeVisitorPaginator<Visitor>>();
+  @Input() visitors$: Observable<TypeResponseVisitor<Visitor>> = new Observable<
+    TypeResponseVisitor<Visitor>
+  >();
 
+  @Output() addVisit = new EventEmitter<TypeVisitor>();
   @Output() paginatorChange = new EventEmitter<number>();
   @Output() tableSizeChange = new EventEmitter<number>();
 
@@ -24,5 +26,9 @@ export class VisitorTableComponent {
 
   onTableSizeChange(event: Event | any) {
     this.tableSizeChange.emit(event);
+  }
+
+  onAddVisit(visitor: TypeVisitor) {
+    this.addVisit.emit(visitor);
   }
 }

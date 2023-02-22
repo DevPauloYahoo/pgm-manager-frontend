@@ -1,11 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { Visitor } from '../models/visitor.interface';
 import {
-  TypeDataPagination,
+  TypePageableVisitor,
+  TypeResponseVisitor,
   TypeVisitor,
-  TypeVisitorPaginator,
+  TypeVisitToVisitor,
 } from '../types/visitor.type';
 
 @Injectable({
@@ -16,19 +18,35 @@ export class VisitorsService {
 
   constructor(private http: HttpClient) {}
 
-  getVisitors({ search, page, limit }: TypeDataPagination) {
+  getVisitors({
+    search,
+    page,
+    limit,
+  }: TypePageableVisitor): Observable<TypeResponseVisitor<Visitor>> {
     const params = new HttpParams()
       .set('search', search || '')
       .set('page', page)
       .set('limit', limit);
 
-    return this.http.get<TypeVisitorPaginator<Visitor>>(
+    return this.http.get<TypeResponseVisitor<Visitor>>(
       `${this.BASE_URL}/visitors`,
       { params }
     );
   }
 
-  createVisitor(visitor: TypeVisitor) {
-    return this.http.post(`${this.BASE_URL}/visitors`, visitor);
+  createVisitor(data: TypeVisitor): Observable<Visitor> {
+    return this.http.post<Visitor>(`${this.BASE_URL}/visitors`, data);
+  }
+
+  createVisitToVisitor({ visitorId, badge, secretary }: TypeVisitToVisitor) {
+    console.log('Data', visitorId);
+    return this.http.post(`${this.BASE_URL}/visits/${visitorId}`, {
+      badge,
+      secretary,
+    });
+  }
+
+  getById(visitorId: string): Observable<Visitor> {
+    return this.http.get<Visitor>(`${this.BASE_URL}/visitors/${visitorId}`);
   }
 }

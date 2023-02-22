@@ -22,7 +22,9 @@
           <td>{{ visitor.name }}</td>
           <td>{{ visitor.document }}</td>
           <td>
-            <a class="btn btn-primary btn-sm">Adicionar</a>
+            <a (click)="onAddVisit(visitor)" class="btn btn-primary btn-sm"
+              >Adicionar</a
+            >
           </td>
         </tr>
       </tbody>

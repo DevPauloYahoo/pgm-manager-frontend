@@ -1,0 +1,115 @@
+<!-- Modal -->
+<div class="modal-dialog">
+  <div class="modal-content p-2">
+    <div class="modal-header">
+      <h1 class="modal-title">Novo Cadastro</h1>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formVisitor" class="g-3">
+        <div class="card p-2" style="background: transparent">
+          <div formGroupName="visitor">
+            <h2>Visitante</h2>
+            <div [class]="name.touched ? 'was-validated' : ''" class="col-12">
+              <label class="form-label" for="inputName">Nome</label>
+              <input
+                class="form-control"
+                formControlName="name"
+                id="inputName"
+                minlength="6"
+                required
+                type="text" />
+              <div *ngIf="name?.touched && name?.invalid" class="msgError">
+                {{ showErrorMessage('name', 'Nome') }}
+              </div>
+            </div>
+
+            <div
+              [class]="document.touched ? 'was-validated' : ''"
+              class="col-12 mt-3">
+              <label class="form-label" for="inputDocument">CPF</label>
+              <input
+                class="form-control"
+                formControlName="document"
+                id="inputDocument"
+                minlength="11"
+                required
+                type="text" />
+              <div
+                *ngIf="document?.touched && document?.invalid"
+                class="msgError">
+                {{ showErrorMessage('document', 'CPF') }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- div visits-->
+        <div *ngIf="visitStatus" class="card p-2 mt-2">
+          <div class="row gx-2" formGroupName="visit">
+            <h2>Atendimento</h2>
+            <div [class]="badge.touched ? 'was-validated' : ''" class="col-4">
+              <label class="form-label" for="inputBadge">Nº Crachá</label>
+              <input
+                class="form-control"
+                formControlName="badge"
+                id="inputBadge"
+                maxlength="2"
+                minlength="2"
+                required
+                type="text" />
+              <div *ngIf="badge?.touched && badge?.invalid" class="msgError">
+                {{ showErrorMessage('badge', 'Crachá') }}
+              </div>
+            </div>
+
+            <div
+              [class]="secretary.touched ? 'was-validated' : ''"
+              class="col-8">
+              <label class="form-label" for="inputSecretary"
+                >Secretaria/Destino</label
+              >
+              <select
+                class="form-select"
+                formControlName="secretary"
+                id="inputSecretary"
+                required>
+                <option [selected]="true" value="">
+                  Selecione a secretaria
+                </option>
+                <option *ngFor="let item of secretaries" value="{{ item }}">
+                  {{ item }}
+                </option>
+              </select>
+              <div
+                *ngIf="secretary?.touched && secretary?.invalid"
+                class="msgError">
+                {{ showErrorMessage('secretary', 'Secretaria') }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer mt-3">
+      <button
+        (click)="onSelectVisitStatus()"
+        *ngIf="visitor.valid && !visitStatus"
+        class="btn-sm btn btn-success me-auto">
+        Cadastrar Atendimento
+      </button>
+      <button
+        [mat-dialog-close]="false"
+        class="btn btn-secondary btn-sm me-2"
+        type="button">
+        Cancelar
+      </button>
+      <button
+        (click)="onConfirm()"
+        [disabled]="(visitor.invalid || visitStatus) && visit.invalid"
+        [mat-dialog-close]="true"
+        class="btn btn-primary btn-sm"
+        type="button">
+        Cadastrar
+      </button>
+    </div>
+  </div>
+</div>

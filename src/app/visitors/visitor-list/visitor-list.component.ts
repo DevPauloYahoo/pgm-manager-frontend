@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Observable, take, tap } from 'rxjs';
 
-import { CustomValidations } from '../../utils/custom-validations';
+import { VisitsService } from '../../visits/services/visits.service';
+import { VisitFormModalComponent } from '../../visits/visit-list/visit-form-modal/visit-form-modal.component';
 import { Visitor } from '../models/visitor.interface';
 import { VisitorsService } from '../services/visitors.service';
 import {
-  TypeDataPagination,
+  TypePageableVisitor,
+  TypeResponseVisitor,
   TypeVisitor,
-  TypeVisitorPaginator,
+  TypeVisitToVisitor,
 } from '../types/visitor.type';
+import { VisitorModalComponent } from './visitor-form-modal/visitor-modal.component';
 
 @Component({
   selector: 'pgm-visitor-list',
@@ -17,38 +21,18 @@ import {
   styleUrls: ['./visitor-list.component.css'],
 })
 export class VisitorListComponent implements OnInit {
-  visitors$: Observable<TypeVisitorPaginator<Visitor>> = new Observable();
-  dataPagination: TypeDataPagination = {
+  visitors$: Observable<TypeResponseVisitor<Visitor>> = new Observable();
+  dataPagination: TypePageableVisitor = {
     limit: 0,
     page: 0,
   };
 
-  // Cria formulário vazio
-  formVisitor = this.formBuilder.group({
-    id: [''],
-    name: ['', [Validators.required, Validators.minLength(6)]],
-    document: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(11),
-        CustomValidations.isValidCpf(),
-      ],
-    ],
-  });
-
   constructor(
     private visitorsService: VisitorsService,
-    private formBuilder: FormBuilder
+    private visitsService: VisitsService,
+    private dialog: MatDialog,
+    private router: Router
   ) {}
-
-  get name() {
-    return this.formVisitor.controls.name;
-  }
-
-  get document() {
-    return this.formVisitor.controls.document;
-  }
 
   ngOnInit(): void {
     this.getVisitors(this.dataPagination);
@@ -65,48 +49,78 @@ export class VisitorListComponent implements OnInit {
     this.getVisitors(this.dataPagination);
   }
 
-  onSubmit() {
-    const { name, document } = this.formVisitor.value;
-    this.createVisitor({ name, document });
-    this.onCancel();
+  onAddVisitToVisitor(visitor: TypeVisitor) {
+    this.onShowModalCreateVisitToVisitor(visitor);
   }
 
-  onCancel() {
-    this.formVisitor.reset();
+  onShowModalCreateVisitToVisitor(visitor: TypeVisitor) {
+    const visitorRest = {
+      id: visitor.id,
+      name: visitor.name,
+      document: visitor.document,
+    };
+    const dialogRef = this.dialog.open(VisitFormModalComponent, {
+      data: visitorRest,
+      width: '600px',
+      disableClose: true,
+      position: {
+        top: '100px',
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        tap((data: TypeVisitToVisitor) => {
+          if (data) {
+            this.visitorsService
+              .createVisitToVisitor(data)
+              .pipe(take(1))
+              .subscribe();
+          }
+          this.router.navigate(['visits']);
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
   }
 
-  // valida os campos do formVisitor
-  getErrorMessage(fieldName: string) {
-    const fieldVisitor = this.formVisitor.get(fieldName);
+  onShowModalCreateVisitor() {
+    const dialogRef = this.dialog.open(VisitorModalComponent, {
+      width: '600px',
+      disableClose: true,
+      position: {
+        top: '100px',
+      },
+    });
 
-    if (fieldVisitor?.hasError('required')) {
-      return 'Campo obrigatório';
-    }
-
-    if (fieldVisitor?.hasError('minlength')) {
-      const requiredLength = fieldVisitor?.errors
-        ? fieldVisitor.errors['minlength']['requiredLength']
-        : 6;
-
-      return `Tamanho mínimo precisa ser de ${requiredLength} caracteres`;
-    }
-
-    if (fieldVisitor?.hasError('cpfNotValid')) {
-      return `CPF ( ${this.document.value} ) inválido`;
-    }
-
-    return 'Campo inválido';
+    dialogRef
+      .afterClosed()
+      .pipe(
+        tap((data: TypeVisitor) => {
+          if (data) {
+            this.createVisitor(data);
+          }
+        }),
+        take(1)
+      )
+      .subscribe();
   }
 
   // private methods
-  private getVisitors(dataPagination: TypeDataPagination) {
+  private getVisitors(dataPagination: TypePageableVisitor) {
     this.visitors$ = this.visitorsService.getVisitors(dataPagination);
   }
 
   private createVisitor(data: TypeVisitor) {
     this.visitorsService
       .createVisitor(data)
-      .pipe(tap(() => this.getVisitors(this.dataPagination)))
+      .pipe(
+        tap(() => {
+          this.getVisitors(this.dataPagination);
+          console.log('SALVOU...');
+        })
+      )
       .pipe(take(1))
       .subscribe();
   }
