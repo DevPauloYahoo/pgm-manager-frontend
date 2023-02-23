@@ -115,8 +115,11 @@ export class VisitorListComponent implements OnInit {
       .createVisitor(data)
       .pipe(
         tap(() => {
-          this.getVisitors(this.dataPagination);
-          console.log('SALVOU...');
+          if (!data.visit) {
+            this.getVisitors(this.dataPagination);
+          } else {
+            this.router.navigate(['visits']);
+          }
         })
       )
       .pipe(take(1))
@@ -124,7 +127,12 @@ export class VisitorListComponent implements OnInit {
   }
 
   private createVisitToVisitor(data: TypeVisitToVisitor) {
-    this.visitorsService.createVisitToVisitor(data).pipe(take(1)).subscribe();
-    this.router.navigate(['visits']);
+    this.visitorsService
+      .createVisitToVisitor(data)
+      .pipe(
+        tap(() => this.router.navigate(['visits'])),
+        take(1)
+      )
+      .subscribe();
   }
 }
