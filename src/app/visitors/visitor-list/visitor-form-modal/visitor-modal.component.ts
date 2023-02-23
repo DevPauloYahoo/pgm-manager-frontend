@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { tap } from 'rxjs';
 
 import { CustomValidations } from '../../../utils/custom-validations';
+import { VisitsService } from '../../../visits/services/visits.service';
 import { VisitorsService } from '../../services/visitors.service';
 import { TypeVisitor } from '../../types/visitor.type';
 
@@ -13,7 +15,6 @@ import { TypeVisitor } from '../../types/visitor.type';
 })
 export class VisitorModalComponent {
   visitStatus = false;
-
   secretaries = ['PGM', 'SEMSUR', 'SEMUR', 'SEMTHAS'];
 
   // Cria formulário vazio
@@ -46,6 +47,7 @@ export class VisitorModalComponent {
   constructor(
     public dialogRef: MatDialogRef<VisitorModalComponent>,
     private visitorsService: VisitorsService,
+    private visitsService: VisitsService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -74,19 +76,47 @@ export class VisitorModalComponent {
   }
 
   onConfirm() {
-    if (!this.visitStatus) {
-      const { visitor } = this.formVisitor.value;
-      this.dialogRef.close({ ...visitor });
-    } else {
-      const { visitor, visit } = this.formVisitor.value;
-      const data: TypeVisitor = {
-        ...visitor,
-        visit: {
-          ...visit,
-        },
-      };
-      this.dialogRef.close(data);
-    }
+    const { visitor } = this.formVisitor.value;
+    const cpf = visitor?.document;
+    // valida se o CPF informado já está cadastrado
+    this.visitorsService
+      .getByCPF(cpf)
+      .pipe(
+        tap(isExistsCPF => {
+          if (isExistsCPF) {
+            alert('CPF EXISTE');
+          } else {
+            if (!this.visitStatus) {
+              const { visitor } = this.formVisitor.value;
+              this.dialogRef.close(visitor);
+            } else {
+              const { visitor, visit } = this.formVisitor.value;
+
+              // valida de o crachá já está em uso na secretaria informada
+              this.visitsService
+                .getBadgeSecretary(visit?.badge, visit?.secretary)
+                .pipe(
+                  tap(isBadgeExists => {
+                    if (isBadgeExists) {
+                      alert('BADGE EXISTE');
+                    } else {
+                      const data: TypeVisitor = {
+                        ...visitor,
+                        visit: {
+                          ...visit,
+                        },
+                      };
+
+                      this.dialogRef.close(data);
+                    }
+                  })
+                )
+                .subscribe();
+            }
+          }
+        })
+      )
+      .subscribe();
   }
 
   onSelectVisitStatus() {

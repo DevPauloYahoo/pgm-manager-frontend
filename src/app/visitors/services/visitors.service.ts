@@ -39,7 +39,6 @@ export class VisitorsService {
   }
 
   createVisitToVisitor({ visitorId, badge, secretary }: TypeVisitToVisitor) {
-    console.log('Data', visitorId);
     return this.http.post(`${this.BASE_URL}/visits/${visitorId}`, {
       badge,
       secretary,
@@ -48,5 +47,10 @@ export class VisitorsService {
 
   getById(visitorId: string): Observable<Visitor> {
     return this.http.get<Visitor>(`${this.BASE_URL}/visitors/${visitorId}`);
+  }
+
+  getByCPF(cpf: string | null | undefined) {
+    const params = new HttpParams().set('cpf', cpf as string);
+    return this.http.get(`${this.BASE_URL}/visitors/document`, { params });
   }
 }

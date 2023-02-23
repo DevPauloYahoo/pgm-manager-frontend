@@ -24,4 +24,15 @@ export class VisitsService {
       { params }
     );
   }
+
+  getBadgeSecretary(
+    badge: string | null | undefined,
+    secretary: string | null | undefined
+  ) {
+    const params = new HttpParams()
+      .set('badge', badge || '')
+      .set('secretary', secretary || '');
+
+    return this.http.get(`${this.BASE_URL}/visits/badge_exists`, { params });
+  }
 }

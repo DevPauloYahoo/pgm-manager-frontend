@@ -2,7 +2,7 @@
 <div class="modal-dialog">
   <div class="modal-content p-2">
     <div class="modal-header">
-      <h1 class="modal-title">Novo Cadastro</h1>
+      <h1 class="modal-title">Cadastro</h1>
     </div>
     <div class="modal-body">
       <form [formGroup]="formVisitor" class="g-3">
@@ -105,7 +105,6 @@
       <button
         (click)="onConfirm()"
         [disabled]="(visitor.invalid || visitStatus) && visit.invalid"
-        [mat-dialog-close]="true"
         class="btn btn-primary btn-sm"
         type="button">
         Cadastrar

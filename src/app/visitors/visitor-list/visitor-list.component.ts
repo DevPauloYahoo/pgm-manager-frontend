@@ -53,6 +53,7 @@ export class VisitorListComponent implements OnInit {
     this.onShowModalCreateVisitToVisitor(visitor);
   }
 
+  // cria um atendimento para um visitante existente
   onShowModalCreateVisitToVisitor(visitor: TypeVisitor) {
     const visitorRest = {
       id: visitor.id,
@@ -73,18 +74,15 @@ export class VisitorListComponent implements OnInit {
       .pipe(
         tap((data: TypeVisitToVisitor) => {
           if (data) {
-            this.visitorsService
-              .createVisitToVisitor(data)
-              .pipe(take(1))
-              .subscribe();
+            this.createVisitToVisitor(data);
           }
-          this.router.navigate(['visits']);
-        })
+        }),
+        take(1)
       )
-      .pipe(take(1))
       .subscribe();
   }
 
+  // cria um visitante com atendimento ou não
   onShowModalCreateVisitor() {
     const dialogRef = this.dialog.open(VisitorModalComponent, {
       width: '600px',
@@ -123,5 +121,10 @@ export class VisitorListComponent implements OnInit {
       )
       .pipe(take(1))
       .subscribe();
+  }
+
+  private createVisitToVisitor(data: TypeVisitToVisitor) {
+    this.visitorsService.createVisitToVisitor(data).pipe(take(1)).subscribe();
+    this.router.navigate(['visits']);
   }
 }

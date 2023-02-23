@@ -2,9 +2,11 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { tap } from 'rxjs';
 
 import { CustomValidations } from '../../../utils/custom-validations';
 import { TypeVisitor } from '../../../visitors/types/visitor.type';
+import { VisitsService } from '../../services/visits.service';
 
 @Component({
   selector: 'pgm-visit-form-modal',
@@ -37,7 +39,8 @@ export class VisitFormModalComponent {
     public dialogRef: MatDialogRef<VisitFormModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: TypeVisitor,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private visitsService: VisitsService
   ) {}
 
   get badge() {
@@ -48,20 +51,27 @@ export class VisitFormModalComponent {
     return this.formVisit.controls.secretary;
   }
 
-  ngOnInit() {
-    this.visitor = this.route.snapshot.data['visitor'];
-    console.log(this.visitor);
-  }
-
   onConfirm() {
     const { badge, secretary } = this.formVisit.value;
 
-    const data: object = {
-      visitorId: this.data.id,
-      badge,
-      secretary,
-    };
-    this.dialogRef.close(data);
+    // valida de o crachá já está em uso na secretaria informada
+    this.visitsService
+      .getBadgeSecretary(badge, secretary)
+      .pipe(
+        tap(isBadgeExists => {
+          if (isBadgeExists) {
+            alert('BADGE EXISTE');
+          } else {
+            const data: object = {
+              visitorId: this.data.id,
+              badge,
+              secretary,
+            };
+            this.dialogRef.close(data);
+          }
+        })
+      )
+      .subscribe();
   }
 
   // fields validation the of formVisit
