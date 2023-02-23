@@ -17,6 +17,7 @@ export class VisitTableComponent {
 
   @Output() paginatorChange = new EventEmitter<number>();
   @Output() tableSizeChange = new EventEmitter<number>();
+  @Output() closeVisits = new EventEmitter<string>();
 
   tableSizes: number[] = [5, 10, 15];
 
@@ -26,5 +27,9 @@ export class VisitTableComponent {
 
   onTableSizeChange(event: Event | any) {
     this.tableSizeChange.emit(event);
+  }
+
+  onCloseVisits(id: string) {
+    this.closeVisits.emit(id);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 
 import { VisitModel } from '../model/visit.model';
 import { VisitsService } from '../services/visits.service';
@@ -50,6 +50,16 @@ export class VisitListComponent implements OnInit {
     }
     this.dataPagination.status = !this.dataPagination.status;
     this.getVisits(this.dataPagination);
+  }
+
+  onCloseVisits(event: string) {
+    this.visitsService
+      .updateStatusVisits(event)
+      .pipe(
+        tap(() => this.getVisits(this.dataPagination)),
+        take(1)
+      )
+      .subscribe();
   }
 
   // private methods

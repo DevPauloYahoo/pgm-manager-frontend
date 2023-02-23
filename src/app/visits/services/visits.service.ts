@@ -35,4 +35,8 @@ export class VisitsService {
 
     return this.http.get(`${this.BASE_URL}/visits/badge_exists`, { params });
   }
+
+  updateStatusVisits(visitId: string | null | undefined) {
+    return this.http.patch(`${this.BASE_URL}/visits/${visitId}`, {});
+  }
 }

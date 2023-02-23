@@ -30,7 +30,10 @@
           <td>{{ visit.created_at | date : 'dd/MM/yyyy HH:mm' }}</td>
           <td>{{ visit.updated_at | date : 'dd/MM/yyyy HH:mm' }}</td>
           <td *ngIf="!statusVisits">
-            <button class="btn btn-primary btn-sm" style="width: 100px">
+            <button
+              (click)="onCloseVisits(visit.id)"
+              class="btn btn-primary btn-sm"
+              style="width: 100px">
               Encerrar
             </button>
           </td>

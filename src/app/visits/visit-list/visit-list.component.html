@@ -1,11 +1,11 @@
-<nav class="navbar navbar">
+<nav class="navbar">
   <form class="d-flex">
     <input
-      aria-label="Search"
+      aria-label="Buscar"
       class="form-control me-2 small"
-      placeholder="Search"
+      placeholder="Buscar"
       type="search" />
-    <button class="btn btn-outline-success btn-sm" type="submit">Search</button>
+    <button class="btn btn-outline-primary btn-sm" type="submit">Buscar</button>
   </form>
   <button
     (click)="onChangeStatus()"
@@ -20,6 +20,7 @@
 </nav>
 
 <pgm-visit-table
+  (closeVisits)="onCloseVisits($event)"
   (paginatorChange)="onChangePage($event)"
   (tableSizeChange)="onTableSizeChange($event)"
   [statusVisits]="dataPagination.status"
