@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, take, tap } from 'rxjs';
 
-import { VisitModel } from '../model/visit.model';
-import { VisitsService } from '../services/visits.service';
-import { TypePageableVisit, TypeResponseVisit } from '../types/visit.type';
+import { VisitModel } from './model/visit.model';
+import { VisitsService } from './services/visits.service';
+import { TypePageableVisit, TypeResponseVisit } from './types/visit.type';
 
 @Component({
   selector: 'pgm-visit-list',
-  templateUrl: './visit-list.component.html',
-  styleUrls: ['./visit-list.component.css'],
+  templateUrl: './visits.component.html',
+  styleUrls: ['./visits.component.css'],
 })
-export class VisitListComponent implements OnInit {
+export class VisitsComponent implements OnInit {
   visits: TypeResponseVisit<VisitModel> = {
     content: [],
     currentPage: 0,

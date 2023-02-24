@@ -3,36 +3,31 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable, take, tap } from 'rxjs';
 
-import { VisitsService } from '../../visits/services/visits.service';
-import { VisitFormModalComponent } from '../../visits/visit-list/visit-form-modal/visit-form-modal.component';
-import { Visitor } from '../models/visitor.interface';
-import { VisitorsService } from '../services/visitors.service';
+import { VisitFormModalComponent } from '../visits/components/visit-form-modal/visit-form-modal.component';
+import { VisitsService } from '../visits/services/visits.service';
+import { VisitorModalComponent } from './components/visitor-form-modal/visitor-modal.component';
+import { Visitor } from './models/visitor.interface';
+import { VisitorsService } from './services/visitors.service';
 import {
   TypePageableVisitor,
   TypeResponseVisitor,
   TypeVisitor,
   TypeVisitToVisitor,
-} from '../types/visitor.type';
-import { VisitorModalComponent } from './visitor-form-modal/visitor-modal.component';
+} from './types/visitor.type';
 
 declare let window: any;
 
 @Component({
   selector: 'pgm-visitor-list',
-  templateUrl: './visitor-list.component.html',
-  styleUrls: ['./visitor-list.component.css'],
+  templateUrl: './visitors.component.html',
+  styleUrls: ['./visitors.component.css'],
 })
-export class VisitorListComponent implements OnInit {
+export class VisitorsComponent implements OnInit {
   visitors$: Observable<TypeResponseVisitor<Visitor>> = new Observable();
   dataPagination: TypePageableVisitor = {
     limit: 0,
     page: 0,
   };
-
-  toastMessage: any;
-  message = '';
-  date = '';
-  headerTitle = '';
 
   constructor(
     private visitorsService: VisitorsService,
@@ -43,7 +38,6 @@ export class VisitorListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getVisitors(this.dataPagination);
-    this.createToastMesssage();
   }
 
   onChangePage(event: Event | any) {
@@ -128,7 +122,6 @@ export class VisitorListComponent implements OnInit {
           } else {
             this.router.navigate(['visits']);
           }
-          this.toastMessage.show();
         })
       )
       .pipe(take(1))
@@ -141,20 +134,9 @@ export class VisitorListComponent implements OnInit {
       .pipe(
         tap(() => {
           this.router.navigate(['visits']);
-          this.toastMessage.show();
         }),
         take(1)
       )
       .subscribe();
-  }
-
-  private createToastMesssage() {
-    this.toastMessage = new window.bootstrap.Toast(
-      document.getElementById('toastMessage')
-    );
-
-    this.headerTitle = 'PGM - SGA';
-    this.message = 'Registro adicionado com sucesso';
-    this.date = new Date().getFullYear().toString();
   }
 }

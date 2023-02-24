@@ -6,7 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./toast-message.component.css'],
 })
 export class ToastMessageComponent {
-  @Input() headerTitle = '';
   @Input() message = '';
   @Input() date = '';
 }

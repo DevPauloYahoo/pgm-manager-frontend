@@ -17,7 +17,6 @@
                 id="inputName"
                 minlength="6"
                 required
-                tabindex="-1"
                 type="text" />
               <div *ngIf="name?.touched && name?.invalid" class="msgError">
                 {{ showErrorMessage('name', 'Nome') }}
@@ -34,7 +33,6 @@
                 id="inputDocument"
                 minlength="11"
                 required
-                tabindex="-1"
                 type="text" />
               <div
                 *ngIf="document?.touched && document?.invalid"
@@ -57,7 +55,6 @@
                 maxlength="2"
                 minlength="2"
                 required
-                tabindex="-1"
                 type="text" />
               <div *ngIf="badge?.touched && badge?.invalid" class="msgError">
                 {{ showErrorMessage('badge', 'Crachá') }}
@@ -74,8 +71,7 @@
                 class="form-select"
                 formControlName="secretary"
                 id="inputSecretary"
-                required
-                tabindex="-1">
+                required>
                 <option [selected]="true" value="">
                   Selecione a secretaria
                 </option>
