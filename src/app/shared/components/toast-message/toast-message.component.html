@@ -1,25 +1,26 @@
-<div
-  aria-atomic="true"
-  aria-live="assertive"
-  class="toast fade"
-  data-bs-autohide="true"
-  id="myToast"
-  role="alert"
-  style="z-index: 100">
-  <div class="toast-header" style="background-color: #d9e7f5">
-    <img
-      alt="logo"
-      class="me-2"
-      src="assets/img/logo_2.png"
-      style="width: 30px; height: 35px" />
-    <span class="me-auto" style="color: darkblue">{{ title }}</span>
-    <small>{{ date }}</small>
-    <button
-      (click)="onClose($event)"
-      aria-label="Close"
-      class="btn-close"
-      data-bs-dismiss="toast"
-      type="button"></button>
+<div class="top-0 end-0 p-5 toast-container" style="z-index: 5">
+  <div
+    aria-atomic="true"
+    aria-live="assertive"
+    class="toast fade"
+    data-bs-autohide="true"
+    id="toastMessage"
+    role="alert"
+    style="z-index: 100">
+    <div class="toast-header" style="background-color: #d9e7f5">
+      <img
+        alt="logo"
+        class="me-2"
+        src="assets/img/logo_2.png"
+        style="width: 30px; height: 35px" />
+      <span class="me-auto" style="color: darkblue">{{ headerTitle }}</span>
+      <small>{{ date }}</small>
+      <button
+        aria-label="Close"
+        class="btn-close"
+        data-bs-dismiss="toast"
+        type="button"></button>
+    </div>
+    <div class="toast-body bg-light">{{ message }}</div>
   </div>
-  <div class="toast-body bg-light">{{ message }}</div>
 </div>

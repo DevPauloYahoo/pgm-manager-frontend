@@ -2,58 +2,60 @@
 <div class="modal-dialog">
   <div class="modal-content p-2">
     <div class="modal-header">
-      <h1 class="modal-title">Novo Cadastro</h1>
+      <h1 class="modal-title">Novo atendimento para:</h1>
     </div>
     <div class="modal-body">
       <form [formGroup]="formVisit" class="g-3">
-        <div class="card p-2">
-          <div class="row gx-2">
-            <h2>Atendimento</h2>
-            <div class="row">
-              <div class="col-12">
-                <h3>Nome: {{ data.name }}</h3>
-              </div>
-              <div class="col-12">
-                <h3>Nome: {{ data.document }}</h3>
-              </div>
+        <div class="gx-2">
+          <div class="card">
+            <div class="row col-12 ps-2">
+              <h3>Nome: {{ data.name }}</h3>
+              <h3>CPF: {{ data.document }}</h3>
             </div>
-            <div [class]="badge.touched ? 'was-validated' : ''" class="col-4">
-              <label class="form-label" for="inputBadge">Nº Crachá</label>
-              <input
-                class="form-control"
-                formControlName="badge"
-                id="inputBadge"
-                maxlength="2"
-                minlength="2"
-                required
-                type="text" />
-              <div *ngIf="badge.touched && badge.invalid" class="msgError">
-                {{ showErrorMessage('badge', 'Crachá') }}
-              </div>
-            </div>
+          </div>
 
-            <div
-              [class]="secretary.touched ? 'was-validated' : ''"
-              class="col-8">
-              <label class="form-label" for="inputSecretary"
-                >Secretaria/Destino</label
-              >
-              <select
-                class="form-select"
-                formControlName="secretary"
-                id="inputSecretary"
-                required>
-                <option [selected]="true" value="">
-                  Selecione a secretaria
-                </option>
-                <option *ngFor="let item of secretaries" value="{{ item }}">
-                  {{ item }}
-                </option>
-              </select>
+          <div class="card p-2 mt-2">
+            <div class="row">
+              <div [class]="badge.touched ? 'was-validated' : ''" class="col-4">
+                <label class="form-label" for="inputBadge">Nº Crachá</label>
+                <input
+                  class="form-control"
+                  formControlName="badge"
+                  id="inputBadge"
+                  maxlength="2"
+                  minlength="2"
+                  required
+                  tabindex="-1"
+                  type="text" />
+                <div *ngIf="badge.touched && badge.invalid" class="msgError">
+                  {{ showErrorMessage('badge', 'Crachá') }}
+                </div>
+              </div>
+
               <div
-                *ngIf="secretary.touched && secretary.invalid"
-                class="msgError">
-                {{ showErrorMessage('secretary', 'Secretaria') }}
+                [class]="secretary.touched ? 'was-validated' : ''"
+                class="col-8">
+                <label class="form-label" for="inputSecretary"
+                  >Secretaria/Destino</label
+                >
+                <select
+                  class="form-select"
+                  formControlName="secretary"
+                  id="inputSecretary"
+                  required
+                  tabindex="-1">
+                  <option [selected]="true" value="">
+                    Selecione a secretaria
+                  </option>
+                  <option *ngFor="let item of secretaries" value="{{ item }}">
+                    {{ item }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="secretary.touched && secretary.invalid"
+                  class="msgError">
+                  {{ showErrorMessage('secretary', 'Secretaria') }}
+                </div>
               </div>
             </div>
           </div>

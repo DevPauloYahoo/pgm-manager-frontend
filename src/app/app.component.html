@@ -4,30 +4,3 @@
   <router-outlet></router-outlet>
 </div>
 <pgm-footer></pgm-footer>
-
-<div>
-  <button (click)="openToast()" class="btn btn-primary m-'">Reset</button>
-  <div class="top-0 end-0 p-5 toast-container" style="z-index: 5">
-    <pgm-toast-message
-      (closeHit)="reset()"
-      (openHit)="openToast()"
-      [date]="date"
-      [message]="message"
-      [myToast]="isToast"
-      [title]="'SGA-PGM'"></pgm-toast-message>
-  </div>
-
-  <div>
-    <button (click)="openToast()" class="btn btn-danger'">Teste</button>
-    <div class="top-0 end-0 p-5 toast-container" style="z-index: 5">
-      <pgm-toast-message
-        (closeHit)="reset()"
-        (openHit)="openToast()"
-        [date]="date"
-        [message]="message"
-        [myToast]="isToast"
-        [teste]="onOpenTeste()"
-        [title]="'SGA-PGM'"></pgm-toast-message>
-    </div>
-  </div>
-</div>

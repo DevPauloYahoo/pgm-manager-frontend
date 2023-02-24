@@ -1,6 +1,5 @@
 import { Visitor } from '../models/visitor.interface';
 
-// export type TypeVisitor = Omit<Visitor, 'id'>;
 export type TypeVisitor = Partial<Visitor>;
 
 export type TypeVisitToVisitor = {

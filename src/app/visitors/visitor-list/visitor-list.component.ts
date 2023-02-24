@@ -15,6 +15,8 @@ import {
 } from '../types/visitor.type';
 import { VisitorModalComponent } from './visitor-form-modal/visitor-modal.component';
 
+declare let window: any;
+
 @Component({
   selector: 'pgm-visitor-list',
   templateUrl: './visitor-list.component.html',
@@ -27,6 +29,11 @@ export class VisitorListComponent implements OnInit {
     page: 0,
   };
 
+  toastMessage: any;
+  message = '';
+  date = '';
+  headerTitle = '';
+
   constructor(
     private visitorsService: VisitorsService,
     private visitsService: VisitsService,
@@ -36,6 +43,7 @@ export class VisitorListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getVisitors(this.dataPagination);
+    this.createToastMesssage();
   }
 
   onChangePage(event: Event | any) {
@@ -120,6 +128,7 @@ export class VisitorListComponent implements OnInit {
           } else {
             this.router.navigate(['visits']);
           }
+          this.toastMessage.show();
         })
       )
       .pipe(take(1))
@@ -130,9 +139,22 @@ export class VisitorListComponent implements OnInit {
     this.visitorsService
       .createVisitToVisitor(data)
       .pipe(
-        tap(() => this.router.navigate(['visits'])),
+        tap(() => {
+          this.router.navigate(['visits']);
+          this.toastMessage.show();
+        }),
         take(1)
       )
       .subscribe();
+  }
+
+  private createToastMesssage() {
+    this.toastMessage = new window.bootstrap.Toast(
+      document.getElementById('toastMessage')
+    );
+
+    this.headerTitle = 'PGM - SGA';
+    this.message = 'Registro adicionado com sucesso';
+    this.date = new Date().getFullYear().toString();
   }
 }

@@ -2,13 +2,13 @@
 <div class="modal-dialog">
   <div class="modal-content p-2">
     <div class="modal-header">
-      <h1 class="modal-title">Cadastro</h1>
+      <h1 class="modal-title">Novo cadastro</h1>
     </div>
     <div class="modal-body">
       <form [formGroup]="formVisitor" class="g-3">
         <div class="card p-2" style="background: transparent">
           <div formGroupName="visitor">
-            <h2>Visitante</h2>
+            <h2>Dados do visitante</h2>
             <div [class]="name.touched ? 'was-validated' : ''" class="col-12">
               <label class="form-label" for="inputName">Nome</label>
               <input
@@ -17,6 +17,7 @@
                 id="inputName"
                 minlength="6"
                 required
+                tabindex="-1"
                 type="text" />
               <div *ngIf="name?.touched && name?.invalid" class="msgError">
                 {{ showErrorMessage('name', 'Nome') }}
@@ -33,6 +34,7 @@
                 id="inputDocument"
                 minlength="11"
                 required
+                tabindex="-1"
                 type="text" />
               <div
                 *ngIf="document?.touched && document?.invalid"
@@ -45,7 +47,7 @@
         <!-- div visits-->
         <div *ngIf="visitStatus" class="card p-2 mt-2">
           <div class="row gx-2" formGroupName="visit">
-            <h2>Atendimento</h2>
+            <h2>Dados do atendimento</h2>
             <div [class]="badge.touched ? 'was-validated' : ''" class="col-4">
               <label class="form-label" for="inputBadge">Nº Crachá</label>
               <input
@@ -55,6 +57,7 @@
                 maxlength="2"
                 minlength="2"
                 required
+                tabindex="-1"
                 type="text" />
               <div *ngIf="badge?.touched && badge?.invalid" class="msgError">
                 {{ showErrorMessage('badge', 'Crachá') }}
@@ -71,7 +74,8 @@
                 class="form-select"
                 formControlName="secretary"
                 id="inputSecretary"
-                required>
+                required
+                tabindex="-1">
                 <option [selected]="true" value="">
                   Selecione a secretaria
                 </option>
