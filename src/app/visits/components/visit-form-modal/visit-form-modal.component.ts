@@ -1,12 +1,18 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { tap } from 'rxjs';
+import { take, tap } from 'rxjs';
 
-import { CustomValidations } from '../../../utils/custom-validations';
-import { TypeVisitor } from '../../../visitors/types/visitor.type';
+import { CustomAsynchronousValidationService } from '../../../utils/custom-asynchronous- validation.service';
+import { CustomSynchronousValidationsClass } from '../../../utils/custom-synchronous-validations.class';
+import { ValidationErrorsService } from '../../../utils/validation-errors.service';
+import {
+  TypeVisitor,
+  TypeVisitToVisitor,
+} from '../../../visitors/types/visitor.type';
 import { VisitsService } from '../../services/visits.service';
+import { TypeVisitByVisitorResponse } from '../../types/visit.type';
 
 @Component({
   selector: 'pgm-visit-form-modal',
@@ -15,24 +21,26 @@ import { VisitsService } from '../../services/visits.service';
 })
 export class VisitFormModalComponent {
   secretaries = ['PGM', 'SEMSUR', 'SEMUR', 'SEMTHAS'];
-  visitor: TypeVisitor = {
-    id: '',
-    name: '',
-    document: '',
-  };
 
   // create empty form
-  formVisit = this.formBuilder.group({
-    badge: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(2),
-        CustomValidations.isValidBadge(),
-      ],
-    ],
-    secretary: ['', [Validators.required]],
+  formVisit: FormGroup = this.formBuilder.group({
+    visit: this.formBuilder.group(
+      {
+        badge: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.maxLength(2),
+            CustomSynchronousValidationsClass.isValidBadge(),
+          ],
+        ],
+        secretary: ['', [Validators.required]],
+      },
+      {
+        asyncValidators: [this.asynchronousValidationService.isBadgeExists()],
+      }
+    ),
   });
 
   constructor(
@@ -40,70 +48,65 @@ export class VisitFormModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: TypeVisitor,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private visitsService: VisitsService
+    private visitsService: VisitsService,
+    private validationErrorsService: ValidationErrorsService,
+    private asynchronousValidationService: CustomAsynchronousValidationService
   ) {}
 
+  get visit() {
+    return this.formVisit?.get('visit');
+  }
+
   get badge() {
-    return this.formVisit.controls.badge;
+    return this.visit?.get('badge');
   }
 
   get secretary() {
-    return this.formVisit.controls.secretary;
+    return this.visit?.get('secretary');
   }
 
   onConfirm() {
-    const { badge, secretary } = this.formVisit.value;
+    const { badge, secretary } = this.formVisit?.get('visit')?.getRawValue();
+    const visitorId = this.data.id;
 
-    // valida de o crachá já está em uso na secretaria informada
+    const data: TypeVisitToVisitor = {
+      visitorId,
+      badge,
+      secretary,
+    };
+
+    this.validIfActiveVisit(data);
+  }
+
+  validIfActiveVisit(data: TypeVisitToVisitor) {
     this.visitsService
-      .getBadgeSecretary(badge, secretary)
+      .getVisitByVisitorId(data.visitorId as string)
       .pipe(
-        tap(isBadgeExists => {
-          if (isBadgeExists) {
-            alert('BADGE EXISTE');
-          } else {
-            const data: object = {
-              visitorId: this.data.id,
-              badge,
-              secretary,
-            };
+        tap((value: TypeVisitByVisitorResponse) => {
+          if (!value.status) {
             this.dialogRef.close(data);
+          } else {
+            alert(
+              `Visitante ${value.visitorName?.toUpperCase()} com atendimento ativo na secretaria ${
+                value.secretaryName
+              } usando o crachá ${value.badgeNumber}`
+            );
           }
         })
       )
-      .subscribe();
+      .pipe(take(1))
+      .subscribe({
+        error: error => {
+          console.log('Error ao validar visita para visitante');
+        },
+      });
   }
 
-  // fields validation the of formVisit
   showErrorMessage(fieldName: string, fieldTranslation: string) {
-    const visitField = this.formVisit.get(fieldName);
-
-    if (visitField?.hasError('required')) {
-      return `${fieldTranslation} é obrigátório`;
-    }
-
-    if (visitField?.hasError('badgeNotValid')) {
-      return `${fieldTranslation} inválido`;
-    }
-
-    if (visitField?.hasError('minlength')) {
-      const requiredLength = visitField?.errors
-        ? visitField.errors['minlength']['requiredLength']
-        : 2;
-
-      return `${fieldTranslation} deve ter no mínimo ${requiredLength} caracteres.
-              (ex: 01...)`;
-    }
-
-    if (visitField?.hasError('maxlength')) {
-      const requiredLength = visitField?.errors
-        ? visitField.errors['maxlength']['requiredLength']
-        : 2;
-
-      return `${fieldTranslation} deve ter no mínimo ${requiredLength} caracteres.
-              (ex: 01...)`;
-    }
-
-    return `Campo inválido`;
+    return this.validationErrorsService.showMessages(
+      fieldName,
+      fieldTranslation,
+      this.formVisit
+    );
   }
 }

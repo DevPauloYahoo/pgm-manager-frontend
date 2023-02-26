@@ -1,38 +1,27 @@
 <!-- Modal -->
 <div class="modal-dialog">
   <div class="modal-content p-2">
-    <div class="modal-header">
-      <h1 class="modal-title">Novo atendimento para:</h1>
+    <div
+      class="modal-header bg-primary rounded-2 p-2 mb-2"
+      style="color: #ffff">
+      <h1 class="modal-title">Novo cadastro de atendimento</h1>
     </div>
     <div class="modal-body">
       <form [formGroup]="formVisit" class="g-3">
         <div class="gx-2">
           <div class="card">
             <div class="row col-12 ps-2">
+              <h2>Dados do visitante:</h2>
               <h3>Nome: {{ data.name }}</h3>
               <h3>CPF: {{ data.document }}</h3>
             </div>
           </div>
 
           <div class="card p-2 mt-2">
-            <div class="row">
-              <div [class]="badge.touched ? 'was-validated' : ''" class="col-4">
-                <label class="form-label" for="inputBadge">Nº Crachá</label>
-                <input
-                  class="form-control"
-                  formControlName="badge"
-                  id="inputBadge"
-                  maxlength="2"
-                  minlength="2"
-                  required
-                  type="text" />
-                <div *ngIf="badge.touched && badge.invalid" class="msgError">
-                  {{ showErrorMessage('badge', 'Crachá') }}
-                </div>
-              </div>
-
+            <div class="row" formGroupName="visit">
+              <h2>Dados do atendimento:</h2>
               <div
-                [class]="secretary.touched ? 'was-validated' : ''"
+                [class]="secretary?.touched ? 'was-validated' : ''"
                 class="col-8">
                 <label class="form-label" for="inputSecretary"
                   >Secretaria/Destino</label
@@ -50,9 +39,25 @@
                   </option>
                 </select>
                 <div
-                  *ngIf="secretary.touched && secretary.invalid"
+                  *ngIf="secretary?.touched && secretary?.invalid"
                   class="msgError">
                   {{ showErrorMessage('secretary', 'Secretaria') }}
+                </div>
+              </div>
+              <div
+                [class]="badge?.touched ? 'was-validated' : ''"
+                class="col-4">
+                <label class="form-label" for="inputBadge">Nº Crachá</label>
+                <input
+                  class="form-control"
+                  formControlName="badge"
+                  id="inputBadge"
+                  maxlength="2"
+                  minlength="2"
+                  required
+                  type="text" />
+                <div *ngIf="badge?.touched && badge?.invalid" class="msgError">
+                  {{ showErrorMessage('badge', 'Crachá') }}
                 </div>
               </div>
             </div>

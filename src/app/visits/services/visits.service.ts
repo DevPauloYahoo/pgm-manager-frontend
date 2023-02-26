@@ -1,8 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { VisitModel } from '../model/visit.model';
-import { TypePageableVisit, TypeResponseVisit } from '../types/visit.type';
+import {
+  TypePageableVisit,
+  TypeResponseVisit,
+  TypeVisitByBadgeResponse,
+  TypeVisitByVisitorResponse,
+} from '../types/visit.type';
 
 @Injectable({
   providedIn: 'root',
@@ -25,18 +31,28 @@ export class VisitsService {
     );
   }
 
-  getBadgeSecretary(
-    badge: string | null | undefined,
-    secretary: string | null | undefined
-  ) {
+  getBadgeSecretary(badge: string, secretary: string) {
     const params = new HttpParams()
       .set('badge', badge || '')
       .set('secretary', secretary || '');
 
-    return this.http.get(`${this.BASE_URL}/visits/badge_exists`, { params });
+    return this.http.get<TypeVisitByBadgeResponse>(
+      `${this.BASE_URL}/visits/badge_exists`,
+      {
+        params,
+      }
+    );
   }
 
-  updateStatusVisits(visitId: string | null | undefined) {
+  getVisitByVisitorId(
+    visitorId: string
+  ): Observable<TypeVisitByVisitorResponse> {
+    return this.http.get<TypeVisitByVisitorResponse>(
+      `${this.BASE_URL}/visits/by_visitor/${visitorId}`
+    );
+  }
+
+  updateStatusVisits(visitId: string) {
     return this.http.patch(`${this.BASE_URL}/visits/${visitId}`, {});
   }
 }

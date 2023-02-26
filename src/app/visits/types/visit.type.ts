@@ -17,3 +17,15 @@ export type TypePageableVisit = {
   page: number;
   limit: number;
 };
+
+// types responses
+export type TypeVisitByVisitorResponse = {
+  status: boolean;
+  visitorName?: string;
+  secretaryName?: string;
+  badgeNumber?: string;
+};
+
+export type TypeVisitByBadgeResponse = {
+  statusVisit: boolean;
+};

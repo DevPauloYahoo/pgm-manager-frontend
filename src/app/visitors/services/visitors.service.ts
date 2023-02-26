@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Visitor } from '../models/visitor.interface';
 import {
+  TypeIsExistsCPF,
   TypePageableVisitor,
   TypeResponseVisitor,
   TypeVisitor,
@@ -51,6 +52,9 @@ export class VisitorsService {
 
   getByCPF(cpf: string | null | undefined) {
     const params = new HttpParams().set('cpf', cpf as string);
-    return this.http.get(`${this.BASE_URL}/visitors/document`, { params });
+    return this.http.get<TypeIsExistsCPF>(
+      `${this.BASE_URL}/visitors/document`,
+      { params }
+    );
   }
 }

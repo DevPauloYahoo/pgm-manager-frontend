@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { tap } from 'rxjs';
 
-import { CustomValidations } from '../../../utils/custom-validations';
+import { CustomAsynchronousValidationService } from '../../../utils/custom-asynchronous- validation.service';
+import { CustomSynchronousValidationsClass } from '../../../utils/custom-synchronous-validations.class';
+import { ValidationErrorsService } from '../../../utils/validation-errors.service';
 import { VisitsService } from '../../../visits/services/visits.service';
 import { VisitorsService } from '../../services/visitors.service';
 import { TypeVisitor } from '../../types/visitor.type';
@@ -16,9 +17,10 @@ import { TypeVisitor } from '../../types/visitor.type';
 export class VisitorModalComponent {
   visitStatus = false;
   secretaries = ['PGM', 'SEMSUR', 'SEMUR', 'SEMTHAS'];
+  teste = '';
 
   // Cria formulário vazio
-  formVisitor = this.formBuilder.group({
+  formVisitor: FormGroup = this.formBuilder.group({
     visitor: this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(6)]],
       document: [
@@ -26,152 +28,101 @@ export class VisitorModalComponent {
         [
           Validators.required,
           Validators.minLength(11),
-          CustomValidations.isValidCpf(),
+          CustomSynchronousValidationsClass.isValidCpf(),
         ],
+        [this.asynchronousValidationService.isCpfExists()],
       ],
     }),
-    visit: this.formBuilder.group({
-      badge: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(2),
-          CustomValidations.isValidBadge(),
+    visit: this.formBuilder.group(
+      {
+        badge: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.maxLength(2),
+            CustomSynchronousValidationsClass.isValidBadge(),
+          ],
         ],
-      ],
-      secretary: ['', [Validators.required]],
-    }),
+        secretary: ['', [Validators.required]],
+      },
+      {
+        asyncValidators: [this.asynchronousValidationService.isBadgeExists()],
+      }
+    ),
   });
 
   constructor(
     public dialogRef: MatDialogRef<VisitorModalComponent>,
     private visitorsService: VisitorsService,
     private visitsService: VisitsService,
+    private asynchronousValidationService: CustomAsynchronousValidationService,
+    private validationErrorsService: ValidationErrorsService,
     private formBuilder: FormBuilder
   ) {}
 
   get visitor() {
-    return this.formVisitor.controls.visitor;
+    // return this.formVisitor.controls.visitor;
+    return this.formVisitor.get('visitor');
   }
 
   get visit() {
-    return this.formVisitor.controls.visit;
+    // return this.formVisitor.controls.visit;
+    return this.formVisitor.get('visit');
   }
 
   get name() {
-    return this.visitor.controls.name;
+    // return this.visitor.controls.name;
+    return this.visitor?.get('name');
   }
 
   get document() {
-    return this.visitor.controls.document;
+    // return this.visitor.controls.document;
+    return this.visitor?.get('document');
   }
 
   get badge() {
-    return this.visit.controls.badge;
+    // return this.visit.controls.badge;
+    return this.visit?.get('badge');
   }
 
   get secretary() {
-    return this.visit.controls.secretary;
+    // return this.visit.controls.secretary;
+    return this.visit?.get('secretary');
+  }
+
+  getValueSecretary(event: any) {
+    this.teste = event.target.value;
   }
 
   onConfirm() {
-    const { visitor } = this.formVisitor.value;
-    const cpf = visitor?.document;
-    // valida se o CPF informado já está cadastrado
-    this.visitorsService
-      .getByCPF(cpf)
-      .pipe(
-        tap(isExistsCPF => {
-          if (isExistsCPF) {
-            alert('CPF EXISTE');
-          } else {
-            if (!this.visitStatus) {
-              const { visitor } = this.formVisitor.value;
-              this.dialogRef.close(visitor);
-            } else {
-              const { visitor, visit } = this.formVisitor.value;
+    if (!this.visitStatus) {
+      const { visitor } = this.formVisitor.getRawValue();
+      this.dialogRef.close(visitor);
+    } else {
+      const { visitor, visit } = this.formVisitor.getRawValue();
 
-              // valida de o crachá já está em uso na secretaria informada
-              this.visitsService
-                .getBadgeSecretary(visit?.badge, visit?.secretary)
-                .pipe(
-                  tap(isBadgeExists => {
-                    if (isBadgeExists) {
-                      alert('BADGE EXISTE');
-                    } else {
-                      const data: TypeVisitor = {
-                        ...visitor,
-                        visit: {
-                          ...visit,
-                        },
-                      };
+      const data: TypeVisitor = {
+        ...visitor,
+        visit: {
+          ...visit,
+        },
+      };
 
-                      this.dialogRef.close(data);
-                    }
-                  })
-                )
-                .subscribe();
-            }
-          }
-        })
-      )
-      .subscribe();
+      this.dialogRef.close(data);
+    }
   }
 
   onSelectVisitStatus() {
     this.visitStatus = !this.visitStatus;
   }
 
-  // fields validation the of formVisitor
-  showErrorMessage(fieldName: string, fieldTranslation: string) {
-    const visitorField = this.visitor.get(fieldName);
-    const visitField = this.visit.get(fieldName);
-
-    // fields validation Visitor
-    if (visitorField?.hasError('required')) {
-      return `${fieldTranslation} é obrigátório`;
-    }
-
-    if (visitorField?.hasError('minlength')) {
-      const requiredLength = visitorField?.errors
-        ? visitorField.errors['minlength']['requiredLength']
-        : 6;
-
-      return `${fieldTranslation} deve ter no mínimo ${requiredLength} caracteres`;
-    }
-
-    if (visitorField?.hasError('cpfNotValid')) {
-      return `CPF ( ${this.document.value} ) inválido`;
-    }
-
-    // validation fields Visit
-    if (visitField?.hasError('required')) {
-      return `${fieldTranslation} é obrigátório`;
-    }
-
-    if (visitField?.hasError('badgeNotValid')) {
-      return `${fieldTranslation} inválido`;
-    }
-
-    if (visitField?.hasError('minlength')) {
-      const requiredLength = visitField?.errors
-        ? visitField.errors['minlength']['requiredLength']
-        : 2;
-
-      return `${fieldTranslation} deve ter no mínimo ${requiredLength} caracteres.
-              (ex: 01...)`;
-    }
-
-    if (visitField?.hasError('maxlength')) {
-      const requiredLength = visitField?.errors
-        ? visitField.errors['maxlength']['requiredLength']
-        : 2;
-
-      return `${fieldTranslation} deve ter no mínimo ${requiredLength} caracteres.
-              (ex: 01...)`;
-    }
-
-    return `Campo inválido`;
+  // show messages errors if fields invalid data
+  validationMessages(fieldName: string, fieldTranslation: string) {
+    return this.validationErrorsService.showMessages(
+      fieldName,
+      fieldTranslation,
+      this.formVisitor
+    );
   }
 }

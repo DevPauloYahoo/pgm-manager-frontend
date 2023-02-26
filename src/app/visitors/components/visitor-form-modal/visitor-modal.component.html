@@ -1,15 +1,17 @@
 <!-- Modal -->
 <div class="modal-dialog">
   <div class="modal-content p-2">
-    <div class="modal-header">
-      <h1 class="modal-title">Novo cadastro</h1>
+    <div
+      class="modal-header bg-primary rounded-2 p-2 mb-2"
+      style="color: #ffff">
+      <h1 class="modal-title">Novo cadastro de visitante</h1>
     </div>
     <div class="modal-body">
       <form [formGroup]="formVisitor" class="g-3">
         <div class="card p-2" style="background: transparent">
           <div formGroupName="visitor">
             <h2>Dados do visitante</h2>
-            <div [class]="name.touched ? 'was-validated' : ''" class="col-12">
+            <div [class]="name?.touched ? 'was-validated' : ''" class="col-12">
               <label class="form-label" for="inputName">Nome</label>
               <input
                 class="form-control"
@@ -19,12 +21,12 @@
                 required
                 type="text" />
               <div *ngIf="name?.touched && name?.invalid" class="msgError">
-                {{ showErrorMessage('name', 'Nome') }}
+                {{ validationMessages('name', 'Nome') }}
               </div>
             </div>
 
             <div
-              [class]="document.touched ? 'was-validated' : ''"
+              [class]="document?.touched ? 'was-validated' : ''"
               class="col-12 mt-3">
               <label class="form-label" for="inputDocument">CPF</label>
               <input
@@ -37,7 +39,12 @@
               <div
                 *ngIf="document?.touched && document?.invalid"
                 class="msgError">
-                {{ showErrorMessage('document', 'CPF') }}
+                {{ validationMessages('document', 'CPF') }}
+              </div>
+              <div
+                *ngIf="document?.touched && document?.valid"
+                class="text-success">
+                CPF válido
               </div>
             </div>
           </div>
@@ -46,28 +53,14 @@
         <div *ngIf="visitStatus" class="card p-2 mt-2">
           <div class="row gx-2" formGroupName="visit">
             <h2>Dados do atendimento</h2>
-            <div [class]="badge.touched ? 'was-validated' : ''" class="col-4">
-              <label class="form-label" for="inputBadge">Nº Crachá</label>
-              <input
-                class="form-control"
-                formControlName="badge"
-                id="inputBadge"
-                maxlength="2"
-                minlength="2"
-                required
-                type="text" />
-              <div *ngIf="badge?.touched && badge?.invalid" class="msgError">
-                {{ showErrorMessage('badge', 'Crachá') }}
-              </div>
-            </div>
-
             <div
-              [class]="secretary.touched ? 'was-validated' : ''"
+              [class]="secretary?.touched ? 'was-validated' : ''"
               class="col-8">
               <label class="form-label" for="inputSecretary"
                 >Secretaria/Destino</label
               >
               <select
+                (change)="getValueSecretary($event)"
                 class="form-select"
                 formControlName="secretary"
                 id="inputSecretary"
@@ -82,7 +75,25 @@
               <div
                 *ngIf="secretary?.touched && secretary?.invalid"
                 class="msgError">
-                {{ showErrorMessage('secretary', 'Secretaria') }}
+                {{ validationMessages('secretary', 'Secretaria') }}
+              </div>
+
+              <div
+                [class]="badge?.touched ? 'was-validated' : ''"
+                class="col-4">
+                <label class="form-label" for="inputBadge">Nº Crachá</label>
+                <input
+                  class="form-control"
+                  formControlName="badge"
+                  id="inputBadge"
+                  isBadgeExists="true"
+                  maxlength="2"
+                  minlength="2"
+                  required
+                  type="text" />
+                <div *ngIf="badge?.touched && badge?.invalid" class="msgError">
+                  {{ validationMessages('badge', 'Crachá') }}
+                </div>
               </div>
             </div>
           </div>
@@ -92,7 +103,7 @@
     <div class="modal-footer mt-3">
       <button
         (click)="onSelectVisitStatus()"
-        *ngIf="visitor.valid && !visitStatus"
+        *ngIf="visitor?.valid && !visitStatus"
         class="btn-sm btn btn-success me-auto">
         Cadastrar Atendimento
       </button>
@@ -104,7 +115,10 @@
       </button>
       <button
         (click)="onConfirm()"
-        [disabled]="(visitor.invalid || visitStatus) && visit.invalid"
+        [disabled]="
+          (visitor?.invalid || visitor?.pending || visitStatus) &&
+          visit?.invalid
+        "
         class="btn btn-primary btn-sm"
         type="button">
         Cadastrar

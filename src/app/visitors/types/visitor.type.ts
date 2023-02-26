@@ -3,7 +3,7 @@ import { Visitor } from '../models/visitor.interface';
 export type TypeVisitor = Partial<Visitor>;
 
 export type TypeVisitToVisitor = {
-  visitorId: string;
+  visitorId?: string;
   badge: string;
   secretary: string;
 };
@@ -21,4 +21,15 @@ export type TypePageableVisitor = {
   search?: string;
   page: number;
   limit: number;
+};
+
+export type TypeIsExistsCPF =
+  | {
+      document: string;
+    }
+  | TypeErrorResponse
+  | null;
+
+type TypeErrorResponse = {
+  message: string;
 };
