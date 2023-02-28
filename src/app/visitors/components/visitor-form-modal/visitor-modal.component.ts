@@ -17,7 +17,6 @@ import { TypeVisitor } from '../../types/visitor.type';
 export class VisitorModalComponent {
   visitStatus = false;
   secretaries = ['PGM', 'SEMSUR', 'SEMUR', 'SEMTHAS'];
-  teste = '';
 
   // Cria formulário vazio
   formVisitor: FormGroup = this.formBuilder.group({
@@ -62,37 +61,28 @@ export class VisitorModalComponent {
   ) {}
 
   get visitor() {
-    // return this.formVisitor.controls.visitor;
     return this.formVisitor.get('visitor');
   }
 
   get visit() {
-    // return this.formVisitor.controls.visit;
     return this.formVisitor.get('visit');
   }
 
   get name() {
-    // return this.visitor.controls.name;
     return this.visitor?.get('name');
   }
 
   get document() {
-    // return this.visitor.controls.document;
     return this.visitor?.get('document');
   }
 
   get badge() {
-    // return this.visit.controls.badge;
     return this.visit?.get('badge');
   }
 
   get secretary() {
     // return this.visit.controls.secretary;
     return this.visit?.get('secretary');
-  }
-
-  getValueSecretary(event: any) {
-    this.teste = event.target.value;
   }
 
   onConfirm() {

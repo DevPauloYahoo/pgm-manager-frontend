@@ -8,7 +8,7 @@
     </div>
     <div class="modal-body">
       <form [formGroup]="formVisitor" class="g-3">
-        <div class="card p-2" style="background: transparent">
+        <div class="card p-2">
           <div formGroupName="visitor">
             <h2>Dados do visitante</h2>
             <div [class]="name?.touched ? 'was-validated' : ''" class="col-12">
@@ -60,7 +60,6 @@
                 >Secretaria/Destino</label
               >
               <select
-                (change)="getValueSecretary($event)"
                 class="form-select"
                 formControlName="secretary"
                 id="inputSecretary"
@@ -86,7 +85,6 @@
                   class="form-control"
                   formControlName="badge"
                   id="inputBadge"
-                  isBadgeExists="true"
                   maxlength="2"
                   minlength="2"
                   required

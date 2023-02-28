@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Observable, take, tap } from 'rxjs';
+import { Observable, switchMap, take, tap } from 'rxjs';
 
 import { VisitFormModalComponent } from '../visits/components/visit-form-modal/visit-form-modal.component';
 import { VisitsService } from '../visits/services/visits.service';
@@ -55,7 +55,7 @@ export class VisitorsComponent implements OnInit {
     this.onShowModalCreateVisitToVisitor(visitor);
   }
 
-  // cria um atendimento para um visitante existente
+  // show modal to create new visit for existing visitor
   onShowModalCreateVisitToVisitor(visitor: TypeVisitor) {
     const visitorRest = {
       id: visitor.id,
@@ -84,7 +84,7 @@ export class VisitorsComponent implements OnInit {
       .subscribe();
   }
 
-  // cria um visitante com atendimento ou não
+  // show modal to create new visitor
   onShowModalCreateVisitor() {
     const dialogRef = this.dialog.open(VisitorModalComponent, {
       width: '600px',
@@ -93,7 +93,6 @@ export class VisitorsComponent implements OnInit {
         top: '100px',
       },
     });
-
     dialogRef
       .afterClosed()
       .pipe(
@@ -112,22 +111,23 @@ export class VisitorsComponent implements OnInit {
     this.visitors$ = this.visitorsService.getVisitors(dataPagination);
   }
 
+  // create new visitor
   private createVisitor(data: TypeVisitor) {
-    this.visitorsService
+    this.visitors$ = this.visitorsService
       .createVisitor(data)
       .pipe(
+        switchMap(() => this.visitorsService.getVisitors(this.dataPagination))
+      )
+      .pipe(
         tap(() => {
-          if (!data.visit) {
-            this.getVisitors(this.dataPagination);
-          } else {
+          if (data.visit) {
             this.router.navigate(['visits']);
           }
         })
-      )
-      .pipe(take(1))
-      .subscribe();
+      );
   }
 
+  // create new visit for existing visitor
   private createVisitToVisitor(data: TypeVisitToVisitor) {
     this.visitorsService
       .createVisitToVisitor(data)

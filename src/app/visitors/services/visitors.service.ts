@@ -50,8 +50,8 @@ export class VisitorsService {
     return this.http.get<Visitor>(`${this.BASE_URL}/visitors/${visitorId}`);
   }
 
-  getByCPF(cpf: string | null | undefined) {
-    const params = new HttpParams().set('cpf', cpf as string);
+  getByCPF(cpf: string) {
+    const params = new HttpParams().set('cpf', cpf);
     return this.http.get<TypeIsExistsCPF>(
       `${this.BASE_URL}/visitors/document`,
       { params }

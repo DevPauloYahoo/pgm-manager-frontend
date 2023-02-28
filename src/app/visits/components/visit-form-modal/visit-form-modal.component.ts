@@ -78,6 +78,7 @@ export class VisitFormModalComponent {
     this.validIfActiveVisit(data);
   }
 
+  // validates if the visitor has an active visit
   validIfActiveVisit(data: TypeVisitToVisitor) {
     this.visitsService
       .getVisitByVisitorId(data.visitorId as string)
@@ -96,12 +97,13 @@ export class VisitFormModalComponent {
       )
       .pipe(take(1))
       .subscribe({
-        error: error => {
+        error: () => {
           console.log('Error ao validar visita para visitante');
         },
       });
   }
 
+  // displays formVisit validation error messages
   showErrorMessage(fieldName: string, fieldTranslation: string) {
     return this.validationErrorsService.showMessages(
       fieldName,
