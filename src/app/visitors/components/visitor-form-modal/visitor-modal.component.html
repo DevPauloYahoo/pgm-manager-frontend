@@ -51,8 +51,8 @@
         </div>
         <!-- div visits-->
         <div *ngIf="visitStatus" class="card p-2 mt-2">
-          <div class="row gx-2" formGroupName="visit">
-            <h2>Dados do atendimento</h2>
+          <div class="row" formGroupName="visit">
+            <h2>Dados do atendimento:</h2>
             <div
               [class]="secretary?.touched ? 'was-validated' : ''"
               class="col-8">
@@ -60,13 +60,12 @@
                 >Secretaria/Destino</label
               >
               <select
+                (change)="getBadges(secretary?.value)"
                 class="form-select"
                 formControlName="secretary"
                 id="inputSecretary"
                 required>
-                <option [selected]="true" value="">
-                  Selecione a secretaria
-                </option>
+                <option [selected]="true" value="">selecione</option>
                 <option *ngFor="let item of secretaries" value="{{ item }}">
                   {{ item }}
                 </option>
@@ -76,22 +75,21 @@
                 class="msgError">
                 {{ validationMessages('secretary', 'Secretaria') }}
               </div>
-
-              <div
-                [class]="badge?.touched ? 'was-validated' : ''"
-                class="col-4">
-                <label class="form-label" for="inputBadge">Nº Crachá</label>
-                <input
-                  class="form-control"
-                  formControlName="badge"
-                  id="inputBadge"
-                  maxlength="2"
-                  minlength="2"
-                  required
-                  type="text" />
-                <div *ngIf="badge?.touched && badge?.invalid" class="msgError">
-                  {{ validationMessages('badge', 'Crachá') }}
-                </div>
+            </div>
+            <div [class]="badge?.touched ? 'was-validated' : ''" class="col-4">
+              <label class="form-label" for="inputBadge">Nº Crachá</label>
+              <select
+                class="form-select"
+                formControlName="badge"
+                id="inputBadge"
+                required>
+                <option [selected]="true" value="">selecione</option>
+                <option *ngFor="let item of availableBadges" value="{{ item }}">
+                  {{ item }}
+                </option>
+              </select>
+              <div *ngIf="badge?.touched && badge?.invalid" class="msgError">
+                {{ validationMessages('badge', 'Crachá') }}
               </div>
             </div>
           </div>

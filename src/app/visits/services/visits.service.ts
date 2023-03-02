@@ -52,6 +52,13 @@ export class VisitsService {
     );
   }
 
+  getBadgesBySecretary(secretary: string): Observable<string[]> {
+    const params = new HttpParams().set('secretary', secretary.toUpperCase());
+    return this.http.get<string[]>(`${this.BASE_URL}/visits/all_badges`, {
+      params,
+    });
+  }
+
   updateStatusVisits(visitId: string) {
     return this.http.patch(`${this.BASE_URL}/visits/${visitId}`, {});
   }

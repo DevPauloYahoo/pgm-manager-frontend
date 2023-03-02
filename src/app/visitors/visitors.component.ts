@@ -78,9 +78,7 @@ export class VisitorsComponent implements OnInit {
       .pipe(
         tap((data: TypeVisitToVisitor) => {
           if (data) {
-            this.usedBadges.push(data.badge);
-            this.visitorsService.setUsedBadges(this.usedBadges);
-            // this.createVisitToVisitor(data);
+            this.createVisitToVisitor(data);
           }
         }),
         take(1)

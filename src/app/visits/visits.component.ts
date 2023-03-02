@@ -45,9 +45,6 @@ export class VisitsComponent implements OnInit {
   }
 
   onChangeStatus() {
-    // if (this.dataPagination.status === '') {
-    //   this.dataPagination.status = false;
-    // }
     this.dataPagination.status = !this.dataPagination.status;
     this.getVisits(this.dataPagination);
   }

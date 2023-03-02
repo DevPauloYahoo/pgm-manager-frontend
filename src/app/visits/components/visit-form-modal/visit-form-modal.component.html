@@ -27,13 +27,12 @@
                   >Secretaria/Destino</label
                 >
                 <select
+                  (change)="getBadges(secretary?.value)"
                   class="form-select"
                   formControlName="secretary"
                   id="inputSecretary"
                   required>
-                  <option [selected]="true" value="">
-                    Selecione a secretaria
-                  </option>
+                  <option [selected]="true" value="">selecione</option>
                   <option *ngFor="let item of secretaries" value="{{ item }}">
                     {{ item }}
                   </option>
@@ -53,8 +52,10 @@
                   formControlName="badge"
                   id="inputBadge"
                   required>
-                  <!--                  <option [selected]="true" value="">Selecione o crachá</option>-->
-                  <option *ngFor="let item of getBadges()" value="{{ item }}">
+                  <option [selected]="true" value="">selecione</option>
+                  <option
+                    *ngFor="let item of availableBadges"
+                    value="{{ item }}">
                     {{ item }}
                   </option>
                 </select>
@@ -62,22 +63,6 @@
                   {{ showErrorMessage('badge', 'Crachá') }}
                 </div>
               </div>
-              <!--              <div-->
-              <!--                [class]="badge?.touched ? 'was-validated' : ''"-->
-              <!--                class="col-4">-->
-              <!--                <label class="form-label" for="inputBadge">Nº Crachá</label>-->
-              <!--                <input-->
-              <!--                  class="form-control"-->
-              <!--                  formControlName="badge"-->
-              <!--                  id="inputBadge"-->
-              <!--                  maxlength="2"-->
-              <!--                  minlength="2"-->
-              <!--                  required-->
-              <!--                  type="text" />-->
-              <!--                <div *ngIf="badge?.touched && badge?.invalid" class="msgError">-->
-              <!--                  {{ showErrorMessage('badge', 'Crachá') }}-->
-              <!--                </div>-->
-              <!--              </div>-->
             </div>
           </div>
         </div>

@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { tap } from 'rxjs/operators';
 
+import { badges } from '../../../utils/badges';
 import { CustomAsynchronousValidationService } from '../../../utils/custom-asynchronous- validation.service';
 import { CustomSynchronousValidationsClass } from '../../../utils/custom-synchronous-validations.class';
 import { ValidationErrorsService } from '../../../utils/validation-errors.service';
@@ -14,9 +16,11 @@ import { TypeVisitor } from '../../types/visitor.type';
   templateUrl: './visitor-modal.component.html',
   styleUrls: ['./visitor-modal.component.css'],
 })
-export class VisitorModalComponent {
+export class VisitorModalComponent implements OnInit {
   visitStatus = false;
   secretaries = ['PGM', 'SEMSUR', 'SEMUR', 'SEMTHAS'];
+  originalBadges: string[] = badges;
+  availableBadges: string[] = [];
 
   // Cria formulário vazio
   formVisitor: FormGroup = this.formBuilder.group({
@@ -85,6 +89,10 @@ export class VisitorModalComponent {
     return this.visit?.get('secretary');
   }
 
+  ngOnInit(): void {
+    // this.availableBadges = this.originalBadges;
+  }
+
   onConfirm() {
     if (!this.visitStatus) {
       const { visitor } = this.formVisitor.getRawValue();
@@ -114,5 +122,18 @@ export class VisitorModalComponent {
       fieldTranslation,
       this.formVisitor
     );
+  }
+
+  getBadges(secretary: string) {
+    this.visitsService
+      .getBadgesBySecretary(secretary)
+      .pipe(
+        tap((badges: string[]) => {
+          this.availableBadges = this.originalBadges.filter(
+            value => !badges.includes(value)
+          );
+        })
+      )
+      .subscribe();
   }
 }

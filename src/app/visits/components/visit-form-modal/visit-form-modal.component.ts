@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { take, tap } from 'rxjs';
 
+import { badges } from '../../../utils/badges';
 import { CustomAsynchronousValidationService } from '../../../utils/custom-asynchronous- validation.service';
 import { CustomSynchronousValidationsClass } from '../../../utils/custom-synchronous-validations.class';
 import { ValidationErrorsService } from '../../../utils/validation-errors.service';
@@ -22,8 +23,8 @@ import { TypeVisitByVisitorResponse } from '../../types/visit.type';
 })
 export class VisitFormModalComponent implements OnInit {
   secretaries = ['PGM', 'SEMSUR', 'SEMUR', 'SEMTHAS'];
-  originalBadges: string[] = [];
-  usedBadges: string[] = [];
+  originalBadges: string[] = badges;
+  availableBadges: string[] = [];
 
   // create empty form
   formVisit: FormGroup = this.formBuilder.group({
@@ -70,13 +71,7 @@ export class VisitFormModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.visitorsService.getUsedBadges().subscribe({
-      next: value => {
-        this.usedBadges = value;
-      },
-    });
-
-    console.log('USED BADGE', this.usedBadges);
+    this.availableBadges = this.originalBadges;
   }
 
   onConfirm() {
@@ -126,12 +121,16 @@ export class VisitFormModalComponent implements OnInit {
     );
   }
 
-  getBadges() {
-    this.originalBadges = ['01', '02', '03', '04', '05', '06'];
-    console.log('USED BADEGS NO GET', this.usedBadges);
-    // this.usedBadges.forEach(value =>
-    //   this.originalBadges.filter(badge => badge === value)
-    // );
-    return this.originalBadges;
+  getBadges(secretary: string) {
+    this.visitsService
+      .getBadgesBySecretary(secretary)
+      .pipe(
+        tap((badges: string[]) => {
+          this.availableBadges = this.originalBadges.filter(
+            value => !badges.includes(value)
+          );
+        })
+      )
+      .subscribe();
   }
 }
