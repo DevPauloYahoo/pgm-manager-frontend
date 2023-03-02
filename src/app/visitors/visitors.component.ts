@@ -29,6 +29,8 @@ export class VisitorsComponent implements OnInit {
     page: 0,
   };
 
+  usedBadges: string[] = [];
+
   constructor(
     private visitorsService: VisitorsService,
     private visitsService: VisitsService,
@@ -76,7 +78,9 @@ export class VisitorsComponent implements OnInit {
       .pipe(
         tap((data: TypeVisitToVisitor) => {
           if (data) {
-            this.createVisitToVisitor(data);
+            this.usedBadges.push(data.badge);
+            this.visitorsService.setUsedBadges(this.usedBadges);
+            // this.createVisitToVisitor(data);
           }
         }),
         take(1)

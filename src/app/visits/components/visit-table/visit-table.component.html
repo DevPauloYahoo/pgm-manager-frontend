@@ -3,6 +3,7 @@
     <table *ngIf="visits$ | async as visits" class="table table-hover">
       <thead>
         <tr>
+          <th scope="col">#</th>
           <th scope="col">Nome</th>
           <th scope="col">CPF</th>
           <th scope="col">Secretaria</th>
@@ -21,12 +22,14 @@
                     itemsPerPage: visits.itemsPerPage,
                     currentPage: visits.currentPage,
                     totalItems: visits.totalItems
-                  }
+                  };
+            let i = index
           ">
+          <td>{{ visits.itemsPerPage * (visits.currentPage - 1) + i + 1 }}</td>
           <td style="width: 300px">{{ visit.visitor.name }}</td>
           <td>{{ visit.visitor.document }}</td>
           <td>{{ visit.secretary }}</td>
-          <td>{{ visit.badge }}</td>
+          <td>{{ visit.badge }} {{ visits.totalItems }}</td>
           <td>{{ visit.created_at | date : 'dd/MM/yyyy HH:mm' }}</td>
           <td>{{ visit.updated_at | date : 'dd/MM/yyyy HH:mm' }}</td>
           <td *ngIf="!statusVisits">
@@ -59,6 +62,7 @@
     </select>
 
     <pagination-controls
+      (pageBoundsCorrection)="onPaginatorChange($event)"
       (pageChange)="onPaginatorChange($event)"
       [autoHide]="false"
       [maxSize]="5"

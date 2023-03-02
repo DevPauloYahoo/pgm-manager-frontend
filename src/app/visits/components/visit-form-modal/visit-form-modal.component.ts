@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +7,7 @@ import { take, tap } from 'rxjs';
 import { CustomAsynchronousValidationService } from '../../../utils/custom-asynchronous- validation.service';
 import { CustomSynchronousValidationsClass } from '../../../utils/custom-synchronous-validations.class';
 import { ValidationErrorsService } from '../../../utils/validation-errors.service';
+import { VisitorsService } from '../../../visitors/services/visitors.service';
 import {
   TypeVisitor,
   TypeVisitToVisitor,
@@ -19,8 +20,10 @@ import { TypeVisitByVisitorResponse } from '../../types/visit.type';
   templateUrl: './visit-form-modal.component.html',
   styleUrls: ['./visit-form-modal.component.css'],
 })
-export class VisitFormModalComponent {
+export class VisitFormModalComponent implements OnInit {
   secretaries = ['PGM', 'SEMSUR', 'SEMUR', 'SEMTHAS'];
+  originalBadges: string[] = [];
+  usedBadges: string[] = [];
 
   // create empty form
   formVisit: FormGroup = this.formBuilder.group({
@@ -49,6 +52,7 @@ export class VisitFormModalComponent {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private visitsService: VisitsService,
+    private visitorsService: VisitorsService,
     private validationErrorsService: ValidationErrorsService,
     private asynchronousValidationService: CustomAsynchronousValidationService
   ) {}
@@ -63,6 +67,16 @@ export class VisitFormModalComponent {
 
   get secretary() {
     return this.visit?.get('secretary');
+  }
+
+  ngOnInit(): void {
+    this.visitorsService.getUsedBadges().subscribe({
+      next: value => {
+        this.usedBadges = value;
+      },
+    });
+
+    console.log('USED BADGE', this.usedBadges);
   }
 
   onConfirm() {
@@ -110,5 +124,14 @@ export class VisitFormModalComponent {
       fieldTranslation,
       this.formVisit
     );
+  }
+
+  getBadges() {
+    this.originalBadges = ['01', '02', '03', '04', '05', '06'];
+    console.log('USED BADEGS NO GET', this.usedBadges);
+    // this.usedBadges.forEach(value =>
+    //   this.originalBadges.filter(badge => badge === value)
+    // );
+    return this.originalBadges;
   }
 }

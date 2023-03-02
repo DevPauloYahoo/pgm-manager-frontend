@@ -22,7 +22,7 @@ export class VisitsComponent implements OnInit {
   >();
   dataPagination: TypePageableVisit = {
     search: '',
-    status: '',
+    status: false,
     limit: 0,
     page: 0,
   };
@@ -45,9 +45,9 @@ export class VisitsComponent implements OnInit {
   }
 
   onChangeStatus() {
-    if (this.dataPagination.status === '') {
-      this.dataPagination.status = false;
-    }
+    // if (this.dataPagination.status === '') {
+    //   this.dataPagination.status = false;
+    // }
     this.dataPagination.status = !this.dataPagination.status;
     this.getVisits(this.dataPagination);
   }

@@ -10,6 +10,7 @@ import { TypeResponseVisit } from '../../types/visit.type';
   styleUrls: ['./visit-table.component.css'],
 })
 export class VisitTableComponent {
+  displayedColumns = ['name', 'document', 'badge', 'secretary'];
   @Input() visits$: Observable<TypeResponseVisit<VisitModel>> =
     new Observable();
 

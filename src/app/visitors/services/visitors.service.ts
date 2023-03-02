@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Visitor } from '../models/visitor.interface';
 import {
@@ -16,8 +16,17 @@ import {
 })
 export class VisitorsService {
   BASE_URL = 'http://localhost:3000/api';
+  usedBadge: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
   constructor(private http: HttpClient) {}
+
+  setUsedBadges(badges: string[]) {
+    this.usedBadge.next(badges);
+  }
+
+  getUsedBadges() {
+    return this.usedBadge.asObservable();
+  }
 
   getVisitors({
     search,
