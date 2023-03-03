@@ -1,12 +1,14 @@
 <nav class="navbar">
   <form class="d-flex">
     <input
+      (keyup)="debounce.next($any($event.target).value)"
       aria-label="Buscar"
       class="form-control me-2 small"
       placeholder="Buscar"
       type="search" />
     <button class="btn btn-outline-primary btn-sm" type="submit">Buscar</button>
   </form>
+
   <button
     (click)="onChangeStatus()"
     [class]="dataPagination.status ? 'btn btn-danger' : 'btn btn-success'"
@@ -24,4 +26,6 @@
   (paginatorChange)="onChangePage($event)"
   (tableSizeChange)="onTableSizeChange($event)"
   [statusVisits]="dataPagination.status"
-  [visits$]="visits$"></pgm-visit-table>
+  [visits$]="
+    visits$ | filterByNameAndDocument : searchFilter : pipeStatus
+  "></pgm-visit-table>

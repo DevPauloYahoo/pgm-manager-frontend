@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, take, tap } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { distinctUntilChanged, Observable, of, Subject, take, tap } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 import { VisitModel } from './model/visit.model';
 import { VisitsService } from './services/visits.service';
@@ -10,16 +12,23 @@ import { TypePageableVisit, TypeResponseVisit } from './types/visit.type';
   templateUrl: './visits.component.html',
   styleUrls: ['./visits.component.css'],
 })
-export class VisitsComponent implements OnInit {
+export class VisitsComponent implements OnInit, OnDestroy {
+  // properties class
+  searchFilter = '';
+  pipeStatus = false;
+  debounce: Subject<string> = new Subject<string>();
+
   visits: TypeResponseVisit<VisitModel> = {
     content: [],
     currentPage: 0,
     itemsPerPage: 0,
     totalItems: 0,
   };
+
   visits$: Observable<TypeResponseVisit<VisitModel>> = new Observable<
     TypeResponseVisit<VisitModel>
   >();
+
   dataPagination: TypePageableVisit = {
     search: '',
     status: false,
@@ -27,10 +36,17 @@ export class VisitsComponent implements OnInit {
     page: 0,
   };
 
-  constructor(private visitsService: VisitsService) {}
+  constructor(
+    private visitsService: VisitsService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.getVisits(this.dataPagination);
+    this.visits$ = of(this.activatedRoute.snapshot.data['visits$']);
+    this.debounce
+      .pipe(debounceTime(400))
+      .pipe(distinctUntilChanged())
+      .subscribe(searchFilter => (this.searchFilter = searchFilter));
   }
 
   onChangePage(event: Event | any) {
@@ -46,6 +62,7 @@ export class VisitsComponent implements OnInit {
 
   onChangeStatus() {
     this.dataPagination.status = !this.dataPagination.status;
+    this.pipeStatus = !this.pipeStatus;
     this.getVisits(this.dataPagination);
   }
 
@@ -62,5 +79,9 @@ export class VisitsComponent implements OnInit {
   // private methods
   getVisits(dataPagination: TypePageableVisit) {
     this.visits$ = this.visitsService.getVisits(dataPagination);
+  }
+
+  ngOnDestroy() {
+    this.debounce.unsubscribe();
   }
 }

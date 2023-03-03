@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { TypeVisitor } from '../../types/visitor.type';
   templateUrl: './visitor-modal.component.html',
   styleUrls: ['./visitor-modal.component.css'],
 })
-export class VisitorModalComponent implements OnInit {
+export class VisitorModalComponent {
   visitStatus = false;
   secretaries = ['PGM', 'SEMSUR', 'SEMUR', 'SEMTHAS'];
   originalBadges: string[] = badges;
@@ -85,12 +85,7 @@ export class VisitorModalComponent implements OnInit {
   }
 
   get secretary() {
-    // return this.visit.controls.secretary;
     return this.visit?.get('secretary');
-  }
-
-  ngOnInit(): void {
-    // this.availableBadges = this.originalBadges;
   }
 
   onConfirm() {

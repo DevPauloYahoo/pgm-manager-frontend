@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { VisitListResolver } from './resolvers/visit-list/visit-list.resolver';
 import { VisitsComponent } from './visits.component';
 
 const routes: Routes = [
   {
     path: '',
     component: VisitsComponent,
+    resolve: {
+      visits$: VisitListResolver,
+    },
   },
 ];
 
