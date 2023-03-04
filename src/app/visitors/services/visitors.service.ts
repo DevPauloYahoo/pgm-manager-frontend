@@ -32,11 +32,11 @@ export class VisitorsService {
     search,
     page,
     limit,
-  }: TypePageableVisitor): Observable<TypeResponseVisitor<Visitor>> {
+  }: Partial<TypePageableVisitor>): Observable<TypeResponseVisitor<Visitor>> {
     const params = new HttpParams()
       .set('search', search || '')
-      .set('page', page)
-      .set('limit', limit);
+      .set('page', page || 0)
+      .set('limit', limit || 0);
 
     return this.http.get<TypeResponseVisitor<Visitor>>(
       `${this.BASE_URL}/visitors`,

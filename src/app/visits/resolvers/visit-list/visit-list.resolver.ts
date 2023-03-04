@@ -16,11 +16,9 @@ import { TypePageableVisit, TypeResponseVisit } from '../../types/visit.type';
 export class VisitListResolver
   implements Resolve<Observable<TypeResponseVisit<VisitModel>>>
 {
-  dataRequest: TypePageableVisit = {
+  dataRequest: Partial<TypePageableVisit> = {
     search: '',
     status: false,
-    page: 0,
-    limit: 0,
   };
 
   constructor(private visitsService: VisitsService) {}

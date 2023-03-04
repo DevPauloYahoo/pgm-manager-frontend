@@ -1,7 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Observable, switchMap, take, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  distinctUntilChanged,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 import { VisitFormModalComponent } from '../visits/components/visit-form-modal/visit-form-modal.component';
 import { VisitsService } from '../visits/services/visits.service';
@@ -23,23 +32,37 @@ declare let window: any;
   styleUrls: ['./visitors.component.css'],
 })
 export class VisitorsComponent implements OnInit {
-  visitors$: Observable<TypeResponseVisitor<Visitor>> = new Observable();
-  dataPagination: TypePageableVisitor = {
+  visitors$: Observable<TypeResponseVisitor<Visitor>> = new Observable<
+    TypeResponseVisitor<Visitor>
+  >();
+  debounce$: Subject<string> = new Subject<string>();
+  searchFilter = '';
+  usedBadges: string[] = [];
+
+  dataPagination: Partial<TypePageableVisitor> = {
+    search: '',
     limit: 0,
     page: 0,
   };
-
-  usedBadges: string[] = [];
 
   constructor(
     private visitorsService: VisitorsService,
     private visitsService: VisitsService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.getVisitors(this.dataPagination);
+    this.visitors$ = of(this.activatedRoute.snapshot.data['visitors$']);
+    this.debounce$
+      .pipe(debounceTime(300))
+      .pipe(distinctUntilChanged())
+      .subscribe({
+        next: (searchValue: string) => {
+          this.searchFilter = searchValue;
+        },
+      });
   }
 
   onChangePage(event: Event | any) {
@@ -109,7 +132,7 @@ export class VisitorsComponent implements OnInit {
   }
 
   // private methods
-  private getVisitors(dataPagination: TypePageableVisitor) {
+  private getVisitors(dataPagination: Partial<TypePageableVisitor>) {
     this.visitors$ = this.visitorsService.getVisitors(dataPagination);
   }
 

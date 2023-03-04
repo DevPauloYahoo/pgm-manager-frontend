@@ -1,18 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { VisitorFormModalModule } from './components/visitor-form-modal/visitor-form-modal.module';
 import { VisitorTableModule } from './components/visitor-table/visitor-table.module';
+import { FilterSearchVisitorsPipe } from './pipes/filter-search-visitors.pipe';
 import { VisitorsRoutingModule } from './visitors-routing.module';
 import { VisitorsComponent } from './visitors.component';
 
 @NgModule({
-  declarations: [VisitorsComponent],
+  declarations: [VisitorsComponent, FilterSearchVisitorsPipe],
   imports: [
     CommonModule,
-    VisitorsRoutingModule,
+    ReactiveFormsModule,
     VisitorFormModalModule,
     VisitorTableModule,
+    VisitorsRoutingModule,
   ],
 })
 export class VisitorsModule {}

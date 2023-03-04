@@ -6,16 +6,16 @@ import { VisitsService } from '../services/visits.service';
 import { TypePageableVisit, TypeResponseVisit } from '../types/visit.type';
 
 @Pipe({
-  name: 'filterByNameAndDocument',
+  name: 'filterSearchVisits',
 })
-export class FilterByNameAndDocumentPipe implements PipeTransform {
+export class FilterSearchVisitsPipe implements PipeTransform {
   constructor(private visitsService: VisitsService) {}
 
   transform(
     visits$: Observable<TypeResponseVisit<VisitModel>>,
     filterQuery: string,
     pipeStatus: boolean
-  ) {
+  ): Observable<TypeResponseVisit<VisitModel>> {
     filterQuery = filterQuery.trim().toLowerCase();
 
     const dataRequest: Partial<TypePageableVisit> = {

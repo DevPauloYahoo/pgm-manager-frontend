@@ -46,7 +46,11 @@ export class VisitsComponent implements OnInit, OnDestroy {
     this.debounce
       .pipe(debounceTime(400))
       .pipe(distinctUntilChanged())
-      .subscribe(searchFilter => (this.searchFilter = searchFilter));
+      .subscribe({
+        next: (searchValue: string) => {
+          this.searchFilter = searchValue;
+        },
+      });
   }
 
   onChangePage(event: Event | any) {
