@@ -5,6 +5,12 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 
 const routes: Routes = [
   {
+    path: 'sign-in',
+    loadChildren: () =>
+      import('./auth/sign-in/sign-in.module').then(m => m.SignInModule),
+  },
+
+  {
     path: 'visitors',
     loadChildren: () =>
       import('./visitors/visitors.module').then(m => m.VisitorsModule),
