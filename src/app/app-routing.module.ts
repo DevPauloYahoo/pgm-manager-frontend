@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from './auth/guards/auth/auth.guard';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
     path: 'visitors',
     loadChildren: () =>
       import('./visitors/visitors.module').then(m => m.VisitorsModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'visits',

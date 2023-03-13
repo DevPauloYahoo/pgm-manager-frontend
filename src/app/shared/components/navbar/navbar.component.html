@@ -28,5 +28,24 @@
         </li>
       </ul>
     </div>
+    <div>
+      <span *ngIf="userProfile?.email" class="me-5" style="color: #fff"
+        >Bem-vindo: {{ userProfile?.email }}
+      </span>
+      <button
+        (click)="logout()"
+        *ngIf="isLoggedIn"
+        class="btn btn-primary"
+        type="button">
+        Log out
+      </button>
+      <button
+        (click)="login()"
+        *ngIf="!isLoggedIn"
+        class="btn btn-primary"
+        type="button">
+        Log in
+      </button>
+    </div>
   </div>
 </nav>
