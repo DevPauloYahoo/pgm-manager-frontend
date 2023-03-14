@@ -35,7 +35,6 @@ export class SignInComponent {
 
     this.signInService.signIn(username, password).subscribe({
       next: res => {
-        console.log(res);
         this.router.navigate(['visits']);
       },
       error: err => {

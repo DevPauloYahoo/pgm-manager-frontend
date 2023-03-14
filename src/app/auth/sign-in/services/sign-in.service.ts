@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { TokenService } from './token.service';
 
@@ -17,7 +17,7 @@ export class SignInService {
 
   signIn(username: string, password: string) {
     return this.http
-      .post<any>(this.BASE_URL, { username, password }, { observe: 'response' })
+      .post(this.BASE_URL, { username, password }, { observe: 'response' })
       .pipe(
         tap(res => {
           const token = res.headers.get('x-access-token');
