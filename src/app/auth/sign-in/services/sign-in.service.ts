@@ -20,8 +20,10 @@ export class SignInService {
       .post(this.BASE_URL, { username, password }, { observe: 'response' })
       .pipe(
         tap(res => {
-          const token = res.headers.get('x-access-token');
-          this.tokenService.setToken(token);
+          const accessToken = res.headers.get('x-access-token');
+          const refreshToken = res.headers.get('x-refresh-token');
+          this.tokenService.setAccessToken(accessToken);
+          this.tokenService.setRefreshToken(refreshToken);
         })
       );
   }

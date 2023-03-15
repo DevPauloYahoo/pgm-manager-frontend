@@ -8,7 +8,7 @@
           <th scope="col">Atendimento</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngIf="visitors.content.length; else notFoundData">
         <tr
           *ngFor="
             let visitor of visitors.content
@@ -29,6 +29,9 @@
         </tr>
       </tbody>
     </table>
+    <ng-template #notFoundData>
+      <h2>No data</h2>
+    </ng-template>
   </div>
 </div>
 <div class="row">

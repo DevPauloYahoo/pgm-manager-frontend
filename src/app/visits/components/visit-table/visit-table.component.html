@@ -1,3 +1,14 @@
+<div class="card bg-primary mb-2" style="height: 40px">
+  <div class="row text-center pt-1">
+    <h2 style="color: #fff">
+      {{
+        statusVisits
+          ? 'Lista de atendimentos encerrados'
+          : 'Lista de atendimentos ativos'
+      }}
+    </h2>
+  </div>
+</div>
 <div class="card mb-2">
   <div class="card-body">
     <table
@@ -6,7 +17,6 @@
       class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">#</th>
           <th scope="col">Nome</th>
           <th scope="col">CPF</th>
           <th scope="col">Secretaria</th>
@@ -28,7 +38,6 @@
                   };
             let i = index
           ">
-          <td>{{ visits.itemsPerPage * (visits.currentPage - 1) + i + 1 }}</td>
           <td style="width: 300px">{{ visit.visitor.name }}</td>
           <td>{{ visit.visitor.document }}</td>
           <td>{{ visit.secretary }}</td>

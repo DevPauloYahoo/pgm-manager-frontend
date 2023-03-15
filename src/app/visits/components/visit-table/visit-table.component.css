@@ -1,0 +1,9 @@
+.background-card-inactive {
+  background-color: rgba(219, 53, 69, 0.7);
+  color: #ffffff;
+}
+
+.background-card-active {
+  background-color: rgba(25, 134, 84, 0.7);
+  color: #ffffff;
+}

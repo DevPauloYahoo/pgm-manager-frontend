@@ -13,13 +13,10 @@
 
   <button
     (click)="onChangeStatus()"
-    [class]="dataPagination.status ? 'btn btn-danger' : 'btn btn-success'"
-    class="btn-sm"
-    style="width: 200px"
+    class="btn-sm btn btn-primary"
+    style="width: 100px"
     type="button">
-    {{
-      dataPagination.status ? 'Atendimentos Encerrados' : 'Atendimentos Ativos'
-    }}
+    {{ dataPagination.status ? 'Ativos' : 'Encerrados' }}
   </button>
 </nav>
 

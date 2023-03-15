@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { distinctUntilChanged, Observable, of, Subject, take, tap } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
+import { TokenService } from '../auth/sign-in/services/token.service';
 import { VisitModel } from './model/visit.model';
 import { VisitsService } from './services/visits.service';
 import { TypePageableVisit, TypeResponseVisit } from './types/visit.type';
@@ -38,6 +39,7 @@ export class VisitsComponent implements OnInit, OnDestroy {
 
   constructor(
     private visitsService: VisitsService,
+    private readonly tokenService: TokenService,
     private activatedRoute: ActivatedRoute
   ) {}
 
