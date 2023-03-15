@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  catchError,
   distinctUntilChanged,
+  EMPTY,
   Observable,
   of,
   Subject,
@@ -67,13 +69,13 @@ export class VisitorsComponent implements OnInit {
 
   onChangePage(event: Event | any) {
     this.dataPagination.page = event;
-    this.getVisitors(this.dataPagination);
+    this.visitors$ = this.getVisitors(this.dataPagination);
   }
 
   onTableSizeChange(event: Event | any) {
     this.dataPagination.limit = event.target.value;
     this.dataPagination.page = 1;
-    this.getVisitors(this.dataPagination);
+    this.visitors$ = this.getVisitors(this.dataPagination);
   }
 
   onAddVisitToVisitor(visitor: TypeVisitor) {
@@ -133,7 +135,14 @@ export class VisitorsComponent implements OnInit {
 
   // private methods
   private getVisitors(dataPagination: Partial<TypePageableVisitor>) {
-    this.visitors$ = this.visitorsService.getVisitors(dataPagination);
+    return this.visitorsService.getVisitors(dataPagination).pipe(
+      catchError(err => {
+        alert(
+          JSON.stringify({ status: err.status, message: err.error.message })
+        );
+        return EMPTY;
+      })
+    );
   }
 
   // create new visitor
@@ -149,6 +158,14 @@ export class VisitorsComponent implements OnInit {
             this.router.navigate(['visits']);
           }
         })
+      )
+      .pipe(
+        catchError(err => {
+          alert(
+            JSON.stringify({ status: err.status, message: err.error.message })
+          );
+          return EMPTY;
+        })
       );
   }
 
@@ -161,6 +178,14 @@ export class VisitorsComponent implements OnInit {
           this.router.navigate(['visits']);
         }),
         take(1)
+      )
+      .pipe(
+        catchError(err => {
+          alert(
+            JSON.stringify({ status: err.status, message: err.error.message })
+          );
+          return EMPTY;
+        })
       )
       .subscribe();
   }

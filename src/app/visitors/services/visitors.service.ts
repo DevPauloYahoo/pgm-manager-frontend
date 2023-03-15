@@ -49,10 +49,13 @@ export class VisitorsService {
   }
 
   createVisitToVisitor({ visitorId, badge, secretary }: TypeVisitToVisitor) {
-    return this.http.post(`${this.BASE_URL}/visits/${visitorId}`, {
-      badge,
-      secretary,
-    });
+    return this.http.post<TypeResponseVisitor<Visitor>>(
+      `${this.BASE_URL}/visits/${visitorId}`,
+      {
+        badge,
+        secretary,
+      }
+    );
   }
 
   getById(visitorId: string): Observable<Visitor> {

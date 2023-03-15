@@ -60,6 +60,9 @@ export class VisitsService {
   }
 
   updateStatusVisits(visitId: string) {
-    return this.http.patch(`${this.BASE_URL}/visits/${visitId}`, {});
+    return this.http.patch<TypeResponseVisit<VisitModel>>(
+      `${this.BASE_URL}/visits/${visitId}`,
+      {}
+    );
   }
 }

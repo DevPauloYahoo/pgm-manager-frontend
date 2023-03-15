@@ -1,6 +1,7 @@
 import { Component, Renderer2 } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { catchError, EMPTY, tap } from 'rxjs';
 
 import { SignInService } from '../../services/sign-in.service';
 
@@ -32,17 +33,35 @@ export class SignInComponent {
 
   signIn() {
     const { username, password } = this.signInForm.getRawValue();
+    this.signInService
+      .signIn(username, password)
+      .pipe(
+        tap(res => {
+          this.router.navigate(['visits']);
+          console.log('RESPOSTAS', res);
+        })
+      )
+      .pipe(
+        catchError(err => {
+          alert('USUÁRIO E/OU SENHA INVÁLIDO');
+          this.renderer.selectRootElement('#formUsername').focus();
+          this.signInForm.reset();
+          console.log(err.message);
+          return EMPTY;
+        })
+      )
+      .subscribe();
 
-    this.signInService.signIn(username, password).subscribe({
-      next: res => {
-        this.router.navigate(['visits']);
-      },
-      error: err => {
-        alert('USUÁRIO E/OU SENHA INVÁLIDO');
-        this.signInForm.reset();
-        this.renderer.selectRootElement('#formUsername').focus();
-        console.log(err.message);
-      },
-    });
+    // this.signInService.signIn(username, password).subscribe({
+    //   next: res => {
+    //     this.router.navigate(['visits']);
+    //   },
+    //   error: err => {
+    //     alert('USUÁRIO E/OU SENHA INVÁLIDO');
+    //     this.signInForm.reset();
+    //     this.renderer.selectRootElement('#formUsername').focus();
+    //     console.log(err.message);
+    //   },
+    // });
   }
 }

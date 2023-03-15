@@ -1,6 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { distinctUntilChanged, Observable, of, Subject, take, tap } from 'rxjs';
+import {
+  catchError,
+  distinctUntilChanged,
+  EMPTY,
+  Observable,
+  of,
+  Subject,
+  take,
+  tap,
+} from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { TokenService } from '../auth/sign-in/services/token.service';
@@ -52,6 +61,12 @@ export class VisitsComponent implements OnInit, OnDestroy {
         next: (searchValue: string) => {
           this.searchFilter = searchValue;
         },
+        error: err => {
+          return JSON.stringify({
+            status: err.status,
+            message: err.error.message,
+          });
+        },
       });
   }
 
@@ -63,28 +78,45 @@ export class VisitsComponent implements OnInit, OnDestroy {
   onTableSizeChange(event: Event | any) {
     this.dataPagination.limit = event.target.value;
     this.dataPagination.page = 1;
-    this.getVisits(this.dataPagination);
+    this.visits$ = this.getVisits(this.dataPagination);
   }
 
   onChangeStatus() {
     this.dataPagination.status = !this.dataPagination.status;
     this.pipeStatus = !this.pipeStatus;
-    this.getVisits(this.dataPagination);
+    this.visits$ = this.getVisits(this.dataPagination);
   }
 
   onCloseVisits(event: string) {
     this.visitsService
       .updateStatusVisits(event)
       .pipe(
-        tap(() => this.getVisits(this.dataPagination)),
+        tap(() => {
+          this.visits$ = this.getVisits(this.dataPagination);
+        }),
         take(1)
+      )
+      .pipe(
+        catchError(err => {
+          alert(
+            JSON.stringify({ status: err.status, message: err.error.message })
+          );
+          return EMPTY;
+        })
       )
       .subscribe();
   }
 
   // private methods
   getVisits(dataPagination: TypePageableVisit) {
-    this.visits$ = this.visitsService.getVisits(dataPagination);
+    return this.visitsService.getVisits(dataPagination).pipe(
+      catchError(err => {
+        alert(
+          JSON.stringify({ status: err.status, message: err.error.message })
+        );
+        return EMPTY;
+      })
+    );
   }
 
   ngOnDestroy() {

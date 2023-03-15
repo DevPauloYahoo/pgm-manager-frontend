@@ -4,7 +4,7 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { catchError, EMPTY, Observable } from 'rxjs';
 
 import { VisitModel } from '../../model/visit.model';
 import { VisitsService } from '../../services/visits.service';
@@ -27,6 +27,13 @@ export class VisitListResolver
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<TypeResponseVisit<VisitModel>> {
-    return this.visitsService.getVisits(this.dataRequest);
+    return this.visitsService.getVisits(this.dataRequest).pipe(
+      catchError(err => {
+        alert(
+          JSON.stringify({ status: err.status, message: err.error.message })
+        );
+        return EMPTY;
+      })
+    );
   }
 }

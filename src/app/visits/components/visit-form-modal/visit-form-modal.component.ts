@@ -2,11 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { take, tap } from 'rxjs';
+import { catchError, EMPTY, take, tap } from 'rxjs';
 
 import { badges } from '../../../utils/badges';
 import { CustomAsynchronousValidationService } from '../../../utils/custom-asynchronous- validation.service';
-import { CustomSynchronousValidationsClass } from '../../../utils/custom-synchronous-validations.class';
 import { ValidationErrorsService } from '../../../utils/validation-errors.service';
 import { VisitorsService } from '../../../visitors/services/visitors.service';
 import {
@@ -36,14 +35,14 @@ export class VisitFormModalComponent implements OnInit {
             Validators.required,
             Validators.minLength(2),
             Validators.maxLength(2),
-            CustomSynchronousValidationsClass.isValidBadge(),
+            // CustomSynchronousValidationsClass.isValidBadge(),
           ],
         ],
         secretary: ['', [Validators.required]],
-      },
-      {
-        asyncValidators: [this.asynchronousValidationService.isBadgeExists()],
       }
+      // {
+      //   asyncValidators: [this.asynchronousValidationService.isBadgeExists()],
+      // }
     ),
   });
 
@@ -104,6 +103,14 @@ export class VisitFormModalComponent implements OnInit {
           }
         })
       )
+      .pipe(
+        catchError(err => {
+          alert(
+            JSON.stringify({ status: err.status, message: err.error.message })
+          );
+          return EMPTY;
+        })
+      )
       .pipe(take(1))
       .subscribe({
         error: () => {
@@ -129,6 +136,14 @@ export class VisitFormModalComponent implements OnInit {
           this.availableBadges = this.originalBadges.filter(
             value => !badges.includes(value)
           );
+        })
+      )
+      .pipe(
+        catchError(err => {
+          alert(
+            JSON.stringify({ status: err.status, message: err.error.message })
+          );
+          return EMPTY;
         })
       )
       .subscribe();
