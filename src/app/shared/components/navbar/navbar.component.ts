@@ -22,6 +22,6 @@ export class NavbarComponent {
 
   logout() {
     this.userService.logout();
-    this.router.navigate(['sign-in']);
+    this.router.navigate(['']);
   }
 }

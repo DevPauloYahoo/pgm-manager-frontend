@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-// import { verify } from 'jsonwebtoken';
 import JWTDecode from 'jwt-decode';
 import { BehaviorSubject } from 'rxjs';
 
@@ -33,6 +32,10 @@ export class UserService {
   logout() {
     this.tokenService.removeAccessToken();
     this.userSubject$.next(null);
+  }
+
+  isLogged() {
+    return this.tokenService.hasAccessToken();
   }
 
   private decodeAndNotify() {

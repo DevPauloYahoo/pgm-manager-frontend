@@ -1,6 +1,6 @@
 .divider:after,
 .divider:before {
-  content: "";
+  content: '';
   flex: 1;
   height: 1px;
   background: #eee;
@@ -11,7 +11,7 @@
 }
 
 section {
-  height: 90vh
+  height: 90vh;
 }
 
 @media (max-width: 450px) {
