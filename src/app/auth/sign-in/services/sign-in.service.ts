@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
-import { TokenService } from './token.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class SignInService {
 
   constructor(
     private readonly http: HttpClient,
-    private readonly tokenService: TokenService
+    private readonly userService: UserService
   ) {}
 
   signIn(username: string, password: string) {
@@ -22,8 +22,8 @@ export class SignInService {
         tap(res => {
           const accessToken = res.headers.get('x-access-token');
           const refreshToken = res.headers.get('x-refresh-token');
-          this.tokenService.setAccessToken(accessToken);
-          this.tokenService.setRefreshToken(refreshToken);
+          this.userService.setAccessToken(accessToken);
+          this.userService.setRefreshToken(refreshToken);
         })
       );
   }

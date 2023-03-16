@@ -28,8 +28,16 @@
         </li>
       </ul>
     </div>
-    <div>
-      <span class="me-5" style="color: #fff">Bem-vindo: </span>
+    <div *ngIf="user$ | async as user; else signIn">
+      <span class="me-5" style="color: #fff"
+        >Bem-vindo: {{ user?.preferred_username?.toUpperCase() }}
+      </span>
+      <button (click)="logout()" class="btn btn-primary">Logout</button>
     </div>
+    <ng-template #signIn>
+      <span class="navbar-text">
+        <a>Faça login</a>
+      </span>
+    </ng-template>
   </div>
 </nav>
