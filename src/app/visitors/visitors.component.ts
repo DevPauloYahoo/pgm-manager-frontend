@@ -26,7 +26,7 @@ import {
   TypeVisitToVisitor,
 } from './types/visitor.type';
 
-declare let window: any;
+// declare let window: any;
 
 @Component({
   selector: 'pgm-visitor-list',

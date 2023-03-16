@@ -51,17 +51,5 @@ export class SignInComponent {
         })
       )
       .subscribe();
-
-    // this.signInService.signIn(username, password).subscribe({
-    //   next: res => {
-    //     this.router.navigate(['visits']);
-    //   },
-    //   error: err => {
-    //     alert('USUÁRIO E/OU SENHA INVÁLIDO');
-    //     this.signInForm.reset();
-    //     this.renderer.selectRootElement('#formUsername').focus();
-    //     console.log(err.message);
-    //   },
-    // });
   }
 }

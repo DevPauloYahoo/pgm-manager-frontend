@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
 
@@ -36,23 +36,13 @@ export class VisitorModalComponent {
         [this.asynchronousValidationService.isCpfExists()],
       ],
     }),
-    visit: this.formBuilder.group(
-      {
-        badge: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(2),
-            CustomSynchronousValidationsClass.isValidBadge(),
-          ],
-        ],
-        secretary: ['', [Validators.required]],
-      },
-      {
-        asyncValidators: [this.asynchronousValidationService.isBadgeExists()],
-      }
-    ),
+    visit: this.formBuilder.group({
+      badge: [
+        '',
+        [Validators.required, Validators.minLength(2), Validators.maxLength(2)],
+      ],
+      secretary: ['', [Validators.required]],
+    }),
   });
 
   constructor(
@@ -61,7 +51,7 @@ export class VisitorModalComponent {
     private visitsService: VisitsService,
     private asynchronousValidationService: CustomAsynchronousValidationService,
     private validationErrorsService: ValidationErrorsService,
-    private formBuilder: FormBuilder
+    private formBuilder: NonNullableFormBuilder
   ) {}
 
   get visitor() {

@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { catchError, EMPTY, take, tap } from 'rxjs';
 
 import { badges } from '../../../utils/badges';
-import { CustomAsynchronousValidationService } from '../../../utils/custom-asynchronous- validation.service';
 import { ValidationErrorsService } from '../../../utils/validation-errors.service';
 import { VisitorsService } from '../../../visitors/services/visitors.service';
 import {
@@ -53,8 +52,7 @@ export class VisitFormModalComponent implements OnInit {
     private route: ActivatedRoute,
     private visitsService: VisitsService,
     private visitorsService: VisitorsService,
-    private validationErrorsService: ValidationErrorsService,
-    private asynchronousValidationService: CustomAsynchronousValidationService
+    private validationErrorsService: ValidationErrorsService
   ) {}
 
   get visit() {
