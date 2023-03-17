@@ -1,4 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, EMPTY, tap } from 'rxjs';
@@ -10,7 +10,7 @@ import { SignInService } from '../../services/sign-in.service';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css'],
 })
-export class SignInComponent {
+export class SignInComponent implements OnInit {
   signInForm = this.formBuilder.group({
     username: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.min(6)]],
@@ -29,6 +29,10 @@ export class SignInComponent {
 
   get password() {
     return this.signInForm.controls['password'].value;
+  }
+
+  ngOnInit() {
+    this.renderer.selectRootElement('#formUsername').focus();
   }
 
   signIn() {
