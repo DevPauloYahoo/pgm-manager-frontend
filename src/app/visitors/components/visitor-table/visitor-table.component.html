@@ -1,6 +1,9 @@
 <div class="card mb-2">
   <div class="card-body">
-    <table *ngIf="visitors$ | async as visitors" class="table table-hover">
+    <table
+      *ngIf="visitors$ | async as visitors"
+      aria-label="visitors"
+      class="table table-hover">
       <thead>
         <tr>
           <th scope="col">Nome</th>

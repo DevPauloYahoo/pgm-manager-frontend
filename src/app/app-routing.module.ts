@@ -1,15 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SignInComponent } from './auth/sign-in/components/sign-in/sign-in.component';
-import { AuthGuard } from './auth/sign-in/guards/auth.guard';
+import { SignInComponent } from './auth/components/sign-in/sign-in.component';
+import { AuthGuard } from './auth/guards/auth.guard';
+import { HomeComponent } from './auth/home.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: SignInComponent,
+    component: HomeComponent,
     canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: SignInComponent,
+      },
+    ],
   },
   {
     path: 'visitors',

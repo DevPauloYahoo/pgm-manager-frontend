@@ -12,7 +12,7 @@ import {
 } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { TokenService } from '../auth/sign-in/services/token.service';
+import { TokenService } from '../auth/services/token.service';
 import { VisitModel } from './model/visit.model';
 import { VisitsService } from './services/visits.service';
 import { TypePageableVisit, TypeResponseVisit } from './types/visit.type';

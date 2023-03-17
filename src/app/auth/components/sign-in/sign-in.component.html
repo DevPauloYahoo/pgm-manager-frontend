@@ -1,0 +1,33 @@
+<form [formGroup]="signInForm">
+  <div
+    class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start mb-5">
+    <p class="lead fw-normal mb-0 me-3">Acesso ao sistema</p>
+  </div>
+  <!-- Email input -->
+  <div class="form-outline mb-4">
+    <label class="form-label" for="formUsername">Email</label>
+    <input
+      class="form-control"
+      formControlName="username"
+      id="formUsername"
+      placeholder="Email ou username"
+      type="email" />
+  </div>
+
+  <!-- Password input -->
+  <div class="form-outline mb-3">
+    <label class="form-label" for="formPassword">Senha</label>
+    <input
+      class="form-control"
+      formControlName="password"
+      id="formPassword"
+      placeholder="Entre com a senha"
+      type="password" />
+  </div>
+
+  <div class="text-center text-lg-start d-grid mt-3 pt-2">
+    <button (click)="signIn()" class="btn btn-primary" type="button">
+      Login
+    </button>
+  </div>
+</form>
