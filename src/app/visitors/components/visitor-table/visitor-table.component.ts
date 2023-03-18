@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { UserService } from '../../../auth/services/user.service';
 import { Visitor } from '../../models/visitor.interface';
 import { TypeResponseVisitor, TypeVisitor } from '../../types/visitor.type';
 
@@ -20,6 +21,8 @@ export class VisitorTableComponent {
 
   tableSizes: number[] = [5, 10, 15];
 
+  constructor(private readonly useService: UserService) {}
+
   onPaginatorChange(event: Event | any) {
     this.paginatorChange.emit(event);
   }
@@ -30,5 +33,9 @@ export class VisitorTableComponent {
 
   onAddVisit(visitor: TypeVisitor) {
     this.addVisit.emit(visitor);
+  }
+
+  isExistRole(roles: string[]) {
+    return this.useService.verifyRoles(roles);
   }
 }

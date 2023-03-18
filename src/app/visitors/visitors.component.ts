@@ -14,6 +14,7 @@ import {
 } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
+import { UserService } from '../auth/services/user.service';
 import { VisitFormModalComponent } from '../visits/components/visit-form-modal/visit-form-modal.component';
 import { VisitsService } from '../visits/services/visits.service';
 import { VisitorModalComponent } from './components/visitor-form-modal/visitor-modal.component';
@@ -50,6 +51,7 @@ export class VisitorsComponent implements OnInit {
   constructor(
     private visitorsService: VisitorsService,
     private visitsService: VisitsService,
+    private readonly userService: UserService,
     private dialog: MatDialog,
     private router: Router,
     private activatedRoute: ActivatedRoute
@@ -80,6 +82,10 @@ export class VisitorsComponent implements OnInit {
 
   onAddVisitToVisitor(visitor: TypeVisitor) {
     this.onShowModalCreateVisitToVisitor(visitor);
+  }
+
+  isExistRole(roles: string[]) {
+    return this.userService.verifyRoles(roles);
   }
 
   // show modal to create new visit for existing visitor
@@ -140,6 +146,7 @@ export class VisitorsComponent implements OnInit {
         alert(
           JSON.stringify({ status: err.status, message: err.error.message })
         );
+        this.userService.invalidAndExpiredAccessToken(err.status);
         return EMPTY;
       })
     );
@@ -164,6 +171,7 @@ export class VisitorsComponent implements OnInit {
           alert(
             JSON.stringify({ status: err.status, message: err.error.message })
           );
+          this.userService.invalidAndExpiredAccessToken(err.status);
           return EMPTY;
         })
       );
@@ -184,6 +192,7 @@ export class VisitorsComponent implements OnInit {
           alert(
             JSON.stringify({ status: err.status, message: err.error.message })
           );
+          this.userService.invalidAndExpiredAccessToken(err.status);
           return EMPTY;
         })
       )

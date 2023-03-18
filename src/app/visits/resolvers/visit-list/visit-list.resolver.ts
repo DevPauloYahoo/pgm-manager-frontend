@@ -6,6 +6,7 @@ import {
 } from '@angular/router';
 import { catchError, EMPTY, Observable } from 'rxjs';
 
+import { UserService } from '../../../auth/services/user.service';
 import { VisitModel } from '../../model/visit.model';
 import { VisitsService } from '../../services/visits.service';
 import { TypePageableVisit, TypeResponseVisit } from '../../types/visit.type';
@@ -21,7 +22,10 @@ export class VisitListResolver
     status: false,
   };
 
-  constructor(private visitsService: VisitsService) {}
+  constructor(
+    private readonly visitsService: VisitsService,
+    private readonly userService: UserService
+  ) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -32,6 +36,7 @@ export class VisitListResolver
         alert(
           JSON.stringify({ status: err.status, message: err.error.message })
         );
+        this.userService.invalidAndExpiredAccessToken(err.status);
         return EMPTY;
       })
     );

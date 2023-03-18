@@ -42,7 +42,6 @@ export class SignInComponent implements OnInit {
       .pipe(
         tap(res => {
           this.router.navigate(['visits']);
-          console.log('RESPOSTAS', res);
         })
       )
       .pipe(

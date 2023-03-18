@@ -12,7 +12,7 @@ import {
 } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { TokenService } from '../auth/services/token.service';
+import { UserService } from '../auth/services/user.service';
 import { VisitModel } from './model/visit.model';
 import { VisitsService } from './services/visits.service';
 import { TypePageableVisit, TypeResponseVisit } from './types/visit.type';
@@ -47,9 +47,9 @@ export class VisitsComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private visitsService: VisitsService,
-    private readonly tokenService: TokenService,
-    private activatedRoute: ActivatedRoute
+    private readonly visitsService: VisitsService,
+    private readonly userService: UserService,
+    private readonly activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -101,6 +101,7 @@ export class VisitsComponent implements OnInit, OnDestroy {
           alert(
             JSON.stringify({ status: err.status, message: err.error.message })
           );
+          this.userService.invalidAndExpiredAccessToken(err.status);
           return EMPTY;
         })
       )
@@ -114,6 +115,7 @@ export class VisitsComponent implements OnInit, OnDestroy {
         alert(
           JSON.stringify({ status: err.status, message: err.error.message })
         );
+        this.userService.invalidAndExpiredAccessToken(err.status);
         return EMPTY;
       })
     );

@@ -1,13 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <a [routerLink]="['/']" class="navbar-brand"
-      >PGM - Gerenciador de atendimento</a
-    >
+    <a [routerLink]="['/']" class="navbar-brand">PGM - SGA</a>
     <button
       aria-controls="navbarToggler"
       aria-expanded="false"
       aria-label="Toggle navigation"
-      class="navbar-toggler"
+      class="navbar-toggler small"
       data-bs-target="#navbarToggler"
       data-bs-toggle="collapse"
       type="button">
@@ -16,10 +14,7 @@
     <div class="collapse navbar-collapse" id="navbarToggler">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a [routerLink]="['/']" aria-current="page" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item">
-          <a [routerLink]="['visitors']" class="nav-link">Visitantes</a>
+          <a [routerLink]="['visitors']" class="nav-link active">Visitantes</a>
         </li>
         <li class="nav-item">
           <a [routerLink]="['visits']" class="nav-link active" tabindex="-1"
@@ -30,7 +25,7 @@
     </div>
     <div *ngIf="user$ | async as user; else signIn">
       <span class="me-5" style="color: #fff"
-        >Bem-vindo: {{ user?.preferred_username?.toUpperCase() }}
+        >Usuário: {{ user?.preferred_username?.toUpperCase() }}
       </span>
       <button (click)="logout()" class="btn btn-primary">Logout</button>
     </div>

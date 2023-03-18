@@ -1,11 +1,7 @@
 <div class="card bg-primary mb-2" style="height: 40px">
   <div class="row text-center pt-1">
     <h2 style="color: #fff">
-      {{
-        statusVisits
-          ? 'Lista de atendimentos encerrados'
-          : 'Lista de atendimentos ativos'
-      }}
+      {{ statusVisits ? 'Atendimentos encerrados' : 'Atendimentos ativos' }}
     </h2>
   </div>
 </div>
@@ -47,13 +43,17 @@
           <td *ngIf="!statusVisits">
             <button
               (click)="onCloseVisits(visit.id)"
+              [disabled]="!isExistRoles(['USER', 'ADMIN'])"
               class="btn btn-primary btn-sm"
               style="width: 100px">
               Encerrar
             </button>
           </td>
           <td *ngIf="statusVisits">
-            <button class="btn btn-danger btn-sm" disabled style="width: 100px">
+            <button
+              [disabled]="!isExistRoles(['ADMIN'])"
+              class="btn btn-danger btn-sm"
+              style="width: 100px">
               Encerrado
             </button>
           </td>

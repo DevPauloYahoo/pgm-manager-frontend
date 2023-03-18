@@ -1,3 +1,8 @@
+<div class="card bg-primary mb-2" style="height: 40px">
+  <div class="row text-center pt-1">
+    <h2 style="color: #fff">Visitantes cadastrados</h2>
+  </div>
+</div>
 <div class="card mb-2">
   <div class="card-body">
     <table
@@ -25,9 +30,12 @@
           <td style="width: 300px">{{ visitor.name }}</td>
           <td>{{ visitor.document }}</td>
           <td>
-            <a (click)="onAddVisit(visitor)" class="btn btn-primary btn-sm"
-              >Adicionar</a
-            >
+            <button
+              (click)="onAddVisit(visitor)"
+              [disabled]="!isExistRole(['ADMIN', 'USER'])"
+              class="btn btn-primary btn-sm">
+              Adicionar
+            </button>
           </td>
         </tr>
       </tbody>
