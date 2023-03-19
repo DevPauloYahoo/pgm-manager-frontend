@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-  exports: [MatDialogModule, MatTableModule, MatPaginatorModule],
+  exports: [MatDialogModule, MatProgressSpinnerModule],
 })
 export class MaterialModule {}

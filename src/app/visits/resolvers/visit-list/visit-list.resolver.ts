@@ -4,7 +4,7 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { catchError, EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { UserService } from '../../../auth/services/user.service';
 import { VisitModel } from '../../model/visit.model';
@@ -31,14 +31,6 @@ export class VisitListResolver
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<TypeResponseVisit<VisitModel>> {
-    return this.visitsService.getVisits(this.dataRequest).pipe(
-      catchError(err => {
-        alert(
-          JSON.stringify({ status: err.status, message: err.error.message })
-        );
-        this.userService.invalidAndExpiredAccessToken(err.status);
-        return EMPTY;
-      })
-    );
+    return this.visitsService.getVisits(this.dataRequest);
   }
 }

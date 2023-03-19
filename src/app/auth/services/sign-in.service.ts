@@ -22,6 +22,7 @@ export class SignInService {
         tap(res => {
           const accessToken = res.headers.get('x-access-token');
           const refreshToken = res.headers.get('x-refresh-token');
+
           this.userService.setAccessToken(accessToken);
           this.userService.setRefreshToken(refreshToken);
         })

@@ -42,11 +42,9 @@ export class UserService {
     return this.tokenService.hasAccessToken();
   }
 
-  invalidAndExpiredAccessToken(errorCode: number): void {
-    if (errorCode === 403) {
-      this.logout();
-      this.router.navigate(['']);
-    }
+  invalidAndExpiredAccessToken(): void {
+    this.logout();
+    this.router.navigate(['']);
   }
 
   verifyRoles(rolesUser: string[]) {

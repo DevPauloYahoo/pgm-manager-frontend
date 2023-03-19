@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  catchError,
   distinctUntilChanged,
-  EMPTY,
   Observable,
   of,
   Subject,
@@ -141,15 +139,16 @@ export class VisitorsComponent implements OnInit {
 
   // private methods
   private getVisitors(dataPagination: Partial<TypePageableVisitor>) {
-    return this.visitorsService.getVisitors(dataPagination).pipe(
-      catchError(err => {
-        alert(
-          JSON.stringify({ status: err.status, message: err.error.message })
-        );
-        this.userService.invalidAndExpiredAccessToken(err.status);
-        return EMPTY;
-      })
-    );
+    return this.visitorsService.getVisitors(dataPagination);
+    //   .pipe(
+    //   catchError(err => {
+    //     alert(
+    //       JSON.stringify({ status: err.status, message: err.error.message })
+    //     );
+    //     this.userService.invalidAndExpiredAccessToken(err.status);
+    //     return EMPTY;
+    //   })
+    // );
   }
 
   // create new visitor
@@ -165,16 +164,16 @@ export class VisitorsComponent implements OnInit {
             this.router.navigate(['visits']);
           }
         })
-      )
-      .pipe(
-        catchError(err => {
-          alert(
-            JSON.stringify({ status: err.status, message: err.error.message })
-          );
-          this.userService.invalidAndExpiredAccessToken(err.status);
-          return EMPTY;
-        })
       );
+    // .pipe(
+    //   catchError(err => {
+    //     alert(
+    //       JSON.stringify({ status: err.status, message: err.error.message })
+    //     );
+    //     this.userService.invalidAndExpiredAccessToken(err.status);
+    //     return EMPTY;
+    //   })
+    // );
   }
 
   // create new visit for existing visitor
@@ -187,15 +186,15 @@ export class VisitorsComponent implements OnInit {
         }),
         take(1)
       )
-      .pipe(
-        catchError(err => {
-          alert(
-            JSON.stringify({ status: err.status, message: err.error.message })
-          );
-          this.userService.invalidAndExpiredAccessToken(err.status);
-          return EMPTY;
-        })
-      )
+      // .pipe(
+      //   catchError(err => {
+      //     alert(
+      //       JSON.stringify({ status: err.status, message: err.error.message })
+      //     );
+      //     this.userService.invalidAndExpiredAccessToken(err.status);
+      //     return EMPTY;
+      //   })
+      // )
       .subscribe();
   }
 }

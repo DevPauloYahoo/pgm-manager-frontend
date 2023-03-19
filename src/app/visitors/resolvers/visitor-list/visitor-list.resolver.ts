@@ -5,7 +5,7 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { catchError, EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { UserService } from '../../../auth/services/user.service';
 import { Visitor } from '../../models/visitor.interface';
@@ -35,14 +35,6 @@ export class VisitorListResolver
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<TypeResponseVisitor<Visitor>> {
-    return this.visitorsService.getVisitors(this.dataRequest).pipe(
-      catchError(err => {
-        alert(
-          JSON.stringify({ status: err.status, message: err.error.message })
-        );
-        this.userService.invalidAndExpiredAccessToken(err.status);
-        return EMPTY;
-      })
-    );
+    return this.visitorsService.getVisitors(this.dataRequest);
   }
 }

@@ -1,15 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {
-  catchError,
-  distinctUntilChanged,
-  EMPTY,
-  Observable,
-  of,
-  Subject,
-  take,
-  tap,
-} from 'rxjs';
+import { distinctUntilChanged, Observable, of, Subject, take, tap } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { UserService } from '../auth/services/user.service';
@@ -96,29 +87,30 @@ export class VisitsComponent implements OnInit, OnDestroy {
         }),
         take(1)
       )
-      .pipe(
-        catchError(err => {
-          alert(
-            JSON.stringify({ status: err.status, message: err.error.message })
-          );
-          this.userService.invalidAndExpiredAccessToken(err.status);
-          return EMPTY;
-        })
-      )
+      // .pipe(
+      //   catchError(err => {
+      //     alert(
+      //       JSON.stringify({ status: err.status, message: err.error.message })
+      //     );
+      //     this.userService.invalidAndExpiredAccessToken(err.status);
+      //     return EMPTY;
+      //   })
+      // )
       .subscribe();
   }
 
   // private methods
   getVisits(dataPagination: TypePageableVisit) {
-    return this.visitsService.getVisits(dataPagination).pipe(
-      catchError(err => {
-        alert(
-          JSON.stringify({ status: err.status, message: err.error.message })
-        );
-        this.userService.invalidAndExpiredAccessToken(err.status);
-        return EMPTY;
-      })
-    );
+    return this.visitsService.getVisits(dataPagination);
+    //   .pipe(
+    //   catchError(err => {
+    //     alert(
+    //       JSON.stringify({ status: err.status, message: err.error.message })
+    //     );
+    //     this.userService.invalidAndExpiredAccessToken(err.status);
+    //     return EMPTY;
+    //   })
+    // );
   }
 
   ngOnDestroy() {
