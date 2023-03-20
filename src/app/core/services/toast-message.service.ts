@@ -11,28 +11,28 @@ export class ToastMessageService {
 
   showSuccess({ title, message, position, time }: ToastrData) {
     this.toastrService.success(message, title, {
-      positionClass: position,
+      // positionClass: position,
       timeOut: time,
     });
   }
 
   showError({ title, message, position, time }: ToastrData) {
     this.toastrService.error(message, title, {
-      positionClass: position,
+      // positionClass: position,
       timeOut: time,
     });
   }
 
   showInfo({ title, message, position, time }: ToastrData) {
     this.toastrService.info(message, title, {
-      positionClass: position,
+      // positionClass: position,
       timeOut: time,
     });
   }
 
   showWarn({ title, message, position, time }: ToastrData) {
     this.toastrService.warning(message, title, {
-      positionClass: position,
+      // positionClass: position,
       timeOut: time,
     });
   }

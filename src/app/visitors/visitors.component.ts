@@ -13,6 +13,7 @@ import {
 import { debounceTime } from 'rxjs/operators';
 
 import { UserService } from '../auth/services/user.service';
+import { ToastMessageService } from '../core/services/toast-message.service';
 import { VisitFormModalComponent } from '../visits/components/visit-form-modal/visit-form-modal.component';
 import { VisitsService } from '../visits/services/visits.service';
 import { VisitorModalComponent } from './components/visitor-form-modal/visitor-modal.component';
@@ -50,6 +51,7 @@ export class VisitorsComponent implements OnInit {
     private visitorsService: VisitorsService,
     private visitsService: VisitsService,
     private readonly userService: UserService,
+    private readonly messageService: ToastMessageService,
     private dialog: MatDialog,
     private router: Router,
     private activatedRoute: ActivatedRoute
@@ -140,15 +142,6 @@ export class VisitorsComponent implements OnInit {
   // private methods
   private getVisitors(dataPagination: Partial<TypePageableVisitor>) {
     return this.visitorsService.getVisitors(dataPagination);
-    //   .pipe(
-    //   catchError(err => {
-    //     alert(
-    //       JSON.stringify({ status: err.status, message: err.error.message })
-    //     );
-    //     this.userService.invalidAndExpiredAccessToken(err.status);
-    //     return EMPTY;
-    //   })
-    // );
   }
 
   // create new visitor
@@ -164,16 +157,16 @@ export class VisitorsComponent implements OnInit {
             this.router.navigate(['visits']);
           }
         })
+      )
+      .pipe(
+        tap(() => {
+          this.messageService.showSuccess({
+            title: 'Novo visitante',
+            message: 'Cadastrado realizado com sucesso',
+            time: 3000,
+          });
+        })
       );
-    // .pipe(
-    //   catchError(err => {
-    //     alert(
-    //       JSON.stringify({ status: err.status, message: err.error.message })
-    //     );
-    //     this.userService.invalidAndExpiredAccessToken(err.status);
-    //     return EMPTY;
-    //   })
-    // );
   }
 
   // create new visit for existing visitor
@@ -186,15 +179,14 @@ export class VisitorsComponent implements OnInit {
         }),
         take(1)
       )
-      // .pipe(
-      //   catchError(err => {
-      //     alert(
-      //       JSON.stringify({ status: err.status, message: err.error.message })
-      //     );
-      //     this.userService.invalidAndExpiredAccessToken(err.status);
-      //     return EMPTY;
-      //   })
-      // )
-      .subscribe();
+      .subscribe({
+        next: () => {
+          this.messageService.showSuccess({
+            title: 'Novo atendimento',
+            message: 'Cadastrado realizado com sucesso',
+            time: 3000,
+          });
+        },
+      });
   }
 }

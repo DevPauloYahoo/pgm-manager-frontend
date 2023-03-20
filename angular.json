@@ -69,7 +69,8 @@
               "browserTarget": "pgm-manager-frontend:build:production"
             },
             "development": {
-              "browserTarget": "pgm-manager-frontend:build:development"
+              "browserTarget": "pgm-manager-frontend:build:development",
+              "proxyConfig": "src/proxy.conf.js"
             }
           },
           "defaultConfiguration": "development"

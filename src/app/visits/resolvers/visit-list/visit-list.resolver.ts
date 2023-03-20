@@ -6,7 +6,6 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { UserService } from '../../../auth/services/user.service';
 import { VisitModel } from '../../model/visit.model';
 import { VisitsService } from '../../services/visits.service';
 import { TypePageableVisit, TypeResponseVisit } from '../../types/visit.type';
@@ -22,10 +21,7 @@ export class VisitListResolver
     status: false,
   };
 
-  constructor(
-    private readonly visitsService: VisitsService,
-    private readonly userService: UserService
-  ) {}
+  constructor(private readonly visitsService: VisitsService) {}
 
   resolve(
     route: ActivatedRouteSnapshot,

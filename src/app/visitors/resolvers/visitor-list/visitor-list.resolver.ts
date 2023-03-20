@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   Resolve,
-  Router,
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { UserService } from '../../../auth/services/user.service';
 import { Visitor } from '../../models/visitor.interface';
 import { VisitorsService } from '../../services/visitors.service';
 import {
@@ -25,11 +23,7 @@ export class VisitorListResolver
     search: '',
   };
 
-  constructor(
-    private visitorsService: VisitorsService,
-    private readonly userService: UserService,
-    private readonly router: Router
-  ) {}
+  constructor(private visitorsService: VisitorsService) {}
 
   resolve(
     route: ActivatedRouteSnapshot,

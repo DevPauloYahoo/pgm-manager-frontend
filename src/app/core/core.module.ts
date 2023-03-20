@@ -14,6 +14,7 @@ import { SpinnerLoadingInterceptor } from './interceptors/spinner-loading.interc
   imports: [
     CommonModule,
     ToastrModule.forRoot({
+      positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
     MaterialModule,

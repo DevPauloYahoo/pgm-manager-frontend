@@ -38,4 +38,8 @@ export class VisitorTableComponent {
   isExistRole(roles: string[]) {
     return this.useService.verifyRoles(roles);
   }
+
+  onDeleteVisit(visitor: Visitor) {
+    console.log(visitor);
+  }
 }

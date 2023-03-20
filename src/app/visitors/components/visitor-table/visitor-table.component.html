@@ -29,12 +29,21 @@
           ">
           <td style="width: 300px">{{ visitor.name }}</td>
           <td>{{ visitor.document }}</td>
-          <td>
+          <td style="width: 190px">
             <button
               (click)="onAddVisit(visitor)"
               [disabled]="!isExistRole(['ADMIN', 'USER'])"
-              class="btn btn-primary btn-sm">
+              class="btn btn-primary btn-sm me-2"
+              style="width: 80px">
               Adicionar
+            </button>
+
+            <button
+              (click)="onDeleteVisit(visitor)"
+              [disabled]="!isExistRole(['ADMIN'])"
+              class="btn btn-danger btn-sm"
+              style="width: 80px">
+              Excluir
             </button>
           </td>
         </tr>

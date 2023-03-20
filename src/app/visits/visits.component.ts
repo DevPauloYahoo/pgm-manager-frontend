@@ -63,7 +63,7 @@ export class VisitsComponent implements OnInit, OnDestroy {
 
   onChangePage(event: Event | any) {
     this.dataPagination.page = event;
-    this.getVisits(this.dataPagination);
+    this.visits$ = this.getVisits(this.dataPagination);
   }
 
   onTableSizeChange(event: Event | any) {
@@ -73,6 +73,10 @@ export class VisitsComponent implements OnInit, OnDestroy {
   }
 
   onChangeStatus() {
+    if (this.dataPagination.page > 1) {
+      this.dataPagination.page = 1;
+    }
+
     this.dataPagination.status = !this.dataPagination.status;
     this.pipeStatus = !this.pipeStatus;
     this.visits$ = this.getVisits(this.dataPagination);
@@ -87,30 +91,12 @@ export class VisitsComponent implements OnInit, OnDestroy {
         }),
         take(1)
       )
-      // .pipe(
-      //   catchError(err => {
-      //     alert(
-      //       JSON.stringify({ status: err.status, message: err.error.message })
-      //     );
-      //     this.userService.invalidAndExpiredAccessToken(err.status);
-      //     return EMPTY;
-      //   })
-      // )
       .subscribe();
   }
 
   // private methods
   getVisits(dataPagination: TypePageableVisit) {
     return this.visitsService.getVisits(dataPagination);
-    //   .pipe(
-    //   catchError(err => {
-    //     alert(
-    //       JSON.stringify({ status: err.status, message: err.error.message })
-    //     );
-    //     this.userService.invalidAndExpiredAccessToken(err.status);
-    //     return EMPTY;
-    //   })
-    // );
   }
 
   ngOnDestroy() {

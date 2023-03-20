@@ -1,5 +1,5 @@
 <nav class="navbar d-flex mt-lg-5 mt-sm-2">
-  <h1>Lista de visitantes</h1>
+  <div class="col-3"><h1>Lista de visitantes</h1></div>
   <div class="col-md-6">
     <div class="input-group">
       <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -14,14 +14,16 @@
     </div>
   </div>
 
-  <button
-    (click)="onShowModalCreateVisitor()"
-    [disabled]="!isExistRole(['USER', 'ADMIN'])"
-    class="btn btn-primary btn-sm"
-    style="width: 115px"
-    type="button">
-    Novo Cadastro
-  </button>
+  <div class="col-3 text-end">
+    <button
+      (click)="onShowModalCreateVisitor()"
+      [disabled]="!isExistRole(['USER', 'ADMIN'])"
+      class="btn btn-primary btn-sm"
+      style="width: 115px"
+      type="button">
+      Novo Cadastro
+    </button>
+  </div>
 </nav>
 <pgm-visitor-table
   (addVisit)="onAddVisitToVisitor($event)"

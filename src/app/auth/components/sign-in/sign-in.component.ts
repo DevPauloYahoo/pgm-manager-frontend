@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,6 +19,7 @@ export class SignInComponent implements OnInit {
   });
 
   constructor(
+    private readonly http: HttpClient,
     private readonly formBuilder: NonNullableFormBuilder,
     private readonly router: Router,
     private readonly renderer: Renderer2,
@@ -41,6 +43,26 @@ export class SignInComponent implements OnInit {
     const { username, password } = this.signInForm.getRawValue();
     this.signInService
       .signIn(username, password)
+      .pipe(
+        tap(res => {
+          this.router.navigate(['visits']);
+        })
+      )
+      .pipe(
+        catchError(err => {
+          this.renderer.selectRootElement('#formUsername').focus();
+          this.signInForm.reset();
+          console.log(err.message);
+          return EMPTY;
+        })
+      )
+      .subscribe();
+  }
+
+  login() {
+    const { username, password } = this.signInForm.getRawValue();
+    this.signInService
+      .login(username, password)
       .pipe(
         tap(res => {
           this.router.navigate(['visits']);
