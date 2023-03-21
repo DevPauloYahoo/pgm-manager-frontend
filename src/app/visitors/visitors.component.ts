@@ -161,7 +161,7 @@ export class VisitorsComponent implements OnInit {
       .pipe(
         tap(() => {
           this.messageService.showSuccess({
-            title: 'Novo visitante',
+            title: 'PGM - SGA',
             message: 'Cadastrado realizado com sucesso',
             time: 3000,
           });
@@ -182,7 +182,7 @@ export class VisitorsComponent implements OnInit {
       .subscribe({
         next: () => {
           this.messageService.showSuccess({
-            title: 'Novo atendimento',
+            title: 'PGM - SGA',
             message: 'Cadastrado realizado com sucesso',
             time: 3000,
           });

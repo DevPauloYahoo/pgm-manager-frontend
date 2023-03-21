@@ -4,9 +4,13 @@ import { distinctUntilChanged, Observable, of, Subject, take, tap } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { UserService } from '../auth/services/user.service';
+import { ToastMessageService } from '../core/services/toast-message.service';
+import { ModalService } from '../shared/components/confirmation-modal/modal.service';
 import { VisitModel } from './model/visit.model';
 import { VisitsService } from './services/visits.service';
 import { TypePageableVisit, TypeResponseVisit } from './types/visit.type';
+
+// declare let window: any;
 
 @Component({
   selector: 'pgm-visit-list',
@@ -40,6 +44,8 @@ export class VisitsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly visitsService: VisitsService,
     private readonly userService: UserService,
+    private readonly messageService: ToastMessageService,
+    private readonly modalService: ModalService,
     private readonly activatedRoute: ActivatedRoute
   ) {}
 
@@ -91,7 +97,13 @@ export class VisitsComponent implements OnInit, OnDestroy {
         }),
         take(1)
       )
-      .subscribe();
+      .subscribe({
+        next: () =>
+          this.messageService.showSuccess({
+            message: 'Atendimento finalizado com sucesso',
+            time: 3000,
+          }),
+      });
   }
 
   // private methods

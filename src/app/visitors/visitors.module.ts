@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { SharedModule } from '../shared/shared.module';
 import { VisitorFormModalModule } from './components/visitor-form-modal/visitor-form-modal.module';
 import { VisitorTableModule } from './components/visitor-table/visitor-table.module';
 import { FilterSearchVisitorsPipe } from './pipes/filter-search-visitors.pipe';
@@ -16,6 +17,7 @@ import { VisitorsComponent } from './visitors.component';
     VisitorFormModalModule,
     VisitorTableModule,
     VisitorsRoutingModule,
+    SharedModule,
   ],
 })
 export class VisitorsModule {}

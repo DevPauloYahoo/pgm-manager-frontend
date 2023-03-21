@@ -31,7 +31,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         // validações usando o angular para se conectar ao keycloak
         if (err.error.error === 'invalid_grant') {
           this.toastMessageService.showError({
-            title: 'Erro autenticação',
             message: 'Usuário e/ou senha inválido',
             time: 3000,
           });
@@ -39,7 +38,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
         if (err.error.error === 'unauthorized_client') {
           this.toastMessageService.showError({
-            title: 'Erro interno',
             message: 'Credenciais inválidas',
             time: 3000,
           });
@@ -47,7 +45,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
         if (err.error.title === 'PrismaClientInitializationError') {
           this.toastMessageService.showError({
-            title: 'Erro interno',
             message: 'Erro acesso database. Tente novamente',
             time: 5000,
           });
@@ -55,7 +52,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
         if (err.error.errorCode === 'P1001') {
           this.toastMessageService.showError({
-            title: 'Erro interno',
             message: 'Erro acesso database. Tente novamente',
             time: 5000,
           });
@@ -63,7 +59,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
         if (err.status === 504) {
           this.toastMessageService.showError({
-            title: 'Erro interno',
             message: 'Erro no servidor de autenticação. Tente novamente',
             time: 5000,
           });
@@ -75,7 +70,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         } else {
           if (err.status === 401 && err.error.message === 'invalid_grant') {
             this.toastMessageService.showError({
-              title: 'Erro autenticação',
               message: 'Usuário e/ou senha inválido',
               time: 3000,
             });
@@ -86,7 +80,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             err.error.message === 'unauthorized_client'
           ) {
             this.toastMessageService.showError({
-              title: 'Erro interno',
               message: 'Credenciais inválidas',
               time: 3000,
             });
@@ -94,7 +87,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
           if (err.status === 0) {
             this.toastMessageService.showError({
-              title: 'Erro time out',
               message: 'Erro interno no servidor. Tente novamente',
               time: 5000,
             });
@@ -104,7 +96,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
           if (err.status === 403) {
             this.toastMessageService.showInfo({
-              title: 'Sessão expirou',
               message: 'Sua conexão expirou. Faça login',
               time: 5000,
             });
@@ -117,7 +108,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             err.error.title === 'KeycloakConnectionError'
           ) {
             this.toastMessageService.showError({
-              title: 'Erro interno',
               message: 'Erro no servidor de autenticação. Tente novamente',
               time: 5000,
             });

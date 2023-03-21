@@ -3,36 +3,34 @@ import { ToastrService } from 'ngx-toastr';
 
 import { ToastrData } from '../models/toastr-data.model';
 
+const TITLE = 'PGM-SGA';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ToastMessageService {
   constructor(private readonly toastrService: ToastrService) {}
 
-  showSuccess({ title, message, position, time }: ToastrData) {
-    this.toastrService.success(message, title, {
-      // positionClass: position,
+  showSuccess({ message, title, time }: ToastrData) {
+    this.toastrService.success(message, title ? title : TITLE, {
       timeOut: time,
     });
   }
 
-  showError({ title, message, position, time }: ToastrData) {
-    this.toastrService.error(message, title, {
-      // positionClass: position,
+  showError({ message, title, time }: ToastrData) {
+    this.toastrService.error(message, title ? title : TITLE, {
       timeOut: time,
     });
   }
 
-  showInfo({ title, message, position, time }: ToastrData) {
-    this.toastrService.info(message, title, {
-      // positionClass: position,
+  showInfo({ message, title, time }: ToastrData) {
+    this.toastrService.info(message, title ? title : TITLE, {
       timeOut: time,
     });
   }
 
-  showWarn({ title, message, position, time }: ToastrData) {
-    this.toastrService.warning(message, title, {
-      // positionClass: position,
+  showWarn({ message, title, time }: ToastrData) {
+    this.toastrService.warning(message, title ? title : TITLE, {
       timeOut: time,
     });
   }
