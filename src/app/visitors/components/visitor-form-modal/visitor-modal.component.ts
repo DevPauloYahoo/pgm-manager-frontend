@@ -1,6 +1,8 @@
+import { transition, trigger, useAnimation } from '@angular/animations';
 import { Component } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { bounceIn } from 'ng-animate';
 import { tap } from 'rxjs/operators';
 
 import { badges } from '../../../utils/badges';
@@ -15,8 +17,12 @@ import { TypeVisitor } from '../../types/visitor.type';
   selector: 'pgm-visitor-form-modal',
   templateUrl: './visitor-modal.component.html',
   styleUrls: ['./visitor-modal.component.css'],
+  animations: [
+    trigger('bounce', [transition('* => *', useAnimation(bounceIn))]),
+  ],
 })
 export class VisitorModalComponent {
+  bounce: any;
   visitStatus = false;
   secretaries = ['PGM', 'SEMSUR', 'SEMUR', 'SEMTHAS'];
   originalBadges: string[] = badges;

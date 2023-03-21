@@ -1,4 +1,6 @@
+import { transition, trigger, useAnimation } from '@angular/animations';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { bounceIn } from 'ng-animate';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/app/auth/services/user.service';
 
@@ -11,8 +13,12 @@ import { TypeResponseVisit } from '../../types/visit.type';
   selector: 'pgm-visit-table',
   templateUrl: './visit-table.component.html',
   styleUrls: ['./visit-table.component.css'],
+  animations: [
+    trigger('bounce', [transition('* => *', useAnimation(bounceIn))]),
+  ],
 })
 export class VisitTableComponent {
+  bounce: any;
   displayedColumns = ['name', 'document', 'badge', 'secretary'];
 
   @Input() visits$: Observable<TypeResponseVisit<VisitModel>> =

@@ -26,6 +26,7 @@
     "jwt-decode": "^3.1.2",
     "keycloak-angular": "^13.0.0",
     "keycloak-js": "^20.0.5",
+    "ng-animate": "^2.0.1",
     "ngx-pagination": "^6.0.3",
     "ngx-toastr": "^16.1.0",
     "rxjs": "~7.5.0",

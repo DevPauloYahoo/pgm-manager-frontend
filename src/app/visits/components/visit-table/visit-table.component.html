@@ -5,7 +5,7 @@
     </h2>
   </div>
 </div>
-<div class="card mb-2">
+<div [@bounce]="bounce" class="card mb-2">
   <div class="card-body">
     <table
       *ngIf="visits$ | async as visits"
