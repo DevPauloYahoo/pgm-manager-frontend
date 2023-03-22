@@ -160,11 +160,11 @@ export class VisitorsComponent implements OnInit {
       )
       .pipe(
         tap(() => {
-          this.messageService.showSuccess({
-            title: 'PGM - SGA',
-            message: 'Cadastrado realizado com sucesso',
-            time: 3000,
-          });
+          this.messageService.toastSuccess(
+            'success',
+            'Visitante cadastrado com sucesso',
+            'Títilo de teste'
+          );
         })
       );
   }
@@ -181,11 +181,10 @@ export class VisitorsComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          this.messageService.showSuccess({
-            title: 'PGM - SGA',
-            message: 'Cadastrado realizado com sucesso',
-            time: 3000,
-          });
+          this.messageService.showToast(
+            'success',
+            'Atendimento cadastrado com sucesso'
+          );
         },
       });
   }
