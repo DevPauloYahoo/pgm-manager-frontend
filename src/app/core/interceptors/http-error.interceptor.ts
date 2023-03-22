@@ -6,7 +6,6 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
 
 import { TokenService } from '../../auth/services/token.service';
@@ -18,8 +17,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(
     private readonly toastMessageService: ToastMessageService,
     private readonly tokenService: TokenService,
-    private readonly userService: UserService,
-    private readonly router: Router
+    private readonly userService: UserService
   ) {}
 
   intercept(

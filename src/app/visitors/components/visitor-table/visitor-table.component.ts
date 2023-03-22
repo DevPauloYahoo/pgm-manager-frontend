@@ -16,6 +16,7 @@ import { TypeResponseVisitor, TypeVisitor } from '../../types/visitor.type';
   ],
 })
 export class VisitorTableComponent {
+  display = 'none';
   bounce: any;
   @Input() visitors$: Observable<TypeResponseVisitor<Visitor>> = new Observable<
     TypeResponseVisitor<Visitor>

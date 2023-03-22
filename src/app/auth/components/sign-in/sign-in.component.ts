@@ -4,7 +4,6 @@ import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, EMPTY, tap } from 'rxjs';
 
-import { ToastMessageService } from '../../../core/services/toast-message.service';
 import { SignInService } from '../../services/sign-in.service';
 
 @Component({
@@ -23,8 +22,7 @@ export class SignInComponent implements OnInit {
     private readonly formBuilder: NonNullableFormBuilder,
     private readonly router: Router,
     private readonly renderer: Renderer2,
-    private readonly signInService: SignInService,
-    private readonly toastrMessageService: ToastMessageService
+    private readonly signInService: SignInService
   ) {}
 
   get username() {

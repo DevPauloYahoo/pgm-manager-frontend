@@ -42,6 +42,8 @@
               (click)="onDeleteVisit(visitor)"
               [disabled]="!isExistRole(['ADMIN'])"
               class="btn btn-danger btn-sm"
+              data-bs-target="#exampleModal"
+              data-bs-toggle="modal"
               style="width: 80px">
               Excluir
             </button>
@@ -74,3 +76,4 @@
       previousLabel="Anterior"></pagination-controls>
   </div>
 </div>
+<pgm-toast-message></pgm-toast-message>

@@ -16,8 +16,8 @@ import { VisitorsComponent } from './visitors.component';
     ReactiveFormsModule,
     VisitorFormModalModule,
     VisitorTableModule,
-    VisitorsRoutingModule,
     SharedModule,
+    VisitorsRoutingModule,
   ],
 })
 export class VisitorsModule {}
