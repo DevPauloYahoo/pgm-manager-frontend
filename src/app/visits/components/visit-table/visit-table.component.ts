@@ -4,7 +4,7 @@ import { bounceIn } from 'ng-animate';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/app/auth/services/user.service';
 
-import { ModalService } from '../../../shared/components/confirmation-modal/modal.service';
+import { ModalMessagesService } from '../../../core/services/modal-messages.service';
 import { VisitCloseInterface } from '../../../shared/models/shared.model';
 import { VisitModel } from '../../model/visit.model';
 import { TypeResponseVisit } from '../../types/visit.type';
@@ -32,12 +32,11 @@ export class VisitTableComponent {
 
   constructor(
     private readonly useService: UserService,
-    private readonly modalService: ModalService
+    private readonly modalMessageService: ModalMessagesService
   ) {}
 
-  openConfirmationModal(visitClose: VisitCloseInterface) {
-    this.modalService.setVisitClose(visitClose);
-    this.modalService.setShowModal();
+  openConfirmationModal(data: VisitCloseInterface) {
+    this.modalMessageService.modalFinalizeVisit(data);
   }
 
   onPaginatorChange(event: Event | any) {

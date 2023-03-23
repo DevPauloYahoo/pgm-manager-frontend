@@ -2,9 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, EMPTY, take, tap } from 'rxjs';
+import { catchError, EMPTY, tap } from 'rxjs';
 
-import { ModalService } from '../../../core/services/modal.service';
+import { ModalMessagesService } from '../../../core/services/modal-messages.service';
 import { badges } from '../../../utils/badges';
 import { ValidationErrorsService } from '../../../utils/validation-errors.service';
 import { VisitorsService } from '../../../visitors/services/visitors.service';
@@ -13,7 +13,6 @@ import {
   TypeVisitToVisitor,
 } from '../../../visitors/types/visitor.type';
 import { VisitsService } from '../../services/visits.service';
-import { TypeVisitByVisitorResponse } from '../../types/visit.type';
 
 @Component({
   selector: 'pgm-visit-form-modal',
@@ -53,7 +52,7 @@ export class VisitFormModalComponent implements OnInit {
     private route: ActivatedRoute,
     private visitsService: VisitsService,
     private visitorsService: VisitorsService,
-    private readonly modalService: ModalService,
+    private readonly modalService: ModalMessagesService,
     private validationErrorsService: ValidationErrorsService
   ) {}
 
@@ -82,41 +81,7 @@ export class VisitFormModalComponent implements OnInit {
       badge,
       secretary,
     };
-
-    this.validIfActiveVisit(data);
-  }
-
-  // validates if the visitor has an active visit
-  validIfActiveVisit(data: TypeVisitToVisitor) {
-    this.visitsService
-      .getVisitByVisitorId(data.visitorId as string)
-      .pipe(
-        tap((value: TypeVisitByVisitorResponse) => {
-          if (!value.status) {
-            this.dialogRef.close(data);
-          } else {
-            this.modalService.modalVisitActive(
-              value.visitorName as string,
-              value.badgeNumber as string,
-              value.secretaryName as string
-            );
-          }
-        })
-      )
-      .pipe(
-        catchError(err => {
-          alert(
-            JSON.stringify({ status: err.status, message: err.error.message })
-          );
-          return EMPTY;
-        })
-      )
-      .pipe(take(1))
-      .subscribe({
-        error: () => {
-          console.log('Error ao validar visita para visitante');
-        },
-      });
+    this.dialogRef.close(data);
   }
 
   // displays formVisit validation error messages

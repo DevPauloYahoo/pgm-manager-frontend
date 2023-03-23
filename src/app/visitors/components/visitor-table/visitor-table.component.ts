@@ -1,10 +1,12 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { bounceIn } from 'ng-animate';
-import { Observable } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 
 import { UserService } from '../../../auth/services/user.service';
+import { ModalMessagesService } from '../../../core/services/modal-messages.service';
 import { ToastMessageService } from '../../../core/services/toast-message.service';
+import { VisitsService } from '../../../visits/services/visits.service';
 import { Visitor } from '../../models/visitor.interface';
 import { TypeResponseVisitor, TypeVisitor } from '../../types/visitor.type';
 
@@ -30,7 +32,9 @@ export class VisitorTableComponent {
 
   constructor(
     private readonly useService: UserService,
-    private readonly messageSErvice: ToastMessageService
+    private readonly visitService: VisitsService,
+    private readonly modalMessageService: ModalMessagesService,
+    private readonly messageService: ToastMessageService
   ) {}
 
   onPaginatorChange(event: Event | any) {
@@ -42,7 +46,23 @@ export class VisitorTableComponent {
   }
 
   onAddVisit(visitor: TypeVisitor) {
-    this.addVisit.emit(visitor);
+    this.visitService
+      .getVisitByVisitorId(visitor.id as string)
+      .pipe(
+        tap(visit => {
+          if (visit.status) {
+            this.modalMessageService.modalVisitActive(
+              visit.visitorName as string,
+              visit.badgeNumber as string,
+              visit.secretaryName as string
+            );
+          } else {
+            this.addVisit.emit(visitor);
+          }
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
   }
 
   isExistRole(roles: string[]) {
@@ -50,7 +70,7 @@ export class VisitorTableComponent {
   }
 
   onDeleteVisit(visitor: Visitor) {
-    this.messageSErvice.toastSuccess('Visitante removido com sucesso');
+    this.messageService.toastSuccess('Visitante removido com sucesso');
     console.log(visitor);
   }
 }
