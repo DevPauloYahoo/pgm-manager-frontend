@@ -160,11 +160,7 @@ export class VisitorsComponent implements OnInit {
       )
       .pipe(
         tap(() => {
-          this.messageService.toastSuccess(
-            'success',
-            'Visitante cadastrado com sucesso',
-            'Títilo de teste'
-          );
+          this.messageService.toastSuccess('Visitante cadastrado com sucesso');
         })
       );
   }
@@ -181,10 +177,7 @@ export class VisitorsComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          this.messageService.showToast(
-            'success',
-            'Atendimento cadastrado com sucesso'
-          );
+          this.messageService.toastSuccess('Visitante cadastrado com sucesso');
         },
       });
   }

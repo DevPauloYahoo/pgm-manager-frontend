@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { catchError, EMPTY, take, tap } from 'rxjs';
 
+import { ModalService } from '../../../core/services/modal.service';
 import { badges } from '../../../utils/badges';
 import { ValidationErrorsService } from '../../../utils/validation-errors.service';
 import { VisitorsService } from '../../../visitors/services/visitors.service';
@@ -52,6 +53,7 @@ export class VisitFormModalComponent implements OnInit {
     private route: ActivatedRoute,
     private visitsService: VisitsService,
     private visitorsService: VisitorsService,
+    private readonly modalService: ModalService,
     private validationErrorsService: ValidationErrorsService
   ) {}
 
@@ -93,10 +95,10 @@ export class VisitFormModalComponent implements OnInit {
           if (!value.status) {
             this.dialogRef.close(data);
           } else {
-            alert(
-              `Visitante ${value.visitorName?.toUpperCase()} com atendimento ativo na secretaria ${
-                value.secretaryName
-              } usando o crachá ${value.badgeNumber}`
+            this.modalService.modalVisitActive(
+              value.visitorName as string,
+              value.badgeNumber as string,
+              value.secretaryName as string
             );
           }
         })

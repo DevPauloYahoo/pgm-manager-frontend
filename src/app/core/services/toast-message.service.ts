@@ -10,6 +10,7 @@ const TITLE = 'PGM-SGA';
 const Toast = Swal.mixin({
   toast: true,
   position: 'top-end',
+  title: 'PGM - SGA',
   showConfirmButton: false,
   timer: 3000,
   timerProgressBar: true,
@@ -53,12 +54,38 @@ export class ToastMessageService {
     Toast.fire({ icon, title }).then();
   }
 
-  toastSuccess(icon: iconType, title: string, titleText: string) {
+  toastSuccess(text: string) {
     Toast.fire({
-      icon,
-      title,
-      titleText,
-      imageUrl: './assets/img/logo_2.png',
+      icon: 'success',
+      text,
+    }).then();
+  }
+
+  toastError(text: string) {
+    Toast.fire({
+      icon: 'error',
+      text,
+    }).then();
+  }
+
+  toastWarning(text: string) {
+    Toast.fire({
+      icon: 'warning',
+      text,
+    }).then();
+  }
+
+  toastInfo(text: string) {
+    Toast.fire({
+      icon: 'info',
+      text,
+    }).then();
+  }
+
+  toastQuestion(text: string) {
+    Toast.fire({
+      icon: 'question',
+      text,
     }).then();
   }
 }

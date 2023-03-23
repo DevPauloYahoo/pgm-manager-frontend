@@ -4,6 +4,7 @@ import { bounceIn } from 'ng-animate';
 import { Observable } from 'rxjs';
 
 import { UserService } from '../../../auth/services/user.service';
+import { ToastMessageService } from '../../../core/services/toast-message.service';
 import { Visitor } from '../../models/visitor.interface';
 import { TypeResponseVisitor, TypeVisitor } from '../../types/visitor.type';
 
@@ -27,7 +28,10 @@ export class VisitorTableComponent {
 
   tableSizes: number[] = [5, 10, 15];
 
-  constructor(private readonly useService: UserService) {}
+  constructor(
+    private readonly useService: UserService,
+    private readonly messageSErvice: ToastMessageService
+  ) {}
 
   onPaginatorChange(event: Event | any) {
     this.paginatorChange.emit(event);
@@ -46,6 +50,7 @@ export class VisitorTableComponent {
   }
 
   onDeleteVisit(visitor: Visitor) {
+    this.messageSErvice.toastSuccess('Visitante removido com sucesso');
     console.log(visitor);
   }
 }
