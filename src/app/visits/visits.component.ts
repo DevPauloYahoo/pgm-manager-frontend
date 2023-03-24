@@ -1,11 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { distinctUntilChanged, Observable, of, Subject, take, tap } from 'rxjs';
+import {
+  distinctUntilChanged,
+  Observable,
+  of,
+  Subject,
+  Subscription,
+  tap,
+} from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { UserService } from '../auth/services/user.service';
+import { ModalMessagesService } from '../core/services/modal-messages.service';
 import { ToastMessageService } from '../core/services/toast-message.service';
-import { ModalService } from '../shared/components/confirmation-modal/modal.service';
 import { VisitModel } from './model/visit.model';
 import { VisitsService } from './services/visits.service';
 import { TypePageableVisit, TypeResponseVisit } from './types/visit.type';
@@ -19,6 +26,7 @@ import { TypePageableVisit, TypeResponseVisit } from './types/visit.type';
 })
 export class VisitsComponent implements OnInit, OnDestroy {
   // properties class
+  statusVisit = false;
   searchFilter = '';
   pipeStatus = false;
   debounce: Subject<string> = new Subject<string>();
@@ -30,10 +38,6 @@ export class VisitsComponent implements OnInit, OnDestroy {
     totalItems: 0,
   };
 
-  visits$: Observable<TypeResponseVisit<VisitModel>> = new Observable<
-    TypeResponseVisit<VisitModel>
-  >();
-
   dataPagination: TypePageableVisit = {
     search: '',
     status: false,
@@ -41,11 +45,17 @@ export class VisitsComponent implements OnInit, OnDestroy {
     page: 0,
   };
 
+  visits$: Observable<TypeResponseVisit<VisitModel>> = new Observable<
+    TypeResponseVisit<VisitModel>
+  >();
+
+  unsubscriptionVisit$?: Subscription;
+
   constructor(
     private readonly visitsService: VisitsService,
     private readonly userService: UserService,
     private readonly messageService: ToastMessageService,
-    private readonly modalService: ModalService,
+    private readonly modalMessageService: ModalMessagesService,
     private readonly activatedRoute: ActivatedRoute
   ) {}
 
@@ -65,6 +75,17 @@ export class VisitsComponent implements OnInit, OnDestroy {
           });
         },
       });
+
+    this.unsubscriptionVisit$ = this.modalMessageService
+      .getStatusVisit()
+      .pipe(
+        tap(value => {
+          if (value) {
+            this.visits$ = this.getVisits(this.dataPagination);
+          }
+        })
+      )
+      .subscribe();
   }
 
   onChangePage(event: Event | any) {
@@ -88,24 +109,6 @@ export class VisitsComponent implements OnInit, OnDestroy {
     this.visits$ = this.getVisits(this.dataPagination);
   }
 
-  onCloseVisits(event: string) {
-    this.visitsService
-      .updateStatusVisits(event)
-      .pipe(
-        tap(() => {
-          this.visits$ = this.getVisits(this.dataPagination);
-        }),
-        take(1)
-      )
-      .subscribe({
-        next: () =>
-          this.messageService.showSuccess({
-            message: 'Atendimento finalizado com sucesso',
-            time: 3000,
-          }),
-      });
-  }
-
   // private methods
   getVisits(dataPagination: TypePageableVisit) {
     return this.visitsService.getVisits(dataPagination);
@@ -113,5 +116,6 @@ export class VisitsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.debounce.unsubscribe();
+    this.unsubscriptionVisit$?.unsubscribe();
   }
 }

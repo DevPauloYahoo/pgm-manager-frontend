@@ -8,12 +8,20 @@ type iconType = 'success' | 'error' | 'warning' | 'question' | undefined;
 const TITLE = 'PGM-SGA';
 
 const Toast = Swal.mixin({
+  customClass: {
+    image: 'mb-0 mt-0',
+    title: 'text-center text-primary mb-0 mt-0 ',
+    timerProgressBar: 'bg-success',
+  },
   toast: true,
   position: 'top-end',
   title: 'PGM - SGA',
+  imageUrl: 'assets/img/logo_2.png',
+  imageWidth: 40,
   showConfirmButton: false,
   timer: 3000,
   timerProgressBar: true,
+  background: 'aliceblue',
   didOpen: toast => {
     toast.addEventListener('mouseenter', Swal.stopTimer);
     toast.addEventListener('mouseleave', Swal.resumeTimer);
@@ -56,36 +64,31 @@ export class ToastMessageService {
 
   toastSuccess(text: string) {
     Toast.fire({
-      icon: 'success',
       text,
-    }).then();
+    });
   }
 
   toastError(text: string) {
     Toast.fire({
-      icon: 'error',
       text,
-    }).then();
+    });
   }
 
   toastWarning(text: string) {
     Toast.fire({
-      icon: 'warning',
       text,
-    }).then();
+    });
   }
 
   toastInfo(text: string) {
     Toast.fire({
-      icon: 'info',
       text,
-    }).then();
+    });
   }
 
   toastQuestion(text: string) {
     Toast.fire({
-      icon: 'question',
       text,
-    }).then();
+    });
   }
 }
