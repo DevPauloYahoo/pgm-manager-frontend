@@ -2,20 +2,18 @@ import { Injectable, Output } from '@angular/core';
 import { BehaviorSubject, take, tap } from 'rxjs';
 import Swal from 'sweetalert2';
 
+import { UserService } from '../../auth/services/user.service';
 import { VisitCloseInterface } from '../../shared/models/shared.model';
 import { VisitsService } from '../../visits/services/visits.service';
 import { ToastMessageService } from './toast-message.service';
 
 const swalVisitActive = Swal.mixin({
   customClass: {
-    image: 'mb-0 mt-2',
-    htmlContainer: 'border border-success',
-    title: 'mb-0 mt-0 text-primary',
-    confirmButton: 'btn btn-outline-primary',
-    cancelButton: 'btn btn-outline-secondary ms-2',
+    actions: 'm-0',
+    htmlContainer: 'm-3',
+    confirmButton: 'btn btn-primary',
+    cancelButton: 'btn btn-secondary ms-3',
   },
-  imageUrl: '/assets/img/logo_2.png',
-  imageWidth: 60,
   buttonsStyling: false,
   background: 'aliceblue',
 });
@@ -28,6 +26,7 @@ export class ModalMessagesService {
 
   constructor(
     private readonly visitService: VisitsService,
+    private readonly userService: UserService,
     private readonly toastMessageService: ToastMessageService
   ) {}
 
@@ -38,9 +37,31 @@ export class ModalMessagesService {
   modalFinalizeVisit(data: VisitCloseInterface) {
     swalVisitActive
       .fire({
-        title: 'ENCERRAR ATENDIMENTO?',
-        html: `<span>Finalizar o atendimento para:</span>
-               <h2>${data.nameVisitor}?</h2>`,
+        html: `
+          <div class="card border-primary">
+            <div class="d-flex">
+              <div class="col-2 row">
+                  <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
+              </div>
+              <div class="col-10 row">
+                  <h3 class="text-primary my-auto"><strong>Procuradoria Geral - SGA</strong></h3>
+              </div>
+
+          </div>
+          </div>
+          <div class="card mt-3 bg-primary border-0 text-light" style="--bs-text-opacity: .9;">
+            <div class="col-12 row p-2">
+              <h3 class=" my-auto">ENCERRAR ATENDIMENTO</h3>
+            </div>
+          </div>
+          <div class="card border-primary mt-3 pt-3">
+            <div class="col-12 row">
+              <span>Finalizar o atendimento para:</span>
+              <h2 class="text-center">${data.nameVisitor}?</h2>
+            </div>
+          </div>
+        `,
+
         confirmButtonText: 'Finalizar',
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
@@ -65,11 +86,69 @@ export class ModalMessagesService {
 
   modalVisitActive(name: string, badge: string, secretary: string) {
     swalVisitActive.fire({
-      title: 'ATENDIMENTO ATIVO',
-      html: `<h2 class="mb-0">${name}</h2>
-             <span>Secretaria: ${secretary.toUpperCase()}</span>
-             </br>
-             <span>Crachá: ${badge}</span>`,
+      html: `
+        <div class="card border-primary">
+          <div class="d-flex">
+            <div class="col-2 row">
+                <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
+            </div>
+            <div class="col-10 row">
+                <h3 class="text-primary my-auto"><strong>Procuradoria Geral - SGA</strong></h3>
+            </div>
+
+        </div>
+        </div>
+        <div class="card mt-3 bg-primary border-0 text-light" style="--bs-text-opacity: .9;">
+          <div class="col-12 row p-2">
+            <h3 class=" my-auto">ATENDIMENTO ATIVO</h3>
+          </div>
+        </div>
+        <div class="card border-primary mt-3 p-3">
+          <div class="col-12 row">
+            <h2 class="text-center">${name}</h2>
+            <span>Secretaria: ${secretary.toUpperCase()}</span>
+            <br>
+            <span>Crachá: ${badge}</span>
+          </div>
+        </div>
+      `,
     });
+  }
+
+  modalTokenExpired(message: string) {
+    swalVisitActive
+      .fire({
+        customClass: {
+          confirmButton: 'btn btn-info',
+        },
+        html: `
+        <div class="card border-info">
+          <div class="d-flex">
+            <div class="col-2 row">
+                <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
+            </div>
+            <div class="col-10 row">
+                <h3 class="text-info my-auto"><strong>Procuradoria Geral - SGA</strong></h3>
+            </div>
+
+        </div>
+        </div>
+        <div class="card mt-3 bg-info border-0 text-dark" style="--bs-text-opacity: .9;">
+          <div class="col-12 row p-2">
+            <h3 class=" my-auto">SESSÃO EXPIROU</h3>
+          </div>
+        </div>
+        <div class="card border-info mt-3 p-3">
+          <div class="col-12 row">
+            <h2 class="text-center">${message}</h2>
+          </div>
+        </div>
+      `,
+      })
+      .then(result => {
+        if (result.isConfirmed) {
+          this.userService.invalidAndExpiredAccessToken();
+        }
+      });
   }
 }

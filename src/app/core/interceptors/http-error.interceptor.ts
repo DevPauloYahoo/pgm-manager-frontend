@@ -10,12 +10,14 @@ import { catchError, Observable, throwError } from 'rxjs';
 
 import { TokenService } from '../../auth/services/token.service';
 import { UserService } from '../../auth/services/user.service';
+import { ModalMessagesService } from '../services/modal-messages.service';
 import { ToastMessageService } from '../services/toast-message.service';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(
     private readonly toastMessageService: ToastMessageService,
+    private readonly modalMessageService: ModalMessagesService,
     private readonly tokenService: TokenService,
     private readonly userService: UserService
   ) {}
@@ -28,38 +30,29 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
         // validações usando o angular para se conectar ao keycloak
         if (err.error.error === 'invalid_grant') {
-          this.toastMessageService.showError({
-            message: 'Usuário e/ou senha inválido',
-            time: 3000,
-          });
+          this.toastMessageService.toastError('Usuário e/ou senha inválido');
         }
 
         if (err.error.error === 'unauthorized_client') {
-          this.toastMessageService.showError({
-            message: 'Credenciais inválidas',
-            time: 3000,
-          });
+          this.toastMessageService.toastError('Credenciais inválidas');
         }
 
         if (err.error.title === 'PrismaClientInitializationError') {
-          this.toastMessageService.showError({
-            message: 'Erro acesso database. Tente novamente',
-            time: 5000,
-          });
+          this.toastMessageService.toastError(
+            'Erro acesso database. Tente novamente'
+          );
         }
 
         if (err.error.errorCode === 'P1001') {
-          this.toastMessageService.showError({
-            message: 'Erro acesso database. Tente novamente',
-            time: 5000,
-          });
+          this.toastMessageService.toastError(
+            'Erro acesso database. Tente novamente'
+          );
         }
 
         if (err.status === 504) {
-          this.toastMessageService.showError({
-            message: 'Erro no servidor de autenticação. Tente novamente',
-            time: 5000,
-          });
+          this.toastMessageService.toastError(
+            'Erro no servidor de autenticação. Tente novamente'
+          );
         }
 
         // validações usando backend para se conectar ao keycloak
@@ -67,48 +60,39 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           console.log('ERROR EVENT', err);
         } else {
           if (err.status === 401 && err.error.message === 'invalid_grant') {
-            this.toastMessageService.showError({
-              message: 'Usuário e/ou senha inválido',
-              time: 3000,
-            });
+            this.toastMessageService.toastError('Usuário e/ou senha inválido');
           }
 
           if (
             err.status === 401 &&
             err.error.message === 'unauthorized_client'
           ) {
-            this.toastMessageService.showError({
-              message: 'Credenciais inválidas',
-              time: 3000,
-            });
+            this.toastMessageService.toastError('Credenciais inválidas');
           }
 
           if (err.status === 0) {
-            this.toastMessageService.showError({
-              message: 'Erro interno no servidor. Tente novamente',
-              time: 5000,
-            });
+            this.toastMessageService.toastError(
+              'Erro interno no servidor. Tente novamente'
+            );
 
             this.userService.invalidAndExpiredAccessToken();
           }
 
           if (err.status === 403) {
-            this.toastMessageService.showInfo({
-              message: 'Sua conexão expirou. Faça login',
-              time: 5000,
-            });
+            this.modalMessageService.modalTokenExpired(
+              'Sua conexão expirou. Faça login'
+            );
 
-            this.userService.invalidAndExpiredAccessToken();
+            // this.userService.invalidAndExpiredAccessToken();
           }
 
           if (
             err.status === 500 &&
             err.error.title === 'KeycloakConnectionError'
           ) {
-            this.toastMessageService.showError({
-              message: 'Erro no servidor de autenticação. Tente novamente',
-              time: 5000,
-            });
+            this.toastMessageService.toastError(
+              'Erro no servidor de autenticação. Tente novamente'
+            );
 
             this.userService.invalidAndExpiredAccessToken();
           }

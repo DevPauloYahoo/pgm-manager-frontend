@@ -19,3 +19,7 @@ section {
     height: 100%;
   }
 }
+
+.card {
+  background-color: aliceblue !important;
+}
