@@ -20,7 +20,6 @@ declare let window: any;
 })
 export class ConfirmationModalComponent implements OnInit, OnDestroy {
   formModal: any;
-  // unsubscription!: Subscription;
   unsubscriptionModal$?: Subscription;
   unsubscriptionVisit$?: Subscription;
 
@@ -53,7 +52,7 @@ export class ConfirmationModalComponent implements OnInit, OnDestroy {
   }
 
   onCloseVisits() {
-    this.closeVisit.emit(this.visitClose.id);
+    // this.closeVisit.emit(this.visitClose.id);
     this.formModal.hide();
   }
 

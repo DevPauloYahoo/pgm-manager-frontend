@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, EMPTY, tap } from 'rxjs';
+import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
+import { catchError, EMPTY, Subscription, tap } from 'rxjs';
 
 import { ModalMessagesService } from '../../../core/services/modal-messages.service';
 import { badges } from '../../../utils/badges';
@@ -12,48 +12,47 @@ import {
   TypeVisitor,
   TypeVisitToVisitor,
 } from '../../../visitors/types/visitor.type';
+import { FormModalService } from '../../services/form-modal.service';
 import { VisitsService } from '../../services/visits.service';
 
+declare let window: any;
+
 @Component({
-  selector: 'pgm-visit-form-visit-modal',
-  templateUrl: './visit-form-modal.component.html',
-  styleUrls: ['./visit-form-modal.component.css'],
+  selector: 'pgm-form-visit-modal',
+  templateUrl: './form-visit-modal.component.html',
+  styleUrls: ['./form-visit-modal.component.css'],
 })
-export class VisitFormModalComponent implements OnInit {
+export class FormVisitModalComponent implements OnInit, OnDestroy {
+  // variables of Form Visit Modal
+  formVisitModal: any;
+  visitorData!: TypeVisitor;
+  unsubscriptionModal$?: Subscription;
+  unsubscriptionVisitor$?: Subscription;
+
   secretaries = ['PGM', 'SEMSUR', 'SEMUR', 'SEMTHAS'];
   originalBadges: string[] = badges;
   availableBadges: string[] = [];
 
   // create empty form
   formVisit: FormGroup = this.formBuilder.group({
-    visit: this.formBuilder.group(
-      {
-        badge: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(2),
-            // CustomSynchronousValidationsClass.isValidBadge(),
-          ],
-        ],
-        secretary: ['', [Validators.required]],
-      }
-      // {
-      //   asyncValidators: [this.asynchronousValidationService.isBadgeExists()],
-      // }
-    ),
+    visit: this.formBuilder.group({
+      badge: [
+        '',
+        [Validators.required, Validators.minLength(2), Validators.maxLength(2)],
+      ],
+      secretary: ['', [Validators.required]],
+    }),
   });
 
   constructor(
-    public dialogRef: MatDialogRef<VisitFormModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: TypeVisitor,
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private visitsService: VisitsService,
-    private visitorsService: VisitorsService,
+    public readonly swalTargets: SwalPortalTargets,
+    private readonly formBuilder: FormBuilder,
+    private readonly route: ActivatedRoute,
+    private readonly visitsService: VisitsService,
+    private readonly visitorsService: VisitorsService,
+    private readonly formModalService: FormModalService,
     private readonly modalService: ModalMessagesService,
-    private validationErrorsService: ValidationErrorsService
+    private readonly validationErrorsService: ValidationErrorsService
   ) {}
 
   get visit() {
@@ -70,18 +69,38 @@ export class VisitFormModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.availableBadges = this.originalBadges;
+    // create instance Form Visit Modal
+    this.formVisitModal = new window.bootstrap.Modal(
+      document.getElementById('formVisitModal')
+    );
+
+    this.unsubscriptionModal$ = this.formModalService
+      .getShowVisitModal()
+      .pipe(tap(() => this.formVisitModal.show()))
+      .subscribe();
+
+    this.unsubscriptionVisitor$ = this.formModalService
+      .getVisitData()
+      .pipe(
+        tap(visitor => {
+          this.visitorData = visitor;
+        })
+      )
+      .subscribe();
   }
 
   onConfirm() {
+    this.formVisitModal.hide();
     const { badge, secretary } = this.formVisit?.get('visit')?.getRawValue();
-    const visitorId = this.data.id;
+    const visitorId = this.visitorData.id;
 
     const data: TypeVisitToVisitor = {
       visitorId,
       badge,
       secretary,
     };
-    this.dialogRef.close(data);
+
+    this.formModalService.setSaveNewVisit(data);
   }
 
   // displays formVisit validation error messages
@@ -112,5 +131,10 @@ export class VisitFormModalComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.unsubscriptionModal$?.unsubscribe();
+    this.unsubscriptionVisitor$?.unsubscribe();
   }
 }

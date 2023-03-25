@@ -15,6 +15,7 @@ import { debounceTime } from 'rxjs/operators';
 import { UserService } from '../auth/services/user.service';
 import { ToastMessageService } from '../core/services/toast-message.service';
 import { VisitFormModalComponent } from '../visits/components/visit-form-modal/visit-form-modal.component';
+import { FormModalService } from '../visits/services/form-modal.service';
 import { VisitsService } from '../visits/services/visits.service';
 import { VisitorModalComponent } from './components/visitor-form-modal/visitor-modal.component';
 import { Visitor } from './models/visitor.interface';
@@ -25,8 +26,6 @@ import {
   TypeVisitor,
   TypeVisitToVisitor,
 } from './types/visitor.type';
-
-// declare let window: any;
 
 @Component({
   selector: 'pgm-visitor-list',
@@ -48,13 +47,14 @@ export class VisitorsComponent implements OnInit {
   };
 
   constructor(
-    private visitorsService: VisitorsService,
-    private visitsService: VisitsService,
+    private readonly visitorsService: VisitorsService,
+    private readonly visitsService: VisitsService,
     private readonly userService: UserService,
     private readonly messageService: ToastMessageService,
+    private readonly formModalService: FormModalService,
     private dialog: MatDialog,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -81,7 +81,18 @@ export class VisitorsComponent implements OnInit {
   }
 
   onAddVisitToVisitor(visitor: TypeVisitor) {
-    this.onShowModalCreateVisitToVisitor(visitor);
+    this.formModalService.setVisitData(visitor);
+    this.formModalService.setShowVisitModal();
+
+    this.formModalService
+      .getSaveNewVisit()
+      .pipe(
+        tap(data => {
+          this.createVisitToVisitor(data);
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
   }
 
   isExistRole(roles: string[]) {
@@ -177,7 +188,9 @@ export class VisitorsComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          this.messageService.toastSuccess('Visitante cadastrado com sucesso');
+          this.messageService.toastSuccess(
+            'Atendimento cadastrado com sucesso'
+          );
         },
       });
   }

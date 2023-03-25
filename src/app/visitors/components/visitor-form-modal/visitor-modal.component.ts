@@ -14,7 +14,7 @@ import { VisitorsService } from '../../services/visitors.service';
 import { TypeVisitor } from '../../types/visitor.type';
 
 @Component({
-  selector: 'pgm-visitor-form-modal',
+  selector: 'pgm-visitor-form-visit-modal',
   templateUrl: './visitor-modal.component.html',
   styleUrls: ['./visitor-modal.component.css'],
   animations: [

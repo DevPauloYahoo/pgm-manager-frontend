@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { ErrorsModule } from './errors/errors.module';
 import { SharedModule } from './shared/shared.module';
+import { FormModalModule } from './visits/components/form-visit-modal/form-modal.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,7 @@ import { SharedModule } from './shared/shared.module';
     AuthModule,
     CoreModule,
     AppRoutingModule,
+    FormModalModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

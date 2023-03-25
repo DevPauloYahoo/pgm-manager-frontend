@@ -1,0 +1,96 @@
+<!-- Modal -->
+<div
+  aria-hidden="false"
+  aria-labelledby="formVisitModalLabel"
+  class="modal fade mt-5"
+  id="formVisitModal"
+  tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-light rounded-top">
+        <h1 class="modal-title fs-4 my-auto" id="formVisitModalLabel">
+          Cadastro de atendimento
+        </h1>
+      </div>
+      <div class="modal-body bg-opacity-10 bg-info">
+        <form [formGroup]="formVisit" class="g-3">
+          <div class="gx-2">
+            <div class="card p-1">
+              <div class="row col-12 ps-2">
+                <h2 class="mb-2">Dados do visitante:</h2>
+                <span class="fs-6">Nome: {{ visitorData.name }}</span>
+                <span class="fs-6 mt-1">CPF: {{ visitorData.document }}</span>
+              </div>
+            </div>
+
+            <div class="card p-2 mt-3">
+              <div class="row" formGroupName="visit">
+                <h2 class="mb-2">Dados do atendimento:</h2>
+                <div
+                  [class]="secretary?.touched ? 'was-validated' : ''"
+                  class="col-8">
+                  <label class="form-label" for="inputSecretary"
+                    >Secretaria/Destino</label
+                  >
+                  <select
+                    (change)="getBadges(secretary?.value)"
+                    class="form-select"
+                    formControlName="secretary"
+                    id="inputSecretary"
+                    required>
+                    <option [selected]="true" value="">selecione</option>
+                    <option *ngFor="let item of secretaries" value="{{ item }}">
+                      {{ item }}
+                    </option>
+                  </select>
+                  <div
+                    *ngIf="secretary?.touched && secretary?.invalid"
+                    class="text-danger">
+                    {{ showErrorMessage('secretary', 'Secretaria') }}
+                  </div>
+                </div>
+                <div
+                  [class]="badge?.touched ? 'was-validated' : ''"
+                  class="col-4">
+                  <label class="form-label" for="inputBadge">Nº Crachá</label>
+                  <select
+                    class="form-select"
+                    formControlName="badge"
+                    id="inputBadge"
+                    required>
+                    <option [selected]="true" value="">selecione</option>
+                    <option
+                      *ngFor="let item of availableBadges"
+                      value="{{ item }}">
+                      {{ item }}
+                    </option>
+                  </select>
+                  <div
+                    *ngIf="badge?.touched && badge?.invalid"
+                    class="text-danger">
+                    {{ showErrorMessage('badge', 'Crachá') }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-secondary btn-sm me-2"
+          data-bs-dismiss="modal"
+          type="button">
+          Cancelar
+        </button>
+        <button
+          (click)="onConfirm()"
+          [disabled]="formVisit.invalid"
+          class="btn btn-primary btn-sm"
+          type="button">
+          Cadastrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

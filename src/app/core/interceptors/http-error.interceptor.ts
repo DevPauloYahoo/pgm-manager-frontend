@@ -82,8 +82,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             this.modalMessageService.modalTokenExpired(
               'Sua conexão expirou. Faça login'
             );
-
-            // this.userService.invalidAndExpiredAccessToken();
           }
 
           if (
