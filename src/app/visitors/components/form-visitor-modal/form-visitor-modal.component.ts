@@ -1,34 +1,37 @@
-import { transition, trigger, useAnimation } from '@angular/animations';
-import { Component } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { bounceIn } from 'ng-animate';
-import { tap } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { catchError, EMPTY, Subscription, tap } from 'rxjs';
 
+import { ModalMessagesService } from '../../../core/services/modal-messages.service';
 import { badges } from '../../../utils/badges';
 import { CustomAsynchronousValidationService } from '../../../utils/custom-asynchronous- validation.service';
 import { CustomSynchronousValidationsClass } from '../../../utils/custom-synchronous-validations.class';
 import { ValidationErrorsService } from '../../../utils/validation-errors.service';
+import { VisitorsService } from '../../../visitors/services/visitors.service';
+import { TypeVisitor } from '../../../visitors/types/visitor.type';
 import { VisitsService } from '../../../visits/services/visits.service';
-import { VisitorsService } from '../../services/visitors.service';
-import { TypeVisitor } from '../../types/visitor.type';
+import { FormVisitorModalService } from '../../services/form-visitor-modal.service';
+
+declare let window: any;
 
 @Component({
-  selector: 'pgm-visitor-form-visitor-modal',
-  templateUrl: './visitor-modal.component.html',
-  styleUrls: ['./visitor-modal.component.css'],
-  animations: [
-    trigger('bounce', [transition('* => *', useAnimation(bounceIn))]),
-  ],
+  selector: 'pgm-form-visitor-modal',
+  templateUrl: './form-visitor-modal.component.html',
+  styleUrls: ['./form-visitor-modal.component.css'],
 })
-export class VisitorModalComponent {
-  bounce: any;
+export class FormVisitorModalComponent implements OnInit, OnDestroy {
+  // variables of Form Visit Modal
+  formVisitorModal: any;
+  unsubscriptionModal$?: Subscription;
+  unsubscriptionVisitor$?: Subscription;
+
   visitStatus = false;
   secretaries = ['PGM', 'SEMSUR', 'SEMUR', 'SEMTHAS'];
   originalBadges: string[] = badges;
   availableBadges: string[] = [];
 
-  // Cria formulário vazio
+  // create empty form
   formVisitor: FormGroup = this.formBuilder.group({
     visitor: this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(6)]],
@@ -52,12 +55,14 @@ export class VisitorModalComponent {
   });
 
   constructor(
-    public dialogRef: MatDialogRef<VisitorModalComponent>,
-    private visitorsService: VisitorsService,
-    private visitsService: VisitsService,
-    private asynchronousValidationService: CustomAsynchronousValidationService,
-    private validationErrorsService: ValidationErrorsService,
-    private formBuilder: NonNullableFormBuilder
+    private readonly formBuilder: FormBuilder,
+    private readonly route: ActivatedRoute,
+    private readonly visitsService: VisitsService,
+    private readonly visitorsService: VisitorsService,
+    private readonly formVisitorModalService: FormVisitorModalService,
+    private readonly modalMessageService: ModalMessagesService,
+    private readonly validationErrorsService: ValidationErrorsService,
+    private readonly asynchronousValidationService: CustomAsynchronousValidationService
   ) {}
 
   get visitor() {
@@ -84,10 +89,24 @@ export class VisitorModalComponent {
     return this.visit?.get('secretary');
   }
 
+  ngOnInit(): void {
+    this.availableBadges = this.originalBadges;
+    // create instance Form Visit Modal
+    this.formVisitorModal = new window.bootstrap.Modal(
+      document.getElementById('formVisitorModal')
+    );
+
+    this.unsubscriptionModal$ = this.formVisitorModalService
+      .getShowVisitorModal()
+      .pipe(tap(() => this.formVisitorModal.show()))
+      .subscribe();
+  }
+
   onConfirm() {
     if (!this.visitStatus) {
       const { visitor } = this.formVisitor.getRawValue();
-      this.dialogRef.close(visitor);
+      this.formVisitorModalService.setSaveNewVisitor(visitor);
+      this.formVisitorModal.hide();
     } else {
       const { visitor, visit } = this.formVisitor.getRawValue();
 
@@ -98,7 +117,8 @@ export class VisitorModalComponent {
         },
       };
 
-      this.dialogRef.close(data);
+      this.formVisitorModalService.setSaveNewVisitor(data);
+      this.formVisitorModal.hide();
     }
   }
 
@@ -106,7 +126,7 @@ export class VisitorModalComponent {
     this.visitStatus = !this.visitStatus;
   }
 
-  // show messages errors if fields invalid data
+  // displays formVisit validation error messages
   validationMessages(fieldName: string, fieldTranslation: string) {
     return this.validationErrorsService.showMessages(
       fieldName,
@@ -125,6 +145,19 @@ export class VisitorModalComponent {
           );
         })
       )
+      .pipe(
+        catchError(err => {
+          alert(
+            JSON.stringify({ status: err.status, message: err.error.message })
+          );
+          return EMPTY;
+        })
+      )
       .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.unsubscriptionModal$?.unsubscribe();
+    this.unsubscriptionVisitor$?.unsubscribe();
   }
 }

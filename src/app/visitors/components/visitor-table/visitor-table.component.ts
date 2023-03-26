@@ -57,7 +57,6 @@ export class VisitorTableComponent {
               visit.secretaryName as string
             );
           } else {
-            console.log('onAddVisit', visitor);
             this.addVisit.emit(visitor);
           }
         })

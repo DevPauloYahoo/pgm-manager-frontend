@@ -9,7 +9,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class FormModalService {
+export class FormVisitModalService {
   showVisitModal = new EventEmitter<any>();
   visitorData: BehaviorSubject<TypeVisitor> = new BehaviorSubject<TypeVisitor>({
     visit: [],

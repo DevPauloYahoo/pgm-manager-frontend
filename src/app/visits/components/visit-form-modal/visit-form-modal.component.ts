@@ -15,7 +15,7 @@ import {
 import { VisitsService } from '../../services/visits.service';
 
 @Component({
-  selector: 'pgm-visit-form-visit-modal',
+  selector: 'pgm-visit-form-visitor-modal',
   templateUrl: './visit-form-modal.component.html',
   styleUrls: ['./visit-form-modal.component.css'],
 })

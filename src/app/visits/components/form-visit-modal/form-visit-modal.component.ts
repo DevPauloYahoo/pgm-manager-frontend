@@ -12,7 +12,7 @@ import {
   TypeVisitor,
   TypeVisitToVisitor,
 } from '../../../visitors/types/visitor.type';
-import { FormModalService } from '../../services/form-modal.service';
+import { FormVisitModalService } from '../../services/form-visit-modal.service';
 import { VisitsService } from '../../services/visits.service';
 
 declare let window: any;
@@ -50,8 +50,8 @@ export class FormVisitModalComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly visitsService: VisitsService,
     private readonly visitorsService: VisitorsService,
-    private readonly formModalService: FormModalService,
-    private readonly modalService: ModalMessagesService,
+    private readonly formModalService: FormVisitModalService,
+    private readonly modalMessageService: ModalMessagesService,
     private readonly validationErrorsService: ValidationErrorsService
   ) {}
 
@@ -90,7 +90,6 @@ export class FormVisitModalComponent implements OnInit, OnDestroy {
   }
 
   onConfirm() {
-    this.formVisitModal.hide();
     const { badge, secretary } = this.formVisit?.get('visit')?.getRawValue();
     const visitorId = this.visitorData.id;
 
@@ -101,6 +100,7 @@ export class FormVisitModalComponent implements OnInit, OnDestroy {
     };
 
     this.formModalService.setSaveNewVisit(data);
+    this.formVisitModal.hide();
   }
 
   // displays formVisit validation error messages

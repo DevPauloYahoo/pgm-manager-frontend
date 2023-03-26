@@ -1,0 +1,139 @@
+<!-- Modal -->
+<div
+  aria-hidden="false"
+  aria-labelledby="formVisitorModalLabel"
+  class="modal fade mt-5"
+  id="formVisitorModal"
+  tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-light rounded-top">
+        <h1 class="modal-title fs-4 my-auto" id="formVisitorModalLabel">
+          Cadastro de visitante
+        </h1>
+      </div>
+      <div class="modal-body bg-opacity-10 bg-info">
+        <form [formGroup]="formVisitor" class="g-3">
+          <div class="card p-2">
+            <div formGroupName="visitor">
+              <h2>Dados do visitante</h2>
+              <div
+                [class]="name?.touched ? 'was-validated' : ''"
+                class="col-12">
+                <label class="form-label" for="inputName">Nome</label>
+                <input
+                  class="form-control"
+                  formControlName="name"
+                  id="inputName"
+                  minlength="6"
+                  required
+                  type="text" />
+                <div *ngIf="name?.touched && name?.invalid" class="msgError">
+                  {{ validationMessages('name', 'Nome') }}
+                </div>
+              </div>
+
+              <div
+                [class]="document?.touched ? 'was-validated' : ''"
+                class="col-12 mt-3">
+                <label class="form-label" for="inputDocument">CPF</label>
+                <input
+                  class="form-control"
+                  formControlName="document"
+                  id="inputDocument"
+                  minlength="11"
+                  required
+                  type="text" />
+                <div
+                  *ngIf="document?.touched && document?.invalid"
+                  class="msgError">
+                  {{ validationMessages('document', 'CPF') }}
+                </div>
+                <div
+                  *ngIf="document?.touched && document?.valid"
+                  class="text-success">
+                  CPF válido
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- div visits-->
+          <div *ngIf="visitStatus" class="card p-2 mt-3">
+            <div class="row" formGroupName="visit">
+              <h2 class="mb-2">Dados do atendimento:</h2>
+              <div
+                [class]="secretary?.touched ? 'was-validated' : ''"
+                class="col-8">
+                <label class="form-label" for="inputSecretary"
+                  >Secretaria/Destino</label
+                >
+                <select
+                  (change)="getBadges(secretary?.value)"
+                  class="form-select"
+                  formControlName="secretary"
+                  id="inputSecretary"
+                  required>
+                  <option [selected]="true" value="">selecione</option>
+                  <option *ngFor="let item of secretaries" value="{{ item }}">
+                    {{ item }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="secretary?.touched && secretary?.invalid"
+                  class="text-danger">
+                  {{ validationMessages('secretary', 'Secretaria') }}
+                </div>
+              </div>
+              <div
+                [class]="badge?.touched ? 'was-validated' : ''"
+                class="col-4">
+                <label class="form-label" for="inputBadge">Nº Crachá</label>
+                <select
+                  class="form-select"
+                  formControlName="badge"
+                  id="inputBadge"
+                  required>
+                  <option [selected]="true" value="">selecione</option>
+                  <option
+                    *ngFor="let item of availableBadges"
+                    value="{{ item }}">
+                    {{ item }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="badge?.touched && badge?.invalid"
+                  class="text-danger">
+                  {{ validationMessages('badge', 'Crachá') }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          (click)="onSelectVisitStatus()"
+          *ngIf="visitor?.valid && !visitStatus"
+          class="btn-sm btn btn-success me-auto">
+          Clique para cadastrar Atendimento
+        </button>
+        <button
+          class="btn btn-secondary btn-sm me-2"
+          data-bs-dismiss="modal"
+          type="button">
+          Cancelar
+        </button>
+        <button
+          (click)="onConfirm()"
+          [disabled]="
+            (visitor?.invalid || visitor?.pending || visitStatus) &&
+            visit?.invalid
+          "
+          class="btn btn-primary btn-sm"
+          type="button">
+          Cadastrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,7 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { ErrorsModule } from './errors/errors.module';
 import { SharedModule } from './shared/shared.module';
-import { FormModalModule } from './visits/components/form-visit-modal/form-modal.module';
+import { FormVisitModalModule } from './visits/components/form-visit-modal/form-visit-modal.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +24,7 @@ import { FormModalModule } from './visits/components/form-visit-modal/form-modal
     AuthModule,
     CoreModule,
     AppRoutingModule,
-    FormModalModule,
+    FormVisitModalModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -16,7 +16,7 @@
 
   <div class="col-3 text-end">
     <button
-      (click)="onShowModalCreateVisitor()"
+      (click)="onShowVisitorCreate()"
       [disabled]="!isExistRole(['USER', 'ADMIN'])"
       class="btn btn-primary btn-sm"
       style="width: 115px"
@@ -32,3 +32,4 @@
   [visitors$]="
     visitors$ | filterSearchVisitors : searchFilter
   "></pgm-visitor-table>
+<pgm-form-visitor-modal></pgm-form-visitor-modal>

@@ -15,10 +15,11 @@ import { debounceTime } from 'rxjs/operators';
 import { UserService } from '../auth/services/user.service';
 import { ToastMessageService } from '../core/services/toast-message.service';
 import { VisitFormModalComponent } from '../visits/components/visit-form-modal/visit-form-modal.component';
-import { FormModalService } from '../visits/services/form-modal.service';
+import { FormVisitModalService } from '../visits/services/form-visit-modal.service';
 import { VisitsService } from '../visits/services/visits.service';
 import { VisitorModalComponent } from './components/visitor-form-modal/visitor-modal.component';
 import { Visitor } from './models/visitor.interface';
+import { FormVisitorModalService } from './services/form-visitor-modal.service';
 import { VisitorsService } from './services/visitors.service';
 import {
   TypePageableVisitor,
@@ -51,7 +52,8 @@ export class VisitorsComponent implements OnInit {
     private readonly visitsService: VisitsService,
     private readonly userService: UserService,
     private readonly messageService: ToastMessageService,
-    private readonly formModalService: FormModalService,
+    private readonly formVisitModalService: FormVisitModalService,
+    private readonly formVisitorModalService: FormVisitorModalService,
     private dialog: MatDialog,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
@@ -81,10 +83,10 @@ export class VisitorsComponent implements OnInit {
   }
 
   onAddVisitToVisitor(visitor: TypeVisitor) {
-    this.formModalService.setVisitData(visitor);
-    this.formModalService.setShowVisitModal();
+    this.formVisitModalService.setVisitData(visitor);
+    this.formVisitModalService.setShowVisitModal();
 
-    this.formModalService
+    this.formVisitModalService
       .getSaveNewVisit()
       .pipe(
         tap(data => {
@@ -97,6 +99,20 @@ export class VisitorsComponent implements OnInit {
 
   isExistRole(roles: string[]) {
     return this.userService.verifyRoles(roles);
+  }
+
+  onShowVisitorCreate() {
+    this.formVisitorModalService.setShowVisitorModal();
+
+    this.formVisitorModalService
+      .getSaveNewVisitor()
+      .pipe(
+        tap(data => {
+          this.createVisitor(data);
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
   }
 
   // show modal to create new visit for existing visitor

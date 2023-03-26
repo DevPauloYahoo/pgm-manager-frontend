@@ -3,11 +3,11 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
-import { FormVisitModalComponent } from './form-visit-modal.component';
+import { FormVisitorModalComponent } from './form-visitor-modal.component';
 
 @NgModule({
-  declarations: [FormVisitModalComponent],
+  declarations: [FormVisitorModalComponent],
   imports: [CommonModule, ReactiveFormsModule, SweetAlert2Module],
-  exports: [FormVisitModalComponent],
+  exports: [FormVisitorModalComponent],
 })
-export class FormModalModule {}
+export class FormVisitorModalModule {}

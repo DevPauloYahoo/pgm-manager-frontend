@@ -5,7 +5,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { CoreModule } from '../../../core/core.module';
 import { SharedModule } from '../../../shared/shared.module';
-import { FormModalModule } from '../../../visits/components/form-visit-modal/form-modal.module';
+import { FormVisitModalModule } from '../../../visits/components/form-visit-modal/form-visit-modal.module';
 import { VisitorTableComponent } from './visitor-table.component';
 
 @NgModule({
@@ -15,7 +15,7 @@ import { VisitorTableComponent } from './visitor-table.component';
     CoreModule,
     NgxPaginationModule,
     SweetAlert2Module.forChild(),
-    FormModalModule,
+    FormVisitModalModule,
     SharedModule,
   ],
   exports: [VisitorTableComponent],
