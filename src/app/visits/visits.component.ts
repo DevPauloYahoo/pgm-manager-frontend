@@ -12,7 +12,6 @@ import { debounceTime } from 'rxjs/operators';
 
 import { UserService } from '../auth/services/user.service';
 import { ModalMessagesService } from '../core/services/modal-messages.service';
-import { ToastMessageService } from '../core/services/toast-message.service';
 import { VisitModel } from './model/visit.model';
 import { VisitsService } from './services/visits.service';
 import { TypePageableVisit, TypeResponseVisit } from './types/visit.type';
@@ -54,7 +53,6 @@ export class VisitsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly visitsService: VisitsService,
     private readonly userService: UserService,
-    private readonly messageService: ToastMessageService,
     private readonly modalMessageService: ModalMessagesService,
     private readonly activatedRoute: ActivatedRoute
   ) {}

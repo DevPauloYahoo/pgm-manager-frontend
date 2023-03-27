@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 
 import { UserService } from '../../auth/services/user.service';
 import { VisitCloseInterface } from '../../shared/models/shared.model';
+import { VisitorsService } from '../../visitors/services/visitors.service';
 import { VisitsService } from '../../visits/services/visits.service';
 import { ToastMessageService } from './toast-message.service';
 
@@ -22,16 +23,24 @@ const swalVisitActive = Swal.mixin({
   providedIn: 'root',
 })
 export class ModalMessagesService {
-  @Output() statusVisit: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  @Output() statusVisit$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  @Output() updateVisitor$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
 
   constructor(
     private readonly visitService: VisitsService,
+    private readonly visitorService: VisitorsService,
     private readonly userService: UserService,
     private readonly toastMessageService: ToastMessageService
   ) {}
 
   getStatusVisit() {
-    return this.statusVisit.asObservable();
+    return this.statusVisit$.asObservable();
+  }
+
+  getUpdateVisitorTable() {
+    return this.updateVisitor$.asObservable();
   }
 
   modalFinalizeVisit(data: VisitCloseInterface) {
@@ -72,7 +81,7 @@ export class ModalMessagesService {
             .updateStatusVisits(data.id)
             .pipe(
               tap(() => {
-                this.statusVisit.next(true);
+                this.statusVisit$.next(true);
                 this.toastMessageService.toastSuccess(
                   `Atendimento finalizado com sucesso`
                 );
@@ -148,6 +157,58 @@ export class ModalMessagesService {
       .then(result => {
         if (result.isConfirmed) {
           this.userService.invalidAndExpiredAccessToken();
+        }
+      });
+  }
+
+  modalRemoveVisitor(data: { id: string; visitorName: string }) {
+    swalVisitActive
+      .fire({
+        html: `
+          <div class="card border-primary">
+            <div class="d-flex">
+              <div class="col-2 row">
+                  <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
+              </div>
+              <div class="col-10 row">
+                  <h3 class="text-primary my-auto"><strong>Procuradoria Geral - SGA</strong></h3>
+              </div>
+
+          </div>
+          </div>
+          <div class="card mt-3 bg-danger border-0 text-light" style="--bs-text-opacity: .9;">
+            <div class="col-12 row p-2">
+              <h3 class=" my-auto">EXCLUIR VISITANTE</h3>
+            </div>
+          </div>
+          <div class="card border-primary mt-3 pt-3">
+            <div class="col-12 row">
+              <span class="text-danger">ATENÇÃO! Ao excluir o visitante também serão excluídos
+              todos os atendimentos a ele vinculados.</span>
+              <span class="mt-2">Confirma a exclusão de:</span>
+              <h2 class="text-center">${data.visitorName}?</h2>
+            </div>
+          </div>
+        `,
+
+        confirmButtonText: 'Excluir',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+      })
+      .then(resul => {
+        if (resul.isConfirmed) {
+          this.visitorService
+            .deleteVisitor(data.id)
+            .pipe(
+              tap(() => {
+                this.updateVisitor$.next(true);
+                this.toastMessageService.toastSuccess(
+                  `Visitante ${data.visitorName} excluído com sucesso`
+                );
+              })
+            )
+            .pipe(take(1))
+            .subscribe();
         }
       });
   }

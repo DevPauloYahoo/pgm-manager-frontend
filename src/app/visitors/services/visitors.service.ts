@@ -69,4 +69,8 @@ export class VisitorsService {
       { params }
     );
   }
+
+  deleteVisitor(visitorId: string) {
+    return this.http.delete(`${this.BASE_URL}/visitors/${visitorId}`);
+  }
 }

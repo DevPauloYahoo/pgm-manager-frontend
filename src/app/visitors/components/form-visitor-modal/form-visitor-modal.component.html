@@ -28,7 +28,7 @@
                   minlength="6"
                   required
                   type="text" />
-                <div *ngIf="name?.touched && name?.invalid" class="msgError">
+                <div *ngIf="name?.touched && name?.invalid" class="text-danger">
                   {{ validationMessages('name', 'Nome') }}
                 </div>
               </div>
@@ -46,7 +46,7 @@
                   type="text" />
                 <div
                   *ngIf="document?.touched && document?.invalid"
-                  class="msgError">
+                  class="text-danger">
                   {{ validationMessages('document', 'CPF') }}
                 </div>
                 <div

@@ -8,7 +8,6 @@ import { badges } from '../../../utils/badges';
 import { CustomAsynchronousValidationService } from '../../../utils/custom-asynchronous- validation.service';
 import { CustomSynchronousValidationsClass } from '../../../utils/custom-synchronous-validations.class';
 import { ValidationErrorsService } from '../../../utils/validation-errors.service';
-import { VisitorsService } from '../../../visitors/services/visitors.service';
 import { TypeVisitor } from '../../../visitors/types/visitor.type';
 import { VisitsService } from '../../../visits/services/visits.service';
 import { FormVisitorModalService } from '../../services/form-visitor-modal.service';
@@ -58,7 +57,6 @@ export class FormVisitorModalComponent implements OnInit, OnDestroy {
     private readonly formBuilder: FormBuilder,
     private readonly route: ActivatedRoute,
     private readonly visitsService: VisitsService,
-    private readonly visitorsService: VisitorsService,
     private readonly formVisitorModalService: FormVisitorModalService,
     private readonly modalMessageService: ModalMessagesService,
     private readonly validationErrorsService: ValidationErrorsService,

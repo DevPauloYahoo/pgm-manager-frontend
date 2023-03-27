@@ -24,4 +24,8 @@ export class NavbarComponent {
     this.userService.logout();
     this.router.navigate(['']);
   }
+
+  isLogged() {
+    return this.userService.isLogged();
+  }
 }

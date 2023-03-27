@@ -8,6 +8,7 @@ import { ModalMessagesService } from '../../../core/services/modal-messages.serv
 import { ToastMessageService } from '../../../core/services/toast-message.service';
 import { VisitsService } from '../../../visits/services/visits.service';
 import { Visitor } from '../../models/visitor.interface';
+import { VisitorsService } from '../../services/visitors.service';
 import { TypeResponseVisitor, TypeVisitor } from '../../types/visitor.type';
 
 @Component({
@@ -33,8 +34,9 @@ export class VisitorTableComponent {
   constructor(
     private readonly useService: UserService,
     private readonly visitService: VisitsService,
+    private readonly visitorService: VisitorsService,
     private readonly modalMessageService: ModalMessagesService,
-    private readonly messageService: ToastMessageService
+    private readonly toastMessageService: ToastMessageService
   ) {}
 
   onPaginatorChange(event: Event | any) {
@@ -69,8 +71,10 @@ export class VisitorTableComponent {
     return this.useService.verifyRoles(roles);
   }
 
-  onDeleteVisit(visitor: Visitor) {
-    this.messageService.toastSuccess('Visitante removido com sucesso');
-    console.log(visitor);
+  onDeleteVisit(visitor: TypeVisitor) {
+    this.modalMessageService.modalRemoveVisitor({
+      id: visitor.id as string,
+      visitorName: visitor.name as string,
+    });
   }
 }

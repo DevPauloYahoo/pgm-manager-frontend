@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   distinctUntilChanged,
   Observable,
   of,
   Subject,
+  Subscription,
   switchMap,
   take,
   tap,
@@ -13,11 +13,10 @@ import {
 import { debounceTime } from 'rxjs/operators';
 
 import { UserService } from '../auth/services/user.service';
+import { ModalMessagesService } from '../core/services/modal-messages.service';
 import { ToastMessageService } from '../core/services/toast-message.service';
-import { VisitFormModalComponent } from '../visits/components/visit-form-modal/visit-form-modal.component';
 import { FormVisitModalService } from '../visits/services/form-visit-modal.service';
 import { VisitsService } from '../visits/services/visits.service';
-import { VisitorModalComponent } from './components/visitor-form-modal/visitor-modal.component';
 import { Visitor } from './models/visitor.interface';
 import { FormVisitorModalService } from './services/form-visitor-modal.service';
 import { VisitorsService } from './services/visitors.service';
@@ -33,14 +32,15 @@ import {
   templateUrl: './visitors.component.html',
   styleUrls: ['./visitors.component.css'],
 })
-export class VisitorsComponent implements OnInit {
+export class VisitorsComponent implements OnInit, OnDestroy {
   visitors$: Observable<TypeResponseVisitor<Visitor>> = new Observable<
     TypeResponseVisitor<Visitor>
   >();
   debounce$: Subject<string> = new Subject<string>();
+  unsubscriptionVisit$?: Subscription;
+
   searchFilter = '';
   usedBadges: string[] = [];
-
   dataPagination: Partial<TypePageableVisitor> = {
     search: '',
     limit: 0,
@@ -51,10 +51,10 @@ export class VisitorsComponent implements OnInit {
     private readonly visitorsService: VisitorsService,
     private readonly visitsService: VisitsService,
     private readonly userService: UserService,
-    private readonly messageService: ToastMessageService,
+    private readonly modalMessage: ModalMessagesService,
+    private readonly toastMessageService: ToastMessageService,
     private readonly formVisitModalService: FormVisitModalService,
     private readonly formVisitorModalService: FormVisitorModalService,
-    private dialog: MatDialog,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
   ) {}
@@ -69,6 +69,17 @@ export class VisitorsComponent implements OnInit {
           this.searchFilter = searchValue;
         },
       });
+
+    this.unsubscriptionVisit$ = this.modalMessage
+      .getUpdateVisitorTable()
+      .pipe(
+        tap(value => {
+          if (value) {
+            this.visitors$ = this.getVisitors(this.dataPagination);
+          }
+        })
+      )
+      .subscribe();
   }
 
   onChangePage(event: Event | any) {
@@ -115,55 +126,9 @@ export class VisitorsComponent implements OnInit {
       .subscribe();
   }
 
-  // show modal to create new visit for existing visitor
-  onShowModalCreateVisitToVisitor(visitor: TypeVisitor) {
-    const visitorRest = {
-      id: visitor.id,
-      name: visitor.name,
-      document: visitor.document,
-    };
-    const dialogRef = this.dialog.open(VisitFormModalComponent, {
-      data: visitorRest,
-      width: '600px',
-      disableClose: true,
-      position: {
-        top: '100px',
-      },
-    });
-
-    dialogRef
-      .afterClosed()
-      .pipe(
-        tap((data: TypeVisitToVisitor) => {
-          if (data) {
-            this.createVisitToVisitor(data);
-          }
-        }),
-        take(1)
-      )
-      .subscribe();
-  }
-
-  // show modal to create new visitor
-  onShowModalCreateVisitor() {
-    const dialogRef = this.dialog.open(VisitorModalComponent, {
-      width: '600px',
-      disableClose: true,
-      position: {
-        top: '100px',
-      },
-    });
-    dialogRef
-      .afterClosed()
-      .pipe(
-        tap((data: TypeVisitor) => {
-          if (data) {
-            this.createVisitor(data);
-          }
-        }),
-        take(1)
-      )
-      .subscribe();
+  ngOnDestroy() {
+    this.debounce$.unsubscribe();
+    this.unsubscriptionVisit$?.unsubscribe();
   }
 
   // private methods
@@ -187,7 +152,9 @@ export class VisitorsComponent implements OnInit {
       )
       .pipe(
         tap(() => {
-          this.messageService.toastSuccess('Visitante cadastrado com sucesso');
+          this.toastMessageService.toastSuccess(
+            'Visitante cadastrado com sucesso'
+          );
         })
       );
   }
@@ -204,7 +171,7 @@ export class VisitorsComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          this.messageService.toastSuccess(
+          this.toastMessageService.toastSuccess(
             'Atendimento cadastrado com sucesso'
           );
         },

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
@@ -45,9 +45,10 @@ export class FormVisitModalComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    public readonly swalTargets: SwalPortalTargets,
     private readonly formBuilder: FormBuilder,
     private readonly route: ActivatedRoute,
+    private readonly renderer: Renderer2,
+    public readonly swalTargets: SwalPortalTargets,
     private readonly visitsService: VisitsService,
     private readonly visitorsService: VisitorsService,
     private readonly formModalService: FormVisitModalService,

@@ -52,7 +52,6 @@ export class ConfirmationModalComponent implements OnInit, OnDestroy {
   }
 
   onCloseVisits() {
-    // this.closeVisit.emit(this.visitClose.id);
     this.formModal.hide();
   }
 
