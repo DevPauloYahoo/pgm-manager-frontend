@@ -12,8 +12,8 @@ const swalVisitActive = Swal.mixin({
   customClass: {
     actions: 'm-0',
     htmlContainer: 'm-3',
-    confirmButton: 'btn btn-primary',
-    cancelButton: 'btn btn-secondary ms-3',
+    confirmButton: 'btn btn-primary btn-sm',
+    cancelButton: 'btn btn-secondary ms-3 btn-sm',
   },
   buttonsStyling: false,
   background: 'aliceblue',
@@ -53,7 +53,7 @@ export class ModalMessagesService {
                   <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
               </div>
               <div class="col-10 row">
-                  <h3 class="text-primary my-auto"><strong>Procuradoria Geral - SGA</strong></h3>
+                  <h2 class="text-primary my-auto">Procuradoria Geral - SGA</h2>
               </div>
 
           </div>
@@ -102,7 +102,7 @@ export class ModalMessagesService {
                 <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
             </div>
             <div class="col-10 row">
-                <h3 class="text-primary my-auto"><strong>Procuradoria Geral - SGA</strong></h3>
+                <h2 class="text-primary my-auto">Procuradoria Geral - SGA</h2>
             </div>
 
         </div>
@@ -137,7 +137,7 @@ export class ModalMessagesService {
                 <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
             </div>
             <div class="col-10 row">
-                <h3 class="text-info my-auto"><strong>Procuradoria Geral - SGA</strong></h3>
+                <h2 class="text-info my-auto">>Procuradoria Geral - SGA</h2>
             </div>
 
         </div>
@@ -171,7 +171,7 @@ export class ModalMessagesService {
                   <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
               </div>
               <div class="col-10 row">
-                  <h3 class="text-primary my-auto"><strong>Procuradoria Geral - SGA</strong></h3>
+                  <h2 class="text-primary my-auto">Procuradoria Geral - SGA</h2>
               </div>
 
           </div>

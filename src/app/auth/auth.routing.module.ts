@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { SignInComponent } from './components/sign-in/sign-in.component';
-import { LoginGuard } from './guards/login.guard';
+import { loginFnGuard } from './guards/login-fn.guard';
 import { HomeComponent } from './home.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    canActivate: [LoginGuard],
+    canActivate: [loginFnGuard],
     children: [
       {
         path: '',

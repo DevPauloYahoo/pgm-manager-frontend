@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthGuard } from '../auth/guards/auth.guard';
+import { authFnGuard } from '../auth/guards/auth-fn.guard';
 import { VisitListResolver } from './resolvers/visit-list/visit-list.resolver';
 import { VisitsComponent } from './visits.component';
 
@@ -12,7 +12,7 @@ const routes: Routes = [
     resolve: {
       visits$: VisitListResolver,
     },
-    canActivate: [AuthGuard],
+    canActivate: [authFnGuard],
   },
 ];
 
