@@ -1,17 +1,17 @@
 <div class="card bg-primary mb-2" style="height: 40px">
   <div class="row text-center pt-1">
-    <h2 style="color: #fff">
+    <h2 class="text-light">
       {{ statusVisits ? 'Atendimentos encerrados' : 'Atendimentos ativos' }}
     </h2>
   </div>
 </div>
-<div [@bounce]="bounce" class="card mb-2">
-  <div class="card-body">
+<div [@bounce]="bounce" class="card mb-2 table-responsive-md row-cols-lg-12">
+  <div class="card-body p-1">
     <table
       *ngIf="visits$ | async as visits"
       aria-label="teste"
       class="table table-hover">
-      <thead>
+      <thead class="table-primary">
         <tr>
           <th scope="col">Nome</th>
           <th scope="col">CPF</th>
@@ -19,6 +19,7 @@
           <th scope="col">Crachá</th>
           <th scope="col">Início</th>
           <th scope="col">Fim</th>
+          <th scope="col">Duração</th>
           <th>Atendimento</th>
         </tr>
       </thead>
@@ -40,6 +41,7 @@
           <td>{{ visit.badge }}</td>
           <td>{{ visit.created_at | date : 'dd/MM/yyyy HH:mm' }}</td>
           <td>{{ visit.updated_at | date : 'dd/MM/yyyy HH:mm' }}</td>
+          <td>10 minutos</td>
           <td *ngIf="!statusVisits">
             <button
               (click)="

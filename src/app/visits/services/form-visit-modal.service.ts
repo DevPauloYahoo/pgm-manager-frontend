@@ -11,12 +11,14 @@ import {
 })
 export class FormVisitModalService {
   showVisitModal = new EventEmitter<any>();
-  visitorData: BehaviorSubject<TypeVisitor> = new BehaviorSubject<TypeVisitor>({
-    visit: [],
-    name: '',
-    document: '',
-    id: '',
-  });
+  visitorData$: BehaviorSubject<TypeVisitor> = new BehaviorSubject<TypeVisitor>(
+    {
+      visit: [],
+      name: '',
+      document: '',
+      id: '',
+    }
+  );
 
   @Output() saveNewVisit: EventEmitter<TypeVisitToVisitor> = new EventEmitter();
 
@@ -29,11 +31,11 @@ export class FormVisitModalService {
   }
 
   setVisitData(visit: TypeVisitor) {
-    this.visitorData.next(visit);
+    this.visitorData$.next(visit);
   }
 
   getVisitData() {
-    return this.visitorData.asObservable();
+    return this.visitorData$.asObservable();
   }
 
   setSaveNewVisit(data: TypeVisitToVisitor) {

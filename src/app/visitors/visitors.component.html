@@ -1,9 +1,8 @@
 <nav class="navbar d-flex mt-lg-5 mt-sm-2">
-  <div class="col-3"><h1>Lista de visitantes</h1></div>
+  <div class="col-md-3"><h1>Lista de visitantes</h1></div>
   <div class="col-md-6">
     <div class="input-group">
       <span class="input-group-text"><i class="bi bi-search"></i></span>
-
       <input
         (keyup)="debounce$.next($any($event.target).value)"
         aria-label="Buscar"
@@ -14,7 +13,7 @@
     </div>
   </div>
 
-  <div class="col-3 text-end">
+  <div class="col-md-3 text-end mt-2">
     <button
       (click)="onShowVisitorCreate()"
       [disabled]="!isExistRole(['USER', 'ADMIN'])"
@@ -32,4 +31,5 @@
   [visitors$]="
     visitors$ | filterSearchVisitors : searchFilter
   "></pgm-visitor-table>
+
 <pgm-form-visitor-modal></pgm-form-visitor-modal>

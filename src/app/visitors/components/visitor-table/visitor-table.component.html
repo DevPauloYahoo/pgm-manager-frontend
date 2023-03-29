@@ -3,13 +3,13 @@
     <h2 style="color: #fff">Visitantes cadastrados</h2>
   </div>
 </div>
-<div [@bounce]="bounce" class="card mb-2">
-  <div class="card-body">
+<div [@bounce]="bounce" class="card mb-2 table-responsive-lg">
+  <div class="card-body p-1">
     <table
       *ngIf="visitors$ | async as visitors"
       aria-label="visitors"
       class="table table-hover">
-      <thead>
+      <thead class="table-primary">
         <tr>
           <th scope="col">Nome</th>
           <th scope="col">CPF</th>
@@ -50,7 +50,7 @@
       </tbody>
     </table>
     <ng-template #notFoundData>
-      <h2>No data</h2>
+      <h2 class="text-danger">No data</h2>
     </ng-template>
   </div>
 </div>
@@ -74,4 +74,5 @@
       previousLabel="Anterior"></pagination-controls>
   </div>
 </div>
+
 <pgm-form-visit-modal></pgm-form-visit-modal>
