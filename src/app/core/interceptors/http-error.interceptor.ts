@@ -34,25 +34,21 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         }
 
         if (err.error.error === 'unauthorized_client') {
-          this.toastMessageService.toastError('Credenciais inválidas');
+          this.modalMessageService.modalErrorMessage('Credenciais inválidas');
         }
 
         if (err.error.title === 'PrismaClientInitializationError') {
-          this.toastMessageService.toastError(
-            'Erro acesso database. Tente novamente'
-          );
+          this.modalMessageService.modalErrorMessage('Falha no database');
+          this.userService.invalidAndExpiredAccessToken();
         }
 
         if (err.error.errorCode === 'P1001') {
-          this.toastMessageService.toastError(
-            'Erro acesso database. Tente novamente'
-          );
+          this.modalMessageService.modalErrorMessage('Falha no database');
+          this.userService.invalidAndExpiredAccessToken();
         }
 
         if (err.status === 504) {
-          this.toastMessageService.toastError(
-            'Erro no servidor de autenticação. Tente novamente'
-          );
+          this.modalMessageService.modalErrorMessage('Falha na autenticação');
         }
 
         // validações usando backend para se conectar ao keycloak
@@ -67,20 +63,17 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             err.status === 401 &&
             err.error.message === 'unauthorized_client'
           ) {
-            this.toastMessageService.toastError('Credenciais inválidas');
+            this.modalMessageService.modalErrorMessage('Credenciais inválidas');
           }
 
           if (err.status === 0) {
-            this.toastMessageService.toastError(
-              'Erro interno no servidor. Tente novamente'
-            );
-
+            this.modalMessageService.modalErrorMessage('Erro interno');
             this.userService.invalidAndExpiredAccessToken();
           }
 
           if (err.status === 403) {
             this.modalMessageService.modalTokenExpired(
-              'Sua conexão expirou. Faça login'
+              'Sua conexão expirou. Faça login novamente'
             );
           }
 
@@ -88,10 +81,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             err.status === 500 &&
             err.error.title === 'KeycloakConnectionError'
           ) {
-            this.toastMessageService.toastError(
-              'Erro no servidor de autenticação. Tente novamente'
-            );
-
+            this.modalMessageService.modalErrorMessage('Falha na autenticação');
             this.userService.invalidAndExpiredAccessToken();
           }
         }

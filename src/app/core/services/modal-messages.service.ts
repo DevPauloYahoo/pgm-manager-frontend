@@ -53,14 +53,14 @@ export class ModalMessagesService {
                   <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
               </div>
               <div class="col-10 row">
-                  <h2 class="text-primary my-auto">Procuradoria Geral - SGA</h2>
+                  <h2 class="text-primary my-auto">Procuradoria Geral do Município</h2>
               </div>
 
           </div>
           </div>
           <div class="card mt-3 bg-primary border-0 text-light" style="--bs-text-opacity: .9;">
             <div class="col-12 row p-2">
-              <h3 class=" my-auto">ENCERRAR ATENDIMENTO</h3>
+              <h3 class=" my-auto">SGA - ENCERRAR ATENDIMENTO</h3>
             </div>
           </div>
           <div class="card border-primary mt-3 pt-3">
@@ -102,14 +102,14 @@ export class ModalMessagesService {
                 <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
             </div>
             <div class="col-10 row">
-                <h2 class="text-primary my-auto">Procuradoria Geral - SGA</h2>
+                <h2 class="text-primary my-auto">Procuradoria Geral do Município</h2>
             </div>
 
         </div>
         </div>
         <div class="card mt-3 bg-primary border-0 text-light" style="--bs-text-opacity: .9;">
           <div class="col-12 row p-2">
-            <h3 class=" my-auto">ATENDIMENTO ATIVO</h3>
+            <h3 class=" my-auto">SGA - ATENDIMENTO ATIVO</h3>
           </div>
         </div>
         <div class="card border-primary mt-3 p-3">
@@ -137,14 +137,14 @@ export class ModalMessagesService {
                 <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
             </div>
             <div class="col-10 row">
-                <h2 class="text-info my-auto">>Procuradoria Geral - SGA</h2>
+                <h2 class="text-info my-auto">>Procuradoria Geral do Município</h2>
             </div>
 
         </div>
         </div>
         <div class="card mt-3 bg-info border-0 text-dark" style="--bs-text-opacity: .9;">
           <div class="col-12 row p-2">
-            <h3 class=" my-auto">SESSÃO EXPIROU</h3>
+            <h3 class=" my-auto">SGA - SESSÃO EXPIROU</h3>
           </div>
         </div>
         <div class="card border-info mt-3 p-3">
@@ -171,14 +171,14 @@ export class ModalMessagesService {
                   <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
               </div>
               <div class="col-10 row">
-                  <h2 class="text-primary my-auto">Procuradoria Geral - SGA</h2>
+                  <h2 class="text-primary my-auto">Procuradoria Geral do Município</h2>
               </div>
 
           </div>
           </div>
           <div class="card mt-3 bg-danger border-0 text-light" style="--bs-text-opacity: .9;">
             <div class="col-12 row p-2">
-              <h3 class=" my-auto">EXCLUIR VISITANTE</h3>
+              <h3 class=" my-auto">SGA - EXCLUIR VISITANTE</h3>
             </div>
           </div>
           <div class="card border-primary mt-3 pt-3">
@@ -211,5 +211,37 @@ export class ModalMessagesService {
             .subscribe();
         }
       });
+  }
+
+  modalErrorMessage(message: string) {
+    swalVisitActive.fire({
+      customClass: {
+        confirmButton: 'btn btn-danger',
+      },
+      html: `
+        <div class="card border-danger">
+          <div class="d-flex">
+            <div class="col-2 row">
+                <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
+            </div>
+            <div class="col-10 row">
+                <h2 class="text-danger my-auto">Procuradoria Geral do Município</h2>
+            </div>
+
+        </div>
+        </div>
+        <div class="card mt-3 bg-danger border-0 text-light" style="--bs-text-opacity: .9;">
+          <div class="col-12 row p-2">
+            <h3 class=" my-auto">SGA - ERRO</h3>
+          </div>
+        </div>
+        <div class="card border-danger mt-3 p-3">
+          <div class="col-12 row">
+            <h2 class="text-center mb-0">${message}.</h2>
+            <span>Tente novamente.</span>
+          </div>
+        </div>
+      `,
+    });
   }
 }
