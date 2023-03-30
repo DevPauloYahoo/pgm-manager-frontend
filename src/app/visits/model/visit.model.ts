@@ -7,5 +7,6 @@ export interface VisitModel {
   secretary: string;
   created_at: string;
   updated_at: string;
+  duration: number;
   visitor: TypeVisitor;
 }
