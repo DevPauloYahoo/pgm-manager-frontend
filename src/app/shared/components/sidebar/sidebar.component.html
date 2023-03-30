@@ -1,0 +1,67 @@
+<div
+  aria-labelledby="offcanvasExampleLabel"
+  class="offcanvas offcanvas-start d-flex flex-column flex-shrink-0 bg-light p-2"
+  id="offcanvasExample"
+  style="width: 10rem"
+  tabindex="-1">
+  <div *ngIf="user$ | async as user" class="mb-3">
+    <a
+      class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none">
+      <img
+        alt="user"
+        class="rounded-circle"
+        height="50"
+        src="https://github.com/mdo.png"
+        width="50" />
+    </a>
+    <div class="align-items-center d-flex justify-content-center">
+      <span class="text-primary">{{
+        user?.preferred_username?.toUpperCase()
+      }}</span>
+    </div>
+  </div>
+  <ul class="nav nav-pills nav-flush flex-column mb-auto">
+    <li class="nav-item">
+      <a
+        [routerLink]="['']"
+        aria-current="page"
+        class="nav-link active"
+        href="#">
+        <i class="bi bi-house-fill"></i>
+        Home
+      </a>
+    </li>
+    <li>
+      <a
+        [routerLink]="['visitors']"
+        class="nav-link py-3 border-bottom rounded-0"
+        data-bs-placement="right"
+        data-bs-toggle="tooltip">
+        <i class="bi bi-person-vcard"></i>
+        Visitante
+      </a>
+    </li>
+    <li>
+      <a
+        [routerLink]="['visits']"
+        class="nav-link py-3 border-bottom rounded-0"
+        data-bs-placement="right"
+        data-bs-toggle="tooltip">
+        <i class="bi bi-people-fill"></i>
+        Atendimento
+      </a>
+    </li>
+    <li>
+      <a
+        (click)="logout()"
+        class="nav-link py-3 border-bottom rounded-0"
+        data-bs-placement="right"
+        data-bs-toggle="tooltip"
+        href="#"
+        title="Products">
+        <i class="bi bi-door-open-fill"></i>
+        Sair
+      </a>
+    </li>
+  </ul>
+</div>

@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 const COMPONENTS = [
   NavbarComponent,
@@ -13,8 +14,8 @@ const COMPONENTS = [
 ];
 
 @NgModule({
-  declarations: [COMPONENTS],
+  declarations: [COMPONENTS, SidebarComponent],
   imports: [CommonModule, RouterModule],
-  exports: [COMPONENTS],
+  exports: [COMPONENTS, SidebarComponent],
 })
 export class ComponentsModule {}

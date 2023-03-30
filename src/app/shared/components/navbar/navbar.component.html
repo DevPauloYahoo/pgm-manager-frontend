@@ -1,7 +1,19 @@
 <nav *ngIf="isLogged()" class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <img alt="logo" class="me-3" src="assets/img/logo_2.png" />
-    <a [routerLink]="['/']" class="navbar-brand">PGM - SGA</a>
+    <img
+      alt="logo"
+      class="me-3"
+      data-bs-target="#offcanvasExample"
+      data-bs-toggle="offcanvas"
+      src="assets/img/logo_2.png" />
+    <a
+      [routerLink]="['/']"
+      aria-controls="offcanvasExample"
+      class="navbar-brand"
+      data-bs-target="#offcanvasExample"
+      data-bs-toggle="offcanvas"
+      >PGM - SGA</a
+    >
     <button
       aria-controls="navbarToggler"
       aria-expanded="false"
