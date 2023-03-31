@@ -16,8 +16,6 @@ import { VisitModel } from './model/visit.model';
 import { VisitsService } from './services/visits.service';
 import { TypePageableVisit, TypeResponseVisit } from './types/visit.type';
 
-// declare let window: any;
-
 @Component({
   selector: 'pgm-visit-list',
   templateUrl: './visits.component.html',
@@ -28,7 +26,7 @@ export class VisitsComponent implements OnInit, OnDestroy {
   statusVisit = false;
   searchFilter = '';
   pipeStatus = false;
-  debounce: Subject<string> = new Subject<string>();
+  debounce = new Subject<string>();
 
   visits: TypeResponseVisit<VisitModel> = {
     content: [],
@@ -44,10 +42,7 @@ export class VisitsComponent implements OnInit, OnDestroy {
     page: 0,
   };
 
-  visits$: Observable<TypeResponseVisit<VisitModel>> = new Observable<
-    TypeResponseVisit<VisitModel>
-  >();
-
+  visits$ = new Observable<TypeResponseVisit<VisitModel>>();
   unsubscriptionVisit$?: Subscription;
 
   constructor(
@@ -74,11 +69,10 @@ export class VisitsComponent implements OnInit, OnDestroy {
         },
       });
 
-    this.unsubscriptionVisit$ = this.modalMessageService
-      .getStatusVisit()
+    this.unsubscriptionVisit$ = this.modalMessageService.statusVisit$
       .pipe(
-        tap(value => {
-          if (value) {
+        tap(status => {
+          if (status) {
             this.visits$ = this.getVisits(this.dataPagination);
           }
         })

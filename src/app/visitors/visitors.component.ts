@@ -70,8 +70,7 @@ export class VisitorsComponent implements OnInit, OnDestroy {
         },
       });
 
-    this.unsubscriptionVisit$ = this.modalMessage
-      .getUpdateVisitorTable()
+    this.unsubscriptionVisit$ = this.modalMessage.updateVisitor$
       .pipe(
         tap(value => {
           if (value) {

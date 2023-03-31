@@ -5,7 +5,6 @@ import { Observable, take, tap } from 'rxjs';
 
 import { UserService } from '../../../auth/services/user.service';
 import { ModalMessagesService } from '../../../core/services/modal-messages.service';
-import { ToastMessageService } from '../../../core/services/toast-message.service';
 import { VisitsService } from '../../../visits/services/visits.service';
 import { Visitor } from '../../models/visitor.interface';
 import { VisitorsService } from '../../services/visitors.service';
@@ -35,8 +34,7 @@ export class VisitorTableComponent {
     private readonly useService: UserService,
     private readonly visitService: VisitsService,
     private readonly visitorService: VisitorsService,
-    private readonly modalMessageService: ModalMessagesService,
-    private readonly toastMessageService: ToastMessageService
+    private readonly modalMessageService: ModalMessagesService
   ) {}
 
   onPaginatorChange(event: Event | any) {
