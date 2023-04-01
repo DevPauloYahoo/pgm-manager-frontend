@@ -1,11 +1,10 @@
-<nav
-  *ngIf="isLogged()"
-  class="navbar navbar-expand-lg navbar-dark bg-primary px-2">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary px-2">
   <div
-    class="side-navbar-button p-2 me-3 text-light"
+    *ngIf="isLogged()"
+    class="side-navbar-button text-white"
     data-bs-target="#offcanvasExample"
     data-bs-toggle="offcanvas">
-    <span class="navbar-toggler-icon"></span>
+    <i class="navbar-toggler-icon fs-5 ms-4"></i>
   </div>
   <div class="m-auto">
     <img
@@ -17,60 +16,3 @@
     <a class="navbar-brand fs-3"> Procuradoria Geral do Município </a>
   </div>
 </nav>
-
-<!--<nav *ngIf="isLogged()" class="navbar navbar-expand-lg navbar-dark bg-primary">-->
-<!--  <div class="container-fluid">-->
-<!--    <img-->
-<!--      alt="logo"-->
-<!--      class="me-3"-->
-<!--      data-bs-target="#offcanvasExample"-->
-<!--      data-bs-toggle="offcanvas"-->
-<!--      src="assets/img/logo_2.png" />-->
-<!--    <a-->
-<!--      [routerLink]="['/']"-->
-<!--      aria-controls="offcanvasExample"-->
-<!--      class="navbar-brand"-->
-<!--      data-bs-target="#offcanvasExample"-->
-<!--      data-bs-toggle="offcanvas"-->
-<!--      >PGM - SGA</a-->
-<!--    >-->
-<!--    <button-->
-<!--      aria-controls="navbarToggler"-->
-<!--      aria-expanded="false"-->
-<!--      aria-label="Toggle navigation"-->
-<!--      class="navbar-toggler small"-->
-<!--      data-bs-target="#navbarToggler"-->
-<!--      data-bs-toggle="collapse"-->
-<!--      type="button">-->
-<!--      <span class="navbar-toggler-icon"></span>-->
-<!--    </button>-->
-<!--    <div class="collapse navbar-collapse container" id="navbarToggler">-->
-<!--      <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
-<!--        <li class="nav-item">-->
-<!--          <button [routerLink]="['visitors']" class="btn btn-primary">-->
-<!--            Visitantes-->
-<!--          </button>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <button-->
-<!--            [routerLink]="['visits']"-->
-<!--            class="btn btn-primary"-->
-<!--            tabindex="-1">-->
-<!--            Atendimentos-->
-<!--          </button>-->
-<!--        </li>-->
-<!--      </ul>-->
-<!--    </div>-->
-<!--    <div *ngIf="user$ | async as user; else signIn">-->
-<!--      <span class="me-5 text-light"-->
-<!--        >Usuário: {{ user?.preferred_username?.toUpperCase() }}-->
-<!--      </span>-->
-<!--      <button (click)="logout()" class="btn btn-primary">Logout</button>-->
-<!--    </div>-->
-<!--    <ng-template #signIn>-->
-<!--      <span>-->
-<!--        <a>Faça login</a>-->
-<!--      </span>-->
-<!--    </ng-template>-->
-<!--  </div>-->
-<!--</nav>-->

@@ -1,8 +1,12 @@
 img {
-  height: 60px;
+  height: 50px;
   cursor: pointer;
 }
 
 li {
   font-size: 17px;
+}
+
+.side-navbar-button {
+  cursor: pointer;
 }

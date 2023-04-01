@@ -4,7 +4,7 @@
   id="offcanvasExample"
   style="width: 10rem"
   tabindex="-1">
-  <div *ngIf="user$ | async as user" class="mb-5">
+  <div *ngIf="user$ | async as user" class="mb-5 border-bottom">
     <a
       class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none">
       <img
@@ -21,37 +21,32 @@
     </div>
   </div>
   <ul class="nav nav-pills nav-flush flex-column fs-6 align-self-center">
-    <li class="border-bottom border-top">
+    <li class="mb-3">
       <button
         [routerLink]="['visitors']"
-        class="nav-link py-3 text-white"
-        data-bs-dismiss="offcanvas"
-        data-bs-placement="right"
-        data-bs-toggle="tooltip">
-        <i class="bi bi-person-vcard fs-4 mx-3"></i>
-        Visitante
+        class="nav-link px-0 align-middle text-light"
+        data-bs-dismiss="offcanvas">
+        <i class="bi bi-person-vcard fs-4"></i>
+        <span class="ms-1 d-none d-sm-inline">Visitante</span>
       </button>
     </li>
-    <li class="border-bottom">
+
+    <li class="mb-3">
       <button
         [routerLink]="['visits']"
-        class="nav-link py-3 text-white"
-        data-bs-dismiss="offcanvas"
-        data-bs-placement="right"
-        data-bs-toggle="tooltip">
+        class="nav-link px-0 align-middle text-light"
+        data-bs-dismiss="offcanvas">
         <i class="bi bi-people-fill fs-4"></i>
-        Atendimento
+        <span class="ms-1 d-none d-sm-inline">Atedimento</span>
       </button>
     </li>
-    <li class="border-bottom">
+    <li>
       <button
         (click)="logout()"
-        class="nav-link py-3 text-white"
-        data-bs-dismiss="offcanvas"
-        data-bs-placement="right"
-        data-bs-toggle="tooltip">
-        <i class="bi bi-door-open-fill fs-4 mx-4"></i>
-        Logout
+        class="nav-link px-0 align-middle text-light"
+        data-bs-dismiss="offcanvas">
+        <i class="bi bi-door-open-fill fs-4"></i>
+        <span class="ms-1 d-none d-sm-inline">Sair</span>
       </button>
     </li>
   </ul>

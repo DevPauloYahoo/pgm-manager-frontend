@@ -78,26 +78,26 @@
     <ng-template #notFoundData>
       <h2 class="text-danger">No data</h2>
     </ng-template>
-  </div>
-</div>
-<div class="row">
-  <div class="col">
-    <select
-      (change)="onTableSizeChange($event)"
-      class="form-select float-end"
-      style="width: 80px; height: 35px; font-size: small">
-      <option value="5">5</option>
-      <option selected value="10">10</option>
-      <option value="15">15</option>
-    </select>
+    <div class="row">
+      <div class="col">
+        <select
+          (change)="onTableSizeChange($event)"
+          class="form-select float-end"
+          style="width: 80px; height: 35px; font-size: small">
+          <option value="5">5</option>
+          <option selected value="10">10</option>
+          <option value="15">15</option>
+        </select>
 
-    <pagination-controls
-      (pageBoundsCorrection)="onPaginatorChange($event)"
-      (pageChange)="onPaginatorChange($event)"
-      [autoHide]="false"
-      [maxSize]="5"
-      class="float-end me-3"
-      nextLabel="Próxima"
-      previousLabel="Anterior"></pagination-controls>
+        <pagination-controls
+          (pageBoundsCorrection)="onPaginatorChange($event)"
+          (pageChange)="onPaginatorChange($event)"
+          [autoHide]="false"
+          [maxSize]="5"
+          class="float-end me-3"
+          nextLabel="Próxima"
+          previousLabel="Anterior"></pagination-controls>
+      </div>
+    </div>
   </div>
 </div>

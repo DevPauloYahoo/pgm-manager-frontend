@@ -1,6 +1,6 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { bounceIn } from 'ng-animate';
+import { bounceInLeft } from 'ng-animate';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/app/auth/services/user.service';
 
@@ -14,7 +14,7 @@ import { TypeResponseVisit } from '../../types/visit.type';
   templateUrl: './visit-table.component.html',
   styleUrls: ['./visit-table.component.css'],
   animations: [
-    trigger('bounce', [transition('* => *', useAnimation(bounceIn))]),
+    trigger('bounce', [transition('* => *', useAnimation(bounceInLeft))]),
   ],
 })
 export class VisitTableComponent {

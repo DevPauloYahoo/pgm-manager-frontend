@@ -1,7 +1,9 @@
+import { transition, trigger, useAnimation } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { bounceInRight } from 'ng-animate';
 import { catchError, EMPTY, tap } from 'rxjs';
 
 import { SignInService } from '../../services/sign-in.service';
@@ -10,8 +12,12 @@ import { SignInService } from '../../services/sign-in.service';
   selector: 'pgm-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css'],
+  animations: [
+    trigger('bounce', [transition('* => *', useAnimation(bounceInRight))]),
+  ],
 })
 export class SignInComponent implements OnInit {
+  bounce: any;
   signInForm = this.formBuilder.group({
     username: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.min(6)]],
