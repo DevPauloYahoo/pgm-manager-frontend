@@ -1,67 +1,58 @@
 <div
   aria-labelledby="offcanvasExampleLabel"
-  class="offcanvas offcanvas-start d-flex flex-column flex-shrink-0 bg-light p-2"
+  class="offcanvas offcanvas-start d-flex flex-column flex-shrink-0 bg-primary bg-opacity-75 p-2"
   id="offcanvasExample"
   style="width: 10rem"
   tabindex="-1">
-  <div *ngIf="user$ | async as user" class="mb-3">
+  <div *ngIf="user$ | async as user" class="mb-5">
     <a
       class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none">
       <img
         alt="user"
-        class="rounded-circle"
-        height="50"
-        src="https://github.com/mdo.png"
-        width="50" />
+        class="rounded-circle border"
+        height="90"
+        src="assets/avatar/avatar_2.png"
+        width="90" />
     </a>
     <div class="align-items-center d-flex justify-content-center">
-      <span class="text-primary">{{
+      <span class="text-white text-wrap">{{
         user?.preferred_username?.toUpperCase()
       }}</span>
     </div>
   </div>
-  <ul class="nav nav-pills nav-flush flex-column mb-auto">
-    <li class="nav-item">
-      <a
-        [routerLink]="['']"
-        aria-current="page"
-        class="nav-link active"
-        href="#">
-        <i class="bi bi-house-fill"></i>
-        Home
-      </a>
-    </li>
-    <li>
-      <a
+  <ul class="nav nav-pills nav-flush flex-column fs-6 align-self-center">
+    <li class="border-bottom border-top">
+      <button
         [routerLink]="['visitors']"
-        class="nav-link py-3 border-bottom rounded-0"
+        class="nav-link py-3 text-white"
+        data-bs-dismiss="offcanvas"
         data-bs-placement="right"
         data-bs-toggle="tooltip">
-        <i class="bi bi-person-vcard"></i>
+        <i class="bi bi-person-vcard fs-4 mx-3"></i>
         Visitante
-      </a>
+      </button>
     </li>
-    <li>
-      <a
+    <li class="border-bottom">
+      <button
         [routerLink]="['visits']"
-        class="nav-link py-3 border-bottom rounded-0"
+        class="nav-link py-3 text-white"
+        data-bs-dismiss="offcanvas"
         data-bs-placement="right"
         data-bs-toggle="tooltip">
-        <i class="bi bi-people-fill"></i>
+        <i class="bi bi-people-fill fs-4"></i>
         Atendimento
-      </a>
+      </button>
     </li>
-    <li>
-      <a
+    <li class="border-bottom">
+      <button
         (click)="logout()"
-        class="nav-link py-3 border-bottom rounded-0"
+        class="nav-link py-3 text-white"
+        data-bs-dismiss="offcanvas"
         data-bs-placement="right"
-        data-bs-toggle="tooltip"
-        href="#"
-        title="Products">
-        <i class="bi bi-door-open-fill"></i>
-        Sair
-      </a>
+        data-bs-toggle="tooltip">
+        <i class="bi bi-door-open-fill fs-4 mx-4"></i>
+        Logout
+      </button>
     </li>
   </ul>
 </div>

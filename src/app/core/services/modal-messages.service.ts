@@ -79,7 +79,7 @@ export class ModalMessagesService {
         customClass: {
           confirmButton: 'btn btn-info',
         },
-        html: modalTokenExpiredHtml,
+        html: modalTokenExpiredHtml(message),
       })
       .then(result => {
         if (result.isConfirmed) {

@@ -13,7 +13,7 @@ export const errorModalHtml = (message: string) => `
  </div>
 <div class="card mt-3 bg-danger border-0 text-light" style="--bs-text-opacity: .9;">
   <div class="col-12 row p-2">
-    <h3 class=" my-auto">SGA - ERRO</h3>
+    <h3 class="fw-semibold my-auto">SGA - ERRO</h3>
   </div>
 </div>
 <div class="card border-danger mt-3 p-3">
@@ -40,7 +40,7 @@ export const modalRemoveVisitHtml = (data: {
   </div>
   <div class="card mt-3 bg-danger border-0 text-light" style="--bs-text-opacity: .9;">
             <div class="col-12 row p-2">
-              <h3 class=" my-auto">SGA - EXCLUIR VISITANTE</h3>
+              <h3 class="fw-semibold my-auto">SGA - EXCLUIR VISITANTE</h3>
             </div>
   </div>
   <div class="card border-primary mt-3 pt-3">
@@ -60,13 +60,13 @@ export const modalTokenExpiredHtml = (message: string) => `
       <img style="height: 50px; width: 70px;" src="assets/img/logo_2.png" alt="logo">
     </div>
     <div class="col-10 row">
-      <h2 class="text-info my-auto">>Procuradoria Geral do Município</h2>
+      <h2 class="text-info my-auto">Procuradoria Geral do Município</h2>
     </div>
   </div>
 </div>
 <div class="card mt-3 bg-info border-0 text-dark" style="--bs-text-opacity: .9;">
   <div class="col-12 row p-2">
-    <h3 class=" my-auto">SGA - SESSÃO EXPIROU</h3>
+    <h3 class="fw-semibold my-auto">SGA - SESSÃO EXPIROU</h3>
   </div>
 </div>
 <div class="card border-info mt-3 p-3">
@@ -93,7 +93,7 @@ export const modalVisitActiveHtml = (
 </div>
 <div class="card mt-3 bg-primary border-0 text-light" style="--bs-text-opacity: .9;">
   <div class="col-12 row p-2">
-    <h3 class=" my-auto">SGA - ATENDIMENTO ATIVO</h3>
+    <h3 class="fw-semibold my-auto">SGA - ATENDIMENTO ATIVO</h3>
   </div>
 </div>
 <div class="card border-primary mt-3 p-3">
@@ -119,7 +119,7 @@ export const modalFinalizeVisitHtml = (data: VisitCloseInterface) => `
 </div>
 <div class="card mt-3 bg-primary border-0 text-light" style="--bs-text-opacity: .9;">
   <div class="col-12 row p-2">
-    <h3 class=" my-auto">SGA - ENCERRAR ATENDIMENTO</h3>
+    <h3 class="fw-semibold my-auto">SGA - ENCERRAR ATENDIMENTO</h3>
   </div>
 </div>
 <div class="card border-primary mt-3 pt-3">
