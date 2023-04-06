@@ -1,10 +1,10 @@
-version: '3.4'
+version: '3.9'
 
 services:
   pgm-manager-frontend:
-    image: pgm-manager-frontend
+    image: pgm-frontend
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - 8081:80
+      - "8081:80"

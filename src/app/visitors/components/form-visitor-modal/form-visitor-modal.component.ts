@@ -118,6 +118,7 @@ export class FormVisitorModalComponent implements OnInit, OnDestroy {
       this.formVisitorModalService.setSaveNewVisitor(data);
       this.formVisitorModal.hide();
     }
+    this.formVisitor.reset();
   }
 
   onSelectVisitStatus() {

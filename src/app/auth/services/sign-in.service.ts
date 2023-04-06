@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 
 import { UserService } from './user.service';
@@ -12,7 +13,8 @@ export class SignInService {
 
   constructor(
     private readonly http: HttpClient,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly router: Router
   ) {}
 
   signIn(username: string, password: string) {
@@ -36,10 +38,10 @@ export class SignInService {
     );
     return this.http
       .post<{ access_token: string; refresh_token: string }>(
-        'auth/realms/pgm/protocol/openid-connect/token',
+        'realms/pgm/protocol/openid-connect/token',
         new URLSearchParams({
           client_id: 'pgm_manager',
-          client_secret: 'i8EsdoagKYZX7IRLce8cul4pH5XEvDgH',
+          client_secret: 'PrGBjZHSQ9TmsyyopeRKFXXK3kmODsMd',
           grant_type: 'password',
           username,
           password,
@@ -56,4 +58,12 @@ export class SignInService {
         })
       );
   }
+
+  // logout() {
+  //   return this.http
+  //     .get('realms/pgm/protocol/openid-connect/logout')
+  //     .subscribe({
+  //       next: () => this.router.navigate(['']),
+  //     });
+  // }
 }

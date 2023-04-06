@@ -47,6 +47,13 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           this.userService.invalidAndExpiredAccessToken();
         }
 
+        if (err.error.errorCode === 'P2021') {
+          this.modalMessageService.modalErrorMessage(
+            'Falha no database (tables)'
+          );
+          this.userService.invalidAndExpiredAccessToken();
+        }
+
         if (err.status === 504) {
           this.modalMessageService.modalErrorMessage('Falha na autenticação');
         }

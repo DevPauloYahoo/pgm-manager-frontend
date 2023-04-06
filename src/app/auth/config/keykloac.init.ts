@@ -6,7 +6,7 @@ export function initializeKeycloak(keycloak: KeycloakService) {
       config: {
         url: 'http://localhost:8080/auth',
         realm: 'pgm',
-        clientId: 'pgm-manager-frontend',
+        clientId: 'pgm-manager',
       },
       initOptions: {
         onLoad: 'check-sso',
