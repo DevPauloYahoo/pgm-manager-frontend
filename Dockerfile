@@ -1,3 +1,4 @@
+# frontend
 FROM node:18-alpine as angular
 WORKDIR /app
 COPY package.json /app

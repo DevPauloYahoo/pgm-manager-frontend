@@ -41,7 +41,7 @@ export class SignInService {
         'realms/pgm/protocol/openid-connect/token',
         new URLSearchParams({
           client_id: 'pgm_manager',
-          client_secret: 'PrGBjZHSQ9TmsyyopeRKFXXK3kmODsMd',
+          client_secret: 'keShwJQAbwxNd9Z3r2lrw0PPZQahUFOa',
           grant_type: 'password',
           username,
           password,
