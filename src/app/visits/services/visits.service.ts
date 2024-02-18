@@ -20,10 +20,10 @@ export class VisitsService {
 
   getVisits({ search, status, page, limit }: Partial<TypePageableVisit>) {
     const params = new HttpParams()
-      .set('search', search || '')
-      .set('status', status || '')
-      .set('page', page || 0)
-      .set('limit', limit || 0);
+      .set('search', search ?? '')
+      .set('status', status ?? '')
+      .set('page', page ?? 0)
+      .set('limit', limit ?? 0);
 
     return this.http.get<TypeResponseVisit<VisitModel>>(
       `${this.BASE_URL}/visits`,

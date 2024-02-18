@@ -73,7 +73,7 @@ export class VisitFormModalComponent implements OnInit {
   }
 
   onConfirm() {
-    const { badge, secretary } = this.formVisit?.get('visit')?.getRawValue();
+    const { badge, secretary } = this.formVisit.get('visit')?.getRawValue();
     const visitorId = this.data.id;
 
     const data: TypeVisitToVisitor = {

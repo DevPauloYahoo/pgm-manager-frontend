@@ -91,7 +91,7 @@ export class FormVisitModalComponent implements OnInit, OnDestroy {
   }
 
   onConfirm() {
-    const { badge, secretary } = this.formVisit?.get('visit')?.getRawValue();
+    const { badge, secretary } = this.formVisit.get('visit')?.getRawValue();
     const visitorId = this.visitorData.id;
 
     const data: TypeVisitToVisitor = {

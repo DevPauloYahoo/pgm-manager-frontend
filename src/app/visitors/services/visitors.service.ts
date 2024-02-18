@@ -34,9 +34,9 @@ export class VisitorsService {
     limit,
   }: Partial<TypePageableVisitor>): Observable<TypeResponseVisitor<Visitor>> {
     const params = new HttpParams()
-      .set('search', search || '')
-      .set('page', page || 0)
-      .set('limit', limit || 0);
+      .set('search', search ?? '')
+      .set('page', page ?? 0)
+      .set('limit', limit ?? 0);
 
     return this.http.get<TypeResponseVisitor<Visitor>>(
       `${this.BASE_URL}/visitors`,
